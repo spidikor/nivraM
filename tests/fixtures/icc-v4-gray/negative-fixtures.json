@@ -1,0 +1,74 @@
+[
+  {
+    "file": "missing-kTRC.icc",
+    "sha256": "2d75e1c6e9d2a78ce2493c0107683ac958352c5ee134186d4259c46221da61db",
+    "expected": "reject",
+    "reason": "missing-kTRC"
+  },
+  {
+    "file": "rgb-hybrid.icc",
+    "sha256": "c4bf4cb9063c152fd314dfe05dd1846c97953aa74256ab7b93b53c1fa8f6fa54",
+    "expected": "reject",
+    "reason": "rgb-hybrid"
+  },
+  {
+    "file": "lut-hybrid.icc",
+    "sha256": "d0686fc724adbf9c45fd51ae970d89428499bcdb93f41397102aa94292d71606",
+    "expected": "reject",
+    "reason": "lut-hybrid"
+  },
+  {
+    "file": "unknown-tag.icc",
+    "sha256": "d15dbfcfea6c973f3f9233ec2285b1232f78353c89c7a5ba51c00cddb2f57359",
+    "expected": "reject",
+    "reason": "unknown-tag"
+  },
+  {
+    "file": "gray-chrm.icc",
+    "sha256": "6ae44270c6ca3d99d59862b9fc88730f966eb37b5429294c7a944bed3423b161",
+    "expected": "reject",
+    "reason": "gray-chrm"
+  },
+  {
+    "file": "duplicate-kTRC.icc",
+    "sha256": "3ae887955d70663810593b45c840d33b173ad981fe87e470ce58e7f1b9c24b5a",
+    "expected": "reject",
+    "reason": "duplicate-kTRC"
+  },
+  {
+    "file": "v2.icc",
+    "sha256": "6319bddeee4f6a99537c317aa69540facf6a4a2addce27795325159d78ca9941",
+    "expected": "reject",
+    "reason": "v2"
+  },
+  {
+    "file": "input-class.icc",
+    "sha256": "017b326e2e0bd66418d474cff7f9ba7346c6fa4f02a8767e3023f57c320175d2",
+    "expected": "reject",
+    "reason": "input-class"
+  },
+  {
+    "file": "lab-pcs.icc",
+    "sha256": "fa6b47a01373858763a25f58877aca45a9903fa5af76ec1fa931ff74b8db002f",
+    "expected": "reject",
+    "reason": "lab-pcs"
+  },
+  {
+    "file": "intent4.icc",
+    "sha256": "e574fa7ac4c8bbd3bf8815749806cb8a691f2581eff056879c98a4557db4c806",
+    "expected": "reject",
+    "reason": "intent4"
+  },
+  {
+    "file": "reserved.icc",
+    "sha256": "3ceaed618dcf25e39e835e275e21e73a621e803c1e8c5216d72de5a6bbf7bee5",
+    "expected": "reject",
+    "reason": "reserved"
+  },
+  {
+    "file": "bad-d50.icc",
+    "sha256": "b3d96660959187231e3f4e93363759dc3391d9ad73879f773fb3ecfff7c42a82",
+    "expected": "reject",
+    "reason": "bad-d50"
+  }
+]

@@ -663,3 +663,80 @@ References: [PNG3](https://www.w3.org/TR/png-3/),
 [ICC v4.3](https://archive.color.org/specification/ICC1v43_2010-12.pdf),
 [ICC White Paper35](https://archive.color.org/files/whitepapers/ICC_White_Paper35-Use_of_the_parametricCurveType.pdf),
 and [CSS Color4](https://www.w3.org/TR/css-color-4/).
+
+## Bounded ICC v4 monochrome display input (2026-11-12)
+
+The preceding RGB-only ICC checkpoint is extended to **GRAY/XYZ display profiles**.
+This supersedes its GRAY exclusion, while retaining its RGB arithmetic, admission
+rules, metadata precedence and resource limits. It is still a deliberately small
+local subset, not arbitrary ICC support or a complete ICC conformance validator.
+
+Grayscale PNG type 0 at depths 1/2/4/8/16 and grayscale-alpha type 4 at depths 8/16
+may carry an ICC v4.0–4.4 `mntr`/`GRAY`/`XYZ ` profile, noninterlaced or Adam7.
+The profile's model must match the PNG: GRAY in RGB/RGBA/indexed images rejects,
+and RGB in grayscale/gray-alpha images rejects. This check still applies when
+cICP takes precedence; neither neutral-looking pixels nor profile names override it.
+
+GRAY requires desc, cprt, wtpt and kTRC, and permits only chad, bkpt and lumi as
+optional tags. RGB colorant/curve tags, chrm, LUT/hybrid tags and unknown tags
+reject. The same bounded header, complete tag layout, mluc text, XYZ and sf32
+validation applies. kTRC uses exactly the curve bounds described above: identity,
+positive gamma through 10, monotone 2–4096-entry full-endpoint sampled curves,
+and bounded parametric functions 0 or 3. Flat sampled-curve segments are allowed
+because only the forward transform is used. These exclusions are local policy,
+not assertions that every excluded profile is invalid under ICC.
+
+[ICC v4.3 Annex F.2](https://archive.color.org/specification/ICC1v43_2010-12.pdf)
+defines the monochrome connection as the forward gray TRC, normalized to black 0
+and white 1. For this XYZ subset, the connection value multiplies the fixed PCS
+white `(63190, 65536, 54061)/65536`. The existing fixed Bradford D50-to-D65 and
+XYZ-to-linear-sRGB conversion then clips each linear channel, sRGB-encodes, and
+rounds once to RGB8. It is not an inverse curve, L* conversion, RGB colorant
+matrix, or LUT encoding rescale. The source's full original sample precision
+reaches kTRC. wtpt must match D50 within the existing local 2/65536 tolerance;
+those small deviations do not tint the output. Optional chad is validated and
+not reapplied. Absent chad is admitted for authored D50 profiles; no historical
+measurement or device-calibration conformance is inferred.
+
+Rendering remains fixed media-relative colorimetric intent 1, full adaptation,
+no black-point compensation and no perceptual/saturation mapping. Header intent
+0–3 is recorded, not executed. Alpha is unassociated and not color-transformed;
+alpha16 uses the existing rounded scaling. Hidden gray at alpha zero is converted
+normally. tRNS compares original samples before reduction or color conversion,
+including 16-bit near-collisions. sBIT retains stored-sample policy. Crops,
+nearest-center overviews, complete source-stream validation and source hashes
+are unchanged.
+
+Precedence remains cICP > iCCP > sRGB > gAMA/cHRM, independent of order. Ignored
+ICC profiles still require full subset validation and model agreement, but cICP
+winners allocate no ICC tables and execute no ICC color conversion. Valid lower
+metadata may accompany active ICC without a required companion. The derived PNG
+contains RGB/RGBA8 core chunks and sRGB intent 1, never source ICC/text metadata.
+Provenance identifies GRAY/kTRC separately from RGB matrix/TRC, profile hash and
+size, original depth, selected metadata and the explicit rendering policy.
+
+An active GRAY profile uses **one** original-depth packed-double table, at most
+65536 entries; on the qualified Python runtime its 16-bit table occupies 524,368
+bytes including the measured array header, plus the existing 88-byte construction
+seed allowance. RGB still uses three tables. The unchanged conservative profile
+allowance of 9,175,040 bytes applies even when ICC is ignored. Full pipeline budget
+admission precedes output/table allocation. Deadlines and supervised cancellation
+remain in force. These are explicit buffer bounds, not whole-process RSS limits.
+
+`tests/test_png_gray_icc_preview.py` uses 84 independently frozen analytical PNG
+fixtures across six curve forms, seven legal formats and both interlaces. Their
+60-digit Decimal color oracle independently inverts the published sRGB/Bradford
+matrices and never imports the production transform or a native CMS. Color
+agreement permits at most one output code per channel; alpha and endpoints are
+exact. Tests independently decode the original GA16 fixture bytes, cover all 70
+format/filter/interlace combinations, metadata orders, original-depth transparency,
+model mismatch, malformed profiles/streams, resource edges, seeded invariants,
+and supervised workers. Same-engine metamorphic checks supplement the independent
+oracle; they are not independent color-accuracy evidence.
+
+This semantic analysis is anchored to ICC v4.3; it is not an exhaustive v4.4
+conformance review. No vendor/system gray-profile corpus, physical display
+calibration, browser/Windows/installed-app qualification, trusted-Arial check,
+private-image recognition accuracy or completion of requirement 3.8 is claimed.
+ICC v2, other profile classes/models/PCS, LUT transforms and arbitrary profiles
+remain unsupported.

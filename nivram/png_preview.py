@@ -159,10 +159,12 @@ def _source(data: bytes, end: float) -> tuple[int, int, _Encoding, list[tuple[in
             return width, height, _Encoding(depth, color, palette, transparency, interlace, srgb_intent,
                                                     gamma if cicp is None and icc is None and srgb_intent is None else None, chromaticities, cicp, icc), idat
         elif kind == b'iCCP':
-            if idat or b'PLTE' in seen or kind in seen or color not in (2, 3, 6):
-                raise PngPreviewError('PNG RGB ICC profile is duplicated, misplaced, or incompatible with grayscale.')
+            if idat or b'PLTE' in seen or kind in seen:
+                raise PngPreviewError('PNG ICC profile is duplicated or misplaced.')
             try:
                 icc = png_icc.parse_iccp(body, lambda: _deadline(end), PIXEL_PIPELINE_BUDGET)
+                if (icc.color_model == 'GRAY') != (color in (0, 4)):
+                    raise PngPreviewError('PNG ICC color model does not match source color type.')
             except ValueError as exc:
                 raise PngPreviewError(str(exc)) from exc
         elif kind == b'cICP':
@@ -557,7 +559,7 @@ def _expand_color(row, samples, width, encoding, table, end):
         else:
             offset = x*channels
             values = row[offset:offset+(1 if color == 4 else 3)]
-        if color in (0, 4):
+        if color in (0, 4) and not (encoding.icc is not None and encoding.cicp is None):
             values = (values[0],)*3
         if encoding.icc is not None and encoding.cicp is None:
             for c, value in enumerate(png_icc.convert(values, encoding.icc, table)):
@@ -671,7 +673,7 @@ def preview_png(data: bytes, *, mode: str, rect: dict | None = None,
     # The gamma-only LUT fills a bytearray directly, without a Python-int list.
     # Existing 32-row allowance covers expansion and its RGB replacement copy.
     if icc_active:
-        table_bytes = png_icc.table_bytes(8 if encoding.color == 3 else encoding.depth)
+        table_bytes = png_icc.table_bytes(8 if encoding.color == 3 else encoding.depth, encoding.icc)
     accounted += table_bytes
     if p3 or icc_active:
         # Multiplication briefly retains the one-double seed array too.
@@ -799,6 +801,10 @@ def preview_png(data: bytes, *, mode: str, rect: dict | None = None,
             'sha256': encoding.icc.sha256, 'sourceIntent': encoding.icc.intent,
             'selectedMetadata': 'cICP' if encoding.cicp is not None else 'iCCP',
             'admissionPolicy': 'bounded-v4-display-RGB-XYZ-matrix-TRC'}
+        if encoding.icc.color_model == 'GRAY':
+            result['engine']['iccProfile'].update({
+                'admissionPolicy': 'bounded-v4-display-GRAY-XYZ-kTRC',
+                'sourceColorModel': 'GRAY', 'sizeBytes': encoding.icc.size})
     if icc_active:
         result['engine']['colorConversion'] = {
             'name': 'bounded ICC v4 matrix/TRC to sRGB', 'version': 1,
@@ -808,5 +814,10 @@ def preview_png(data: bytes, *, mode: str, rect: dict | None = None,
             'gamutPolicy': 'clip-linear-sRGB-channels-to-[0,1]',
             'transferPolicy': 'original-sample-TRC; PCS-D50-to-D65-sRGB; round-once-8bit',
             'numericPolicy': 'bounded-fixed-coefficients; float64; no-physical-calibration'}
+        if encoding.icc.color_model == 'GRAY':
+            result['engine']['colorConversion'].update({
+                'name': 'bounded ICC v4 GRAY kTRC to sRGB',
+                'sourceColorModel': 'GRAY',
+                'transferPolicy': 'original-sample-kTRC; multiply-PCS-D50-white; PCS-D50-to-D65-sRGB; round-once-8bit'})
     _deadline(end)
     return result

@@ -1,0 +1,297 @@
+[
+  {
+    "file": "icc-lower-conflicts.png",
+    "sha256": "41a9504eab3cec9aa8a37548a3cf3cd0a7caf43d49a007bf616baf9ec006ace3",
+    "expected": "icc",
+    "expectedRGBA": [
+      [
+        137,
+        137,
+        137,
+        0
+      ],
+      [
+        188,
+        188,
+        188,
+        128
+      ],
+      [
+        255,
+        255,
+        255,
+        255
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0
+  },
+  {
+    "file": "lower-before-icc.png",
+    "sha256": "8fca2e8bf645ae3f98efe85301ff091899bd9535603c97286a5b8210f64c8288",
+    "expected": "icc",
+    "expectedRGBA": [
+      [
+        137,
+        137,
+        137,
+        0
+      ],
+      [
+        188,
+        188,
+        188,
+        128
+      ],
+      [
+        255,
+        255,
+        255,
+        255
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0
+  },
+  {
+    "file": "icc-gamma-alone.png",
+    "sha256": "39634c60b2a8e021f227d08a9f551bc05099a46d5edce50961973d6b6c13fc29",
+    "expected": "icc",
+    "expectedRGBA": [
+      [
+        137,
+        137,
+        137,
+        0
+      ],
+      [
+        188,
+        188,
+        188,
+        128
+      ],
+      [
+        255,
+        255,
+        255,
+        255
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0
+  },
+  {
+    "file": "icc-chroma-alone.png",
+    "sha256": "48dae8474e8fe918ac54a00de48e1428f1cc572e7c8da60c7abf782d16e2b34b",
+    "expected": "icc",
+    "expectedRGBA": [
+      [
+        137,
+        137,
+        137,
+        0
+      ],
+      [
+        188,
+        188,
+        188,
+        128
+      ],
+      [
+        255,
+        255,
+        255,
+        255
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0
+  },
+  {
+    "file": "cicp-first.png",
+    "sha256": "40fd907307801c7e1176120ecee2bb6c3f68f96abba11aadf75d127428ea5010",
+    "expected": "cicp",
+    "expectedRGBA": [
+      [
+        64,
+        64,
+        64,
+        0
+      ],
+      [
+        128,
+        128,
+        128,
+        128
+      ],
+      [
+        255,
+        255,
+        255,
+        255
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0
+  },
+  {
+    "file": "cicp-last.png",
+    "sha256": "7896e0cfa5e5e00fe55fca28a9015555e342f1e2b1cbc3c34db91d627ffd80da",
+    "expected": "cicp",
+    "expectedRGBA": [
+      [
+        64,
+        64,
+        64,
+        0
+      ],
+      [
+        128,
+        128,
+        128,
+        128
+      ],
+      [
+        255,
+        255,
+        255,
+        255
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0
+  },
+  {
+    "file": "p3-first.png",
+    "sha256": "3f3ea9cf2ef47bc1ffe2c285af25b75aa029ef050395b75b8c08fe799bffda1d",
+    "expected": "cicp",
+    "expectedRGBA": [
+      [
+        64,
+        64,
+        64,
+        0
+      ],
+      [
+        128,
+        128,
+        128,
+        128
+      ],
+      [
+        255,
+        255,
+        255,
+        255
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0
+  },
+  {
+    "file": "p3-last.png",
+    "sha256": "77f8bbcdca3af4c5255beff9aec5e9f0fa59d55e27af3c3b107918502e044f7f",
+    "expected": "cicp",
+    "expectedRGBA": [
+      [
+        64,
+        64,
+        64,
+        0
+      ],
+      [
+        128,
+        128,
+        128,
+        128
+      ],
+      [
+        255,
+        255,
+        255,
+        255
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0
+  },
+  {
+    "file": "sbit.png",
+    "sha256": "6efb7de0e0b34980801464c78e33051df6d68c0a9f227f9e1984177b57ddb8a2",
+    "expected": "icc",
+    "expectedRGBA": [
+      [
+        137,
+        137,
+        137,
+        0
+      ],
+      [
+        188,
+        188,
+        188,
+        128
+      ],
+      [
+        255,
+        255,
+        255,
+        255
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0
+  },
+  {
+    "file": "ignored-bad-profile.png",
+    "sha256": "dcff56b407dc25c8b848edd89038ac176a11e2f19483d70d826f6ad843a7916a",
+    "expected": "reject",
+    "expectedRGBA": null,
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0
+  },
+  {
+    "file": "ignored-gray-rgb-mismatch.png",
+    "sha256": "5019936664487de0eef57b6d62bd89e467e7682abc66219c1af4d718151b8c96",
+    "expected": "reject",
+    "expectedRGBA": null,
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0
+  },
+  {
+    "file": "gray-in-c2-cicp0.png",
+    "sha256": "d5b40f09da45d8b23eedf621e88caf64509e534cad539e34c7494427ddc375ae",
+    "expected": "reject",
+    "expectedRGBA": null
+  },
+  {
+    "file": "gray-in-c2-cicp1.png",
+    "sha256": "5021eeaede0f9800bcf7e524565285471665eb15c411f25616491ab95364daa0",
+    "expected": "reject",
+    "expectedRGBA": null
+  },
+  {
+    "file": "gray-in-c3-cicp0.png",
+    "sha256": "8f5e06bd7ccca16be9cb401211585bd9f27fb7658fdfc5453a02ffb4cc78356d",
+    "expected": "reject",
+    "expectedRGBA": null
+  },
+  {
+    "file": "gray-in-c3-cicp1.png",
+    "sha256": "1d1cc833f87bc62e11a3588b6dd8953a9777d09660dbcc9e1df68ed34015e8e4",
+    "expected": "reject",
+    "expectedRGBA": null
+  },
+  {
+    "file": "gray-in-c6-cicp0.png",
+    "sha256": "686c9aa8c2b87adb9caa84f931f69f94484dfe86e23580525d6ea448bfab3184",
+    "expected": "reject",
+    "expectedRGBA": null
+  },
+  {
+    "file": "gray-in-c6-cicp1.png",
+    "sha256": "73eccf68214cb2455e5ae9ac9a623598e760fb21458d07f5777a94fe9e2a4455",
+    "expected": "reject",
+    "expectedRGBA": null
+  }
+]

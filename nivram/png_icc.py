@@ -1,4 +1,4 @@
-"""Deliberately bounded ICC v4 display RGB matrix/TRC subset, not a general CMS.
+"""Bounded ICC v4 display RGB matrix/TRC and GRAY kTRC, not a general CMS.
 
 Untrusted profiles never enter Pillow/ImageCms. PCS columns are already D50
 adapted; chad is validated, not applied twice. See docs/png-encodings.md.
@@ -128,6 +128,7 @@ class Profile:
     intent: int
     matrix: tuple
     curves: tuple
+    color_model: str = 'RGB'
 
 
 def parse_iccp(body, check, budget):
@@ -168,7 +169,10 @@ def parse_iccp(body, check, budget):
 def _parse(raw, check):
     _require(len(raw) >= 132 and len(raw) % 4 == 0 and int.from_bytes(raw[:4], 'big') == len(raw), 'invalid declared profile size.')
     _require(raw[8] == 4 and raw[9] >> 4 <= 4 and raw[9] & 15 <= 9 and raw[10:12] == b'\0\0', 'only ICC v4.0 through v4.4 profiles are supported.')
-    _require(raw[12:24] == b'mntrRGB XYZ ' and raw[36:40] == b'acsp', 'only v4 display RGB/XYZ profiles are supported.')
+    _require(raw[12:16] == b'mntr' and raw[16:20] in (b'RGB ', b'GRAY') and
+             raw[20:24] == b'XYZ ' and raw[36:40] == b'acsp',
+             'only v4 display RGB/XYZ or GRAY/XYZ profiles are supported.')
+    gray = raw[16:20] == b'GRAY'
     _require(raw[68:80] == struct.pack('>3i', 63190,65536,54061) and not any(raw[100:128]), 'invalid PCS illuminant or reserved header.')
     intent = int.from_bytes(raw[64:68], 'big')
     _require(intent <= 3, 'invalid rendering intent.')
@@ -181,7 +185,9 @@ def _parse(raw, check):
     _require(1 <= count <= MAX_TAGS and end <= len(raw), 'invalid tag count/table.')
     tags, spans = {}, set()
     required = {b'rXYZ',b'gXYZ',b'bXYZ',b'rTRC',b'gTRC',b'bTRC',b'wtpt',b'desc',b'cprt'}
-    allowed = required | {b'chad',b'bkpt',b'lumi',b'chrm'}
+    if gray:
+        required = {b'kTRC',b'wtpt',b'desc',b'cprt'}
+    allowed = required | {b'chad',b'bkpt',b'lumi'} | (set() if gray else {b'chrm'})
     for i in range(count):
         check()
         name, offset, size = struct.unpack_from('>4sII', raw, 132+12*i)
@@ -216,6 +222,12 @@ def _parse(raw, check):
                  'unsupported chromaticity tag.')
         coords=struct.unpack_from('>6I',p,12)
         _require(all(x<=65536 for x in coords) and all(coords[i]+coords[i+1]<=65536 for i in (0,2,4)), 'invalid chromaticity coordinates.')
+    if gray:
+        # ICC v4.3 Annex F.2: forward kTRC times PCS white, not media wtpt
+        # deviations, an RGB matrix, L*, or a second application of chad.
+        curves = (_curve(payload(b'kTRC')),)
+        check()
+        return Profile(hashlib.sha256(raw).hexdigest(),len(raw),intent,(),curves,'GRAY')
     matrix=tuple(zip(*(_xyz(payload(n)) for n in (b'rXYZ',b'gXYZ',b'bXYZ'))))
     _require(all(abs(v)<=4 for row in matrix for v in row) and
              all(abs(sum(row)-w)<=.002 for row,w in zip(matrix,D50)) and abs(_det(matrix))>=1e-8,
@@ -225,8 +237,9 @@ def _parse(raw, check):
     return Profile(hashlib.sha256(raw).hexdigest(),len(raw),intent,matrix,curves)
 
 
-def table_bytes(depth):
-    return 3*((1<<depth)*array('d').itemsize+sys.getsizeof(array('d')))
+def table_bytes(depth, profile=None):
+    channels = 1 if profile is not None and profile.color_model == 'GRAY' else 3
+    return channels*((1<<depth)*array('d').itemsize+sys.getsizeof(array('d')))
 
 
 def tables(profile, depth, check):
@@ -244,8 +257,12 @@ def tables(profile, depth, check):
 
 
 def convert(values, profile, tables):
-    linear=tuple(tables[i][v] for i,v in enumerate(values))
-    xyz=tuple(sum(c*v for c,v in zip(row,linear)) for row in profile.matrix)
+    if profile.color_model == 'GRAY':
+        connection = tables[0][values[0]]
+        xyz = tuple(connection * white for white in D50)
+    else:
+        linear=tuple(tables[i][v] for i,v in enumerate(values))
+        xyz=tuple(sum(c*v for c,v in zip(row,linear)) for row in profile.matrix)
     output=[]
     for row in PCS_TO_SRGB:
         value=sum(c*v for c,v in zip(row,xyz))
