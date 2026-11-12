@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="nivram-token" content="__TOKEN__">
+<title>nivraM — Local chemical editor</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/modules/comparison.css">
+<link rel="stylesheet" href="/modules/canvas-menu.css">
+<link rel="stylesheet" href="/modules/supplied-3d-viewer.css">
+<script src="/vendor/chart.umd.min.js"></script>
+<script type="module" src="/app.mjs"></script>
+<script type="module" src="/modules/desktop.mjs"></script>
+<script type="module" src="/modules/analysis.mjs"></script>
+<script type="module" src="/modules/pubchem.mjs"></script>
+<script type="module" src="/modules/image-import.mjs"></script>
+<script type="module" src="/modules/supplied-3d-viewer.mjs"></script>
+</head>
+<body>
+<a class="skip-link" href="#canvas">Skip to molecular drawing</a>
+<a class="skip-link" href="#keyboard-summary">Skip to keyboard drawing</a>
+<a class="skip-link" href="#inspector">Skip to properties and export</a>
+<header class="app-header">
+  <div class="brand"><span class="wordmark" role="img" aria-label="nivraM"><span aria-hidden="true">Marvin</span></span><span class="edition">LOCAL EDITOR · DEV 0.2.0</span></div>
+  <div class="header-actions"><button id="theme-toggle" type="button" class="quiet" aria-pressed="false" aria-describedby="theme-description" title="Editor view only. PNG ink keeps normal colors; white or transparent background is selected separately.">Dark mode</button><button id="help-button" class="quiet">About this build</button><span class="local-status"><i></i> Local session</span></div>
+</header>
+<nav class="document-toolbar" aria-label="Document actions">
+  <div class="button-group"><button id="new-button">New</button><button id="open-button">Open</button><button id="save-button">Save project</button><button id="save-as-button" hidden>Save As</button><button id="open-molecule-button" hidden>Open MOL/SMILES</button><button id="recovery-button" hidden>Recovery</button></div>
+  <span class="separator"></span><div class="button-group"><button id="undo-button" disabled>Undo</button><button id="redo-button" disabled>Redo</button></div>
+  <span class="separator"></span><button id="clean-button" class="clean-button" title="Experimental RDKit 2D layout; not verified as Marvin-equivalent">2D Clean</button><span class="clean-note">RDKit · experimental</span>
+  <div class="toolbar-end"><button id="optical-setup-button" type="button" hidden>PNG recognition setup</button><button id="image-import-button" title="Choose a PNG, drop it onto the drawing, or paste an image with Ctrl+V to review it before importing." hidden>Import PNG</button><button id="image-continue-3d" type="button" hidden title="Generate a local conformer from the just-accepted drawing">Continue to 3D</button><button id="supplied-3d-open" type="button">3D view</button><button id="import-button">Paste structure</button><button id="samples-button">Examples</button></div>
+</nav>
+<main class="workspace">
+  <aside class="tools" aria-label="Drawing tools">
+    <h2>DRAW</h2>
+    <button data-tool="select" aria-label="Select tool (V)" aria-keyshortcuts="V" aria-pressed="true" class="tool active"><span class="tool-symbol">↖</span><span>Select</span><kbd>V</kbd></button>
+    <button data-tool="atom" aria-label="Atom tool (A)" aria-keyshortcuts="A" aria-pressed="false" class="tool"><span class="tool-symbol atom-symbol">C</span><span>Atom</span><kbd>A</kbd></button>
+    <button data-tool="bond" aria-label="Bond tool (B)" aria-keyshortcuts="B" aria-pressed="false" class="tool"><span class="tool-symbol">╱</span><span>Bond</span><kbd>B</kbd></button>
+    <button data-tool="ring" aria-label="Ring tool (R)" aria-keyshortcuts="R" aria-pressed="false" class="tool"><span class="tool-symbol">⬡</span><span>Ring</span><kbd>R</kbd></button>
+    <button data-tool="erase" aria-label="Erase tool (E)" aria-keyshortcuts="E" aria-pressed="false" class="tool"><span class="tool-symbol">×</span><span>Erase</span><kbd>E</kbd></button>
+    <div class="tool-options"><label for="bond-type">Bond</label><select id="bond-type"><option value="1">Single</option><option value="2">Double</option><option value="3">Triple</option><option value="wedge">Solid wedge</option><option value="dash">Hashed wedge</option></select>
+    <label for="ring-type">Ring</label><select id="ring-type"><option value="benzene">Benzene</option><option value="6">6-membered</option><option value="5">5-membered</option><option value="3">3-membered</option><option value="4">4-membered</option><option value="7">7-membered</option><option value="8">8-membered</option></select></div>
+    <div class="tool-help">Drag to draw a bond.<br>Alt-drag to pan.<br>Scroll to zoom.</div>
+  </aside>
+  <section class="editor-area" aria-label="Molecule drawing">
+    <div class="atom-toolbar" aria-label="Elements"><span>Element</span><div id="elements"></div><button id="delete-button" class="quiet" title="Delete selected atoms or bonds">Delete selection</button></div>
+    <div class="drawing-transform-toolbar" role="group" aria-label="Rotate drawing"><button id="rotate-ccw" title="Rotate selection, or whole drawing when nothing is selected" aria-label="Rotate 30° counterclockwise">↶ 30°</button><button id="rotate-cw" title="Rotate selection, or whole drawing when nothing is selected" aria-label="Rotate 30° clockwise">↷ 30°</button></div>
+    <div class="canvas-wrap" id="canvas-wrap">
+      <svg id="canvas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Editable molecular drawing; keyboard construction is available in the Keyboard drawing panel" tabindex="0"><g id="drawing"></g><g id="selection"></g><g id="keyboard-target-overlay" aria-hidden="true" pointer-events="none"></g><g id="gesture"></g><g id="valence-warning" aria-hidden="true" pointer-events="none"></g></svg>
+      <div id="empty-state"><div class="empty-hex">⬡</div><h1>Start with a structure.</h1><p>Draw atoms and bonds, paste SMILES,<br>or open a 2D MOL file.</p><button id="empty-import">Paste a structure</button></div>
+      <div class="canvas-bottom"><span id="tool-hint">Select atoms or drag a selection rectangle.</span><div class="zoom-controls"><button id="zoom-out" aria-label="Zoom out">−</button><button id="fit-button">Fit</button><button id="zoom-in" aria-label="Zoom in">+</button></div></div>
+    </div>
+    <div id="structure-status" class="structure-status"><span id="counts">0 atoms · 0 bonds</span><span id="formula"></span><span id="molecular-weight"></span><span id="request-status">Starting local engine…</span></div>
+  </section>
+  <aside class="inspector" id="inspector" aria-label="Structure properties and export" tabindex="-1">
+    <div id="stereo-guidance-region" class="stereo-guidance-region" role="region" aria-label="Stereochemistry guidance" hidden></div>
+    <section class="keyboard-panel"><details id="keyboard-editor"><summary id="keyboard-summary">Keyboard drawing</summary>
+      <p id="keyboard-help" class="muted">Choose an atom, bond or empty position, then use an action. Position and movement use drawing coordinates, not physical distances. Target navigation does not change your selection. Use Tab to leave this panel.</p>
+      <label for="keyboard-target">Drawing target</label><select id="keyboard-target" aria-describedby="keyboard-help"><option value="empty">Empty position</option></select>
+      <div class="two-fields"><label for="keyboard-x">Position x<input id="keyboard-x" type="number" min="-10000" max="10000" step="any" value="0"></label><label for="keyboard-y">Position y<input id="keyboard-y" type="number" min="-10000" max="10000" step="any" value="0"></label></div>
+      <label for="keyboard-element">Atom element</label><select id="keyboard-element"><option>C</option><option>N</option><option>O</option><option>S</option><option>P</option><option>F</option><option>Cl</option><option>Br</option><option>I</option></select>
+      <button id="keyboard-atom">Add atom</button>
+      <label for="keyboard-bond-type">Bond type</label><select id="keyboard-bond-type"><option value="1">Single</option><option value="2">Double</option><option value="3">Triple</option><option value="wedge">Solid wedge</option><option value="dash">Hashed wedge</option></select>
+      <button id="keyboard-edit-bond">Apply bond type</button><button id="keyboard-start-bond">Start bond at target</button>
+      <p class="muted">After starting a bond, choose its endpoint or an empty position. New endpoints use a 1.5-unit bond and 30-degree snapping unless free positioning is selected.</p>
+      <label class="check-label"><input id="keyboard-free-bond" type="checkbox">Free endpoint direction and length (minimum 0.6 units)</label>
+      <button id="keyboard-finish-bond" disabled>Finish bond</button><button id="keyboard-cancel-bond" disabled>Cancel unfinished bond</button>
+      <label for="keyboard-ring-type">Ring type</label><select id="keyboard-ring-type"><option value="benzene">Benzene</option><option value="6">6-membered</option><option value="5">5-membered</option><option value="3">3-membered</option><option value="4">4-membered</option><option value="7">7-membered</option><option value="8">8-membered</option></select>
+      <label for="keyboard-ring-side">Fused ring side, viewed from the bond's first atom to its second</label><select id="keyboard-ring-side"><option value="left">Left</option><option value="right">Right</option></select><button id="keyboard-ring">Add ring at target</button>
+      <div class="keyboard-actions"><button id="keyboard-select">Select only target</button><button id="keyboard-toggle-select">Add/remove target from selection</button><button id="keyboard-endpoints">Select bond endpoints</button><button id="keyboard-select-all">Select all atoms</button><button id="keyboard-clear-selection">Clear selection</button><button id="keyboard-delete">Delete selection</button></div>
+      <p class="muted">Select one atom to edit its charge or isotope in Selected atom below. Moving a bond means selecting and moving its endpoints.</p>
+      <div class="two-fields"><label for="keyboard-dx">Move x by<input id="keyboard-dx" type="number" min="-20000" max="20000" step="any" value="0"></label><label for="keyboard-dy">Move y by<input id="keyboard-dy" type="number" min="-20000" max="20000" step="any" value="0"></label></div><button id="keyboard-move">Move selected atoms</button>
+      <div class="keyboard-actions"><button id="keyboard-reveal">Show target</button><button id="keyboard-pan-left">Pan left</button><button id="keyboard-pan-right">Pan right</button><button id="keyboard-pan-up">Pan up</button><button id="keyboard-pan-down">Pan down</button></div>
+      <p id="keyboard-status" role="status" aria-live="polite" aria-atomic="true">Choose a drawing target.</p>
+    </details></section>
+    <section class="fragment-panel"><details><summary>Reusable fragments</summary>
+      <p class="muted">Save or duplicate complete disconnected components. Select their atoms (selected bonds include their endpoints), or clear the selection to use the whole drawing. Partial molecular cuts and covalent attachment are not supported.</p>
+      <p class="muted">Insert adds a disconnected copy 3 drawing units to the right and fits the view. Atom-map labels are retained and may need manual adjustment if duplicate labels matter. Appearance and export settings stay unchanged. Undo removes the insertion.</p>
+      <button id="fragment-duplicate" type="button">Duplicate selection / drawing</button>
+      <label for="fragment-name">Local fragment name</label><input id="fragment-name" type="text" maxlength="80" autocomplete="off">
+      <button id="fragment-save" type="button">Save local fragment</button>
+      <label for="fragment-choice">Saved fragments</label><select id="fragment-choice"></select>
+      <button id="fragment-reload" type="button">Reload shelf</button><button id="fragment-insert" type="button">Insert disconnected copy</button>
+      <p class="muted">The desktop shelf keeps immutable local copies. Saving does not save or replace your current project. Stored records are checked structurally; insertion is checked by the local chemistry engine.</p>
+      <p id="fragment-status" role="status" aria-live="polite" aria-atomic="true">Open the desktop app to save and reuse local fragments.</p>
+    </details></section>
+    <section class="properties-panel"><h2>Structure properties</h2><button id="open-comparison" type="button" class="secondary-full">Compare with a pinned structure</button>
+      <dl><dt>Formula</dt><dd id="property-formula">No structure</dd><dt>Molecular weight / molar mass</dt><dd id="property-mass">Unavailable</dd><dt>Exact mass</dt><dd id="property-exact-mass">Unavailable</dd><dt>Calculated LogP — RDKit Wildman–Crippen</dt><dd id="property-logp">Unavailable</dd></dl>
+      <label for="property-smiles">Isomeric SMILES</label><textarea id="property-smiles" rows="2" readonly spellcheck="false"></textarea>
+      <details><summary>Method and applicability</summary><p id="property-provenance" class="muted">Local calculation; no structure transformations. Calculated LogP is separate from experimental LogP and pH-dependent LogD.</p></details>
+      <details><summary>IUPAC Name</summary><button id="calculate-name" class="secondary-full">Generate systematic name</button><button id="cancel-name" hidden>Cancel naming</button><p id="name-result" aria-live="polite">Calculate a name for the current structure.</p><p id="name-details" class="muted"></p>
+        <button id="pubchem-lookup" type="button" class="secondary-full" disabled>Lookup in PubChem</button><button id="pubchem-cancel" type="button" hidden>Cancel PubChem lookup</button>
+        <p class="muted">Optional online lookup, off by default. Review the exact structure and confirm each request before anything is sent.</p>
+        <p id="pubchem-result" role="status" aria-live="polite">No PubChem request has been sent.</p><p id="pubchem-details" class="muted"></p>
+      </details>
+    </section>
+    <section class="properties-panel" aria-labelledby="stereo-inspector-title"><h2 id="stereo-inspector-title">Stereochemistry inspector</h2>
+      <p class="muted">Read-only local inspection of the current 2D graph. Labels describe specified configurations; unresolved possibilities are never assigned. No cleanup or 3D generation.</p>
+      <button id="inspect-stereo" type="button" class="secondary-full">Inspect R/S and E/Z</button><button id="cancel-stereo-inspector" type="button" hidden>Cancel inspection</button>
+      <p id="stereo-inspector-status" role="status" aria-live="polite">Inspect the current structure for supported R/S and E/Z labels.</p>
+      <ul id="stereo-inspector-list"></ul>
+      <details><summary>Method and limitations</summary><p id="stereo-inspector-details" class="muted"></p><p class="muted">Supported tetrahedral and double-bond sites only. Pseudoasymmetric, axial, enhanced and other stereo cases are not comprehensively supported. Unspecified does not mean racemic. Source identifiers and 1-based graph positions identify listed sites. Select a site to highlight it in the drawing.</p></details>
+    </section>
+    <section class="export-panel"><h2>Image export</h2><p class="muted">Current layout. White background by default; transparency is optional. Includes recoverable 2D molecular coordinates and nivraM runtime version in PNG metadata. Anyone receiving the image can recover this chemistry. 3D viewer coordinates are not included.</p>
+      <label for="export-width">Width <span>px</span></label><input id="export-width" type="number" min="1" max="9999" step="1" value="2000">
+      <div class="auto-height"><span>Height</span><strong>Automatic</strong></div>
+      <div class="margin-description" id="margin-summary">40 px white margin on every side</div>
+      <details id="margin-details"><summary>Advanced margins</summary><label for="margin-mode">Margin units</label><select id="margin-mode"><option value="percent">Percent of image width</option><option value="pixels">Fixed pixels</option></select><label for="margin-value">Margin per side</label><input id="margin-value" type="number" min="0" step="0.1" value="2"><button id="reset-margin" class="text-button">Reset to 2%</button></details>
+      <label class="check-label"><input id="transparent-background" type="checkbox"> Transparent background?</label>
+      <label class="check-label"><input id="remove-chemistry-metadata" type="checkbox" autocomplete="off" aria-describedby="png-metadata-help"> Remove chemistry metadata?</label>
+      <p id="png-metadata-help">Unchecked keeps recoverable coordinates. Checked removes them from this PNG, not the visible artwork. The software label remains.</p>
+      <label for="filename">File name</label><input id="filename" type="text" value="structure" maxlength="100" spellcheck="false">
+      <button id="export-button" class="primary">Export PNG</button>
+      <p id="export-result" class="export-result" aria-live="polite">Up to 9999 px wide. No automatic cleanup.</p>
+      <button id="export-svg-button" class="secondary-full" type="button" aria-describedby="svg-export-help">Export SVG artwork</button>
+      <p id="svg-export-help" class="muted">Scalable 2D vector artwork using the same width, margins and background settings. Light-theme ink; no cleanup or embedded molecular record. Visual elements still reveal the structure. Save a project or MOL for editable chemistry.</p>
+      <button id="export-mol-button" class="secondary-full">Export 2D MOL</button>
+    </section>
+    <section class="appearance-panel"><h2>Drawing appearance</h2><p class="muted">Reference-informed starting preset.</p>
+      <p id="theme-description" class="muted theme-note">The desktop app remembers your light/dark choice between sessions. Black bonds become light grey; element colors stay unchanged with neutral contrast outlines. PNG and SVG ink stay in the light theme, with white background by default or optional transparency. Review panels stay white.</p>
+      <div class="two-fields"><div><label for="bond-width">Line width</label><input id="bond-width" type="number" min="0.5" max="5" step="0.1" value="4.2"></div><div><label for="label-size">Label size</label><input id="label-size" type="number" min="10" max="40" step="1" value="36"></div></div>
+      <label for="bond-spacing">Multiple-bond spacing</label><input id="bond-spacing" type="number" min="0.06" max="0.28" step="0.01" value="0.14" aria-describedby="bond-spacing-hint">
+      <p id="bond-spacing-hint" class="muted">Adjusts separation in double and triple bonds.</p>
+      <label for="label-padding">Extra label clearance (%)</label><input id="label-padding" type="number" min="0" max="20" step="1" value="4" aria-describedby="label-padding-hint">
+      <p id="label-padding-hint" class="muted">Adds space around atom labels relative to label size.</p>
+      <label for="hash-bond-style">Hashed stereobonds</label><select id="hash-bond-style" aria-describedby="hash-bond-style-hint"><option value="engine">Engine spacing</option><option value="spaced">Thicker, spaced bars</option></select>
+      <p id="hash-bond-style-hint" class="muted">Full-width bars with spacing proportional to line width. Provisional appearance from one black-bond example; colored hashes keep engine colors.</p>
+      <label class="check-label"><input id="element-color" type="checkbox" checked> Element colors</label><button id="apply-style" class="secondary-full">Apply appearance</button>
+    </section>
+    <section class="atom-panel"><h2>Selected atom</h2><p class="muted" id="atom-info">Select one atom to edit.</p><div class="two-fields"><div><label for="atom-charge">Charge</label><input id="atom-charge" type="number" min="-8" max="8" step="1" value="0" disabled></div><div><label for="atom-isotope">Isotope</label><input id="atom-isotope" type="number" min="0" max="400" step="1" value="0" disabled></div></div><label for="atom-radicals">Unpaired electrons (radicals)</label><input id="atom-radicals" type="number" min="0" max="8" step="1" value="0" disabled aria-describedby="atom-hydrogen-help"><p class="muted" id="atom-hydrogen-help">Hydrogen labels follow the engine’s valence rules. Imported hydrogen overrides are preserved; incompatible radical edits are rejected.</p><button id="apply-atom" class="secondary-full" disabled>Apply to atom</button></section>
+    <section class="science-panel"><h2>maraPssiwS</h2><p class="muted">Open a supplied population model to calculate and explore its pH curves. Prediction from the drawing remains unavailable.</p>
+      <button id="open-population-model" class="secondary-full" type="button" disabled>Open population model</button>
+      <details><summary>Physiological pH references</summary><label for="physiology-context">Evidence-qualified context</label><select id="physiology-context"><option value="">Choose a context</option></select><p id="physiology-detail" class="evidence-detail">Select a reference context. No interval is assumed for your physiology.</p></details>
+      <button id="open-ph-chart" class="secondary-full" type="button" disabled>Open pH reference chart</button>
+      <p id="ph-chart-status" class="muted" role="status">Loading local pH references.</p>
+    </section>
+  </aside>
+</main>
+<footer class="app-footer"><span id="save-status" role="status" aria-live="polite">Browser export mode · native recovery unavailable</span><span>Marvin visual and cleanup equivalence: not yet established</span></footer>
+<div id="toast" class="toast" role="alert" hidden></div>
+<dialog id="pubchem-dialog" aria-labelledby="pubchem-title" aria-describedby="pubchem-scope">
+  <div class="dialog-heading"><h2 id="pubchem-title">Review PubChem request</h2></div>
+  <p id="pubchem-scope">This sends the exact SMILES below to PubChem. Do not send confidential structures unless you intend to disclose them to this provider. Cancelling before Send makes no lookup request. Once sent, a request cannot be recalled.</p>
+  <p id="pubchem-review-status" role="status" aria-live="polite"></p>
+  <dl><dt>Provider</dt><dd id="pubchem-provider"></dd><dt>Destination</dt><dd id="pubchem-endpoint"></dd><dt>Purpose</dt><dd id="pubchem-purpose"></dd><dt>Cost</dt><dd id="pubchem-cost"></dd><dt>Exact SMILES to send</dt><dd id="pubchem-smiles"></dd></dl>
+  <p>PubChem may standardize structures. A retrieved name is accepted only after the returned structure matches. A database IUPAC name is not a verified Preferred IUPAC Name.</p>
+  <ul id="pubchem-warnings"></ul>
+  <div class="dialog-buttons"><button id="pubchem-review-cancel" type="button">Cancel review</button><button id="pubchem-send" type="button" class="primary" disabled>Send to PubChem</button></div>
+</dialog>
+<dialog id="population-dialog" class="population-dialog" aria-labelledby="population-title" aria-describedby="population-scope">
+  <div class="dialog-heading"><h2 id="population-title">Supplied-model populations</h2><button id="close-population-model" class="close-button" type="button" aria-label="Close population model">x</button></div>
+  <p id="population-scope">Calculate a complete model supplied by you. The model's chemistry, completeness and correspondence to your drawing are not independently verified. Your drawing stays unchanged until you explicitly use a reviewed state. Results are cleared when the drawing changes or this window closes.</p>
+  <div class="dialog-buttons"><button id="choose-population-model" type="button">Choose model JSON</button><button id="cancel-population-model" type="button" hidden>Cancel calculation</button></div>
+  <label for="population-context">Evidence-qualified pH reference context</label>
+  <select id="population-context" aria-describedby="population-context-help population-context-status" disabled><option value="">No reference context</option></select>
+  <p id="population-context-help">Change the reference without closing or recalculating the model. Existing session-only comparisons follow their context. Edit custom comparisons in the editor's reference controls. References do not validate these populations in vivo.</p>
+  <p id="population-context-status" role="status" aria-live="polite">Reference data is not available yet. Supplied-model calculation remains available.</p>
+  <input id="population-model-file" type="file" accept=".json,application/json" hidden>
+  <p id="population-model-name" class="muted"></p><p id="population-model-status" role="status" aria-live="polite"></p>
+  <div id="population-model-chart"></div>
+  <section id="population-state-panel" aria-labelledby="population-state-title" hidden>
+    <h3 id="population-state-title">Inspect a supplied state</h3>
+    <p id="population-state-summary"></p>
+    <p>Choose a state's Inspect control in the table. A matching structure file supplies its drawing; state names alone cannot reconstruct a molecule.</p>
+    <div class="dialog-buttons"><button id="choose-population-structures" type="button" disabled>Choose state structures JSON</button><button id="population-state-preview-button" type="button" disabled>Preview selected state</button></div>
+    <input id="population-structures-file" type="file" accept=".json,application/json" hidden>
+    <p id="population-structures-name" class="muted"></p>
+    <p id="population-state-status" role="status" aria-live="polite"></p>
+    <svg id="population-state-preview" class="population-state-preview" role="img" aria-label="Supplied two-dimensional state preview" hidden></svg>
+    <p id="population-state-limitations" hidden>This replaces the whole drawing with the reviewed 2D structure. The supplied energies and model applicability are not independently validated. A 2D depiction does not adopt a 3D conformer geometry. Undo restores the preceding drawing.</p>
+    <div class="dialog-buttons"><button id="population-state-adopt" type="button" class="primary" disabled>Use this 2D state</button><button id="population-state-cancel" type="button" hidden>Cancel state preview</button></div>
+  </section>
+  <div class="dialog-buttons"><button id="population-export-json" type="button" disabled>Export full JSON</button><button id="population-export-csv" type="button" disabled>Export full CSV</button><label class="check-label"><input id="population-transparent-background" type="checkbox"> Transparent background?</label><button id="population-export-png" type="button" disabled>Export chart PNG</button></div>
+  <p id="population-export-status" role="status" aria-live="polite"></p>
+</dialog>
+<dialog id="ph-reference-dialog" class="ph-reference-dialog" aria-labelledby="ph-reference-title" aria-describedby="ph-reference-scope">
+  <div class="dialog-heading"><h2 id="ph-reference-title">maraPssiwS: pH references</h2><button id="close-ph-chart" class="close-button" type="button" aria-label="Close pH reference chart">×</button></div>
+  <p id="ph-reference-scope">Compare evidence-qualified reference values and your optional custom comparison. These references do not predict molecular populations or your physiology.</p>
+  <button id="ph-change-context" type="button">Change reference context</button>
+  <div id="ph-chart-host"></div>
+  <div class="dialog-buttons"><button id="ph-export-json" type="button" disabled>Export reference JSON</button><button id="ph-export-csv" type="button" disabled>Export reference CSV</button><label class="check-label"><input id="ph-transparent-background" type="checkbox"> Transparent background?</label><button id="ph-export-png" type="button" disabled>Export reference PNG</button></div>
+  <p id="ph-export-status" role="status" aria-live="polite"></p>
+</dialog>
+<dialog id="image-import-dialog" class="image-import-dialog" aria-labelledby="image-import-title" aria-describedby="image-import-scope image-import-limit">
+  <div class="dialog-heading"><h2 id="image-import-title">Review PNG components</h2><button id="image-import-close" class="close-button" aria-label="Cancel PNG import">×</button></div>
+  <p id="image-import-name"></p><p id="image-import-engine"></p>
+  <p id="image-import-scope">Choose a PNG, drop it onto the drawing, or paste an image with Ctrl+V. Review embedded components, supply a structure as SMILES or 2D MOL text, or recognize a crop when the local model is configured. Correct the draft before importing. Annotations remain in the original PNG. Cancel leaves your open drawing unchanged.</p>
+  <p id="image-import-optical-status" role="status"></p>
+  <button id="image-import-setup" type="button" hidden>Set up local recognition…</button>
+  <p id="image-import-status" role="status" aria-live="polite"></p>
+  <section id="image-import-region" hidden aria-labelledby="image-import-region-title">
+    <h3 id="image-import-region-title">Source overview and detail crop</h3>
+    <p>The overview is for navigation only. Use the pixel coordinates below, or drag an area in the overview, then load a detail crop at 100%. A crop does not identify, select or clip molecular metadata. Review every selected component and the stated omissions; image correspondence is not independently verified.</p>
+    <button id="image-import-overview-button" type="button">Load overview</button>
+    <div class="image-import-overview-wrap"><img id="image-import-overview" alt="Navigation-only source overview; use the crop coordinate controls for keyboard access" hidden></div>
+    <fieldset class="image-import-crop-fields"><legend>Detail crop in original source pixels</legend>
+      <label>Left (x)<input id="image-import-crop-x" type="number" min="0" step="1" value="0"></label>
+      <label>Top (y)<input id="image-import-crop-y" type="number" min="0" step="1" value="0"></label>
+      <label>Width<input id="image-import-crop-width" type="number" min="1" max="2048" step="1" value="1000"></label>
+      <label>Height<input id="image-import-crop-height" type="number" min="1" max="2048" step="1" value="1000"></label>
+    </fieldset>
+    <p>Each crop is limited to 1,000,000 pixels and 2048 pixels per side. Larger structures need smaller views. Cropping does not remove atoms from a selected metadata component.</p>
+    <button id="image-import-crop-button" type="button" disabled>Load selected detail at 100%</button>
+    <button id="image-import-recognize" type="button" disabled>Recognize structure in crop</button>
+    <p id="image-import-crop-status" role="status" aria-live="polite">No detail crop reviewed.</p>
+  </section>
+  <section id="image-import-manual" hidden aria-labelledby="image-import-manual-title">
+    <h3 id="image-import-manual-title">Supply a structure for this PNG</h3>
+    <p id="image-import-manual-hint">Paste SMILES or a 2D MOL structure to compare with the selected crop. This uses the structure you supply; it does not recognize the image. The open drawing stays unchanged until you accept the review.</p>
+    <label for="image-import-manual-source">SMILES or 2D MOL</label>
+    <textarea id="image-import-manual-source" rows="4" spellcheck="false" maxlength="1000000" aria-describedby="image-import-manual-hint"></textarea>
+    <button id="image-import-manual-start" type="button" disabled>Start review from structure text</button>
+  </section>
+  <div class="image-import-panels">
+    <section><h3 id="image-import-source-title">Original PNG</h3><div class="image-import-source-wrap" id="image-import-source-wrap" tabindex="0" aria-label="Source image review viewport"><img id="image-import-source" alt="Original PNG selected for review" hidden></div></section>
+    <section><h3>Structure draft</h3><svg id="image-import-candidate" xmlns="http://www.w3.org/2000/svg" tabindex="0" aria-label="Editable structure draft; use the correction controls below"></svg><div id="image-import-correction"></div></section>
+  </div>
+  <p id="image-import-limit"></p><h3>Select components</h3><div id="image-import-components" class="image-import-components"></div>
+  <button id="image-import-preview" disabled>Preview selected components</button>
+  <details open><summary>Warnings and omissions</summary><ul id="image-import-warnings"></ul></details>
+  <label class="check-label"><input id="image-import-acknowledge" type="checkbox" disabled><span>I reviewed every selected component against the source, including charges, stereochemistry and stated limitations. Whether metadata, supplied text or an optical proposal matches the image is not independently verified.</span></label>
+  <div class="dialog-buttons"><button id="image-import-cancel">Cancel</button><button id="image-import-accept" class="primary" disabled>Import reviewed components</button></div>
+</dialog>
+<dialog id="optical-setup-dialog" aria-labelledby="optical-setup-title" aria-describedby="optical-setup-scope">
+  <div class="dialog-heading"><h2 id="optical-setup-title">Local PNG recognition setup</h2><button id="optical-setup-close" type="button" class="close-button" aria-label="Cancel local recognition setup">x</button></div>
+  <p id="optical-setup-scope">Choose an existing local MolScribe Python runtime and its pinned model. Setup verifies the model file before saving. Runtime compatibility is checked when recognition starts. Nothing is downloaded, installed or recognized here. Your drawing and PNG review stay unchanged.</p>
+  <p class="muted">Cancel discards pending choices. If saving has already completed, Cancel does not undo it; reopen setup to view the saved selection.</p>
+  <p id="optical-setup-availability" class="muted"></p>
+  <dl><dt>Local Python executable</dt><dd id="optical-setup-runtime">No runtime selected</dd></dl>
+  <button id="optical-setup-runtime-choose" type="button" disabled>Choose runtime…</button>
+  <dl><dt>Pinned MolScribe model</dt><dd id="optical-setup-model">No model selected</dd></dl>
+  <button id="optical-setup-model-choose" type="button" disabled>Choose model…</button>
+  <p id="optical-setup-status" role="status" aria-live="polite"></p>
+  <progress id="optical-setup-progress" aria-label="Local recognition setup in progress" hidden></progress>
+  <div class="dialog-buttons"><button id="optical-setup-cancel" type="button">Cancel</button><button id="optical-setup-save" type="button" class="primary" disabled>Verify model and save</button></div>
+</dialog>
+<dialog id="cleanup-dialog" aria-labelledby="cleanup-title" aria-describedby="cleanup-summary cleanup-limitations">
+  <div class="dialog-heading"><h2 id="cleanup-title">2D Clean preview</h2><button id="close-cleanup" class="close-button" aria-label="Cancel cleanup preview">×</button></div>
+  <p id="cleanup-backend"></p><p id="cleanup-summary" role="status"></p><p>Both views share the same position and scale.</p>
+  <div class="two-fields">
+    <section><h3>Current layout</h3><svg id="cleanup-current" xmlns="http://www.w3.org/2000/svg" width="100%" height="220" role="img" aria-label="Current molecular layout"></svg></section>
+    <section><h3>Proposed layout</h3><svg id="cleanup-proposed" xmlns="http://www.w3.org/2000/svg" width="100%" height="220" role="img" aria-label="Proposed molecular layout"></svg></section>
+  </div>
+  <p id="cleanup-limitations"></p><div class="dialog-buttons"><button id="cancel-cleanup">Cancel</button><button id="apply-cleanup" class="primary">Apply</button></div>
+</dialog>
+<dialog id="import-dialog" aria-labelledby="import-title" aria-describedby="import-description"><form method="dialog"><div class="dialog-heading"><h2 id="import-title">Paste a structure</h2><button value="cancel" class="close-button" aria-label="Close">×</button></div><p id="import-description">SMILES or a 2D MOL block. This replaces the current drawing; Undo restores it.</p><label for="structure-input">SMILES or MOL source</label><textarea id="structure-input" rows="8" spellcheck="false" placeholder="For example: CC(=O)Oc1ccccc1C(=O)O"></textarea><div class="dialog-buttons"><button value="cancel">Cancel</button><button id="load-structure" type="button" class="primary">Load structure</button></div></form></dialog>
+<dialog id="examples-dialog" aria-labelledby="examples-title"><div class="dialog-heading"><h2 id="examples-title">Example structures</h2><button id="close-examples" class="close-button" aria-label="Close">×</button></div><p>Local built-in examples. Loading an example is undoable.</p><div id="example-list"></div></dialog>
+<dialog id="comparison-dialog" aria-labelledby="comparison-title">
+  <div class="dialog-heading"><h2 id="comparison-title">Pinned structure comparison</h2><button id="comparison-close" type="button">Close comparison</button></div>
+  <p>Read-only local comparison. Pin the current drawing, or load one saved nivraM project without replacing your drawing. A pin lasts only for this session and is not saved in your project.</p>
+  <div class="comparison-controls"><button id="comparison-pin-current" type="button">Pin current drawing</button><label>Pin saved project <input id="comparison-file" type="file" accept=".nivram,.json,application/json"></label><button id="comparison-unpin" type="button" disabled>Unpin</button><button id="comparison-refresh" type="button" disabled>Refresh current comparison</button><button id="comparison-cancel" type="button" hidden>Cancel comparison</button></div>
+  <p id="comparison-status" role="status" aria-live="polite">Pin a structure to begin.</p>
+  <div class="comparison-panes">
+    <section class="comparison-pane"><h3>Pinned structure</h3><p id="comparison-pin-label">No structure pinned</p><div id="comparison-pinned-view" class="comparison-view" aria-label="Pinned structure drawing"></div><label for="comparison-pinned-smiles">Pinned isomeric SMILES</label><textarea id="comparison-pinned-smiles" readonly rows="2"></textarea><p id="comparison-pinned-notes" class="muted"></p></section>
+    <section class="comparison-pane"><h3>Current structure</h3><p>Current drawing at the reported revision</p><div id="comparison-current-view" class="comparison-view" aria-label="Current structure drawing"></div><label for="comparison-current-smiles">Current isomeric SMILES</label><textarea id="comparison-current-smiles" readonly rows="2"></textarea><p id="comparison-current-notes" class="muted"></p></section>
+  </div>
+  <p class="muted">Each preview fits independently. No aligned orientation, matched image scale, atom mapping or atom-by-atom highlights. Source coordinates and appearance are retained; no cleanup.</p>
+  <p id="comparison-identity"></p>
+  <div class="comparison-properties"><table><caption>Local properties. Difference = current minus pinned.</caption><thead><tr><th scope="col">Property</th><th scope="col">Pinned</th><th scope="col">Current</th><th scope="col">Difference</th></tr></thead><tbody id="comparison-rows"></tbody></table></div>
+  <p class="muted">Calculated LogP is an RDKit Wildman–Crippen descriptor, not measured LogP or pH-dependent LogD. Its difference is withheld when either side has an applicability warning or unavailable value. Review each structure and all warnings before interpreting differences.</p>
+</dialog>
+<dialog id="about-dialog" aria-labelledby="about-title"><div class="dialog-heading"><h2 id="about-title">nivraM · 0.2.0-dev.1</h2><button id="close-about" class="close-button" aria-label="Close">×</button></div><p>A local small-molecule editor. Chemistry runs on your computer. The desktop host provides native project saving and recovery; external scientific requests are off by default. Optional PubChem name lookup requires a separate review and confirmation for every request; core editing remains offline.</p><h3>What is implemented</h3><p>Atom/bond/ring editing, selection and dragging, history, SMILES/2D MOL import, editable project files, experimental full/partial 2D cleanup preview, native PNG metadata review, and native-resolution PNG export. An optional separate 3D input viewer displays supported supplied-coordinate MOL V2000 and supported V3000 files without changing the drawing.</p><h3>Important boundaries</h3><p><strong>2D Clean uses the experimental local RDKit backend.</strong> Marvin JS layout equivalence remains unverified. The wordmark mirrors the complete literal word Marvin, including glyphs, using a local serif font; fidelity to a specific reference font and wordmark remains unvalidated.</p><p>This development build supports up to 512 atoms. For 2D document import, reaction documents, query atoms, S-groups, 3D input and enhanced AND/OR stereogroups are rejected rather than silently simplified. The separate 3D viewer has its own narrower input limits. Supported V3000 stereo/valence declarations require a fresh bounded native parse-consistency check, which does not verify experimental identity or origin. A separate bounded local generation action uses a copy of the current graph without modifying the drawing. PNG metadata recovery creates an explicitly selected partial reconstruction. Bounded overview and original-resolution crop review are available for supported PNGs. A reviewed crop does not establish that embedded molecular metadata matches that image area. Review drafts support atom, bond, charge and isotope corrections with separate Undo/Redo before acceptance. PNG chooser, drag-and-drop and image paste use the same review. Local MolScribe recognition can propose a structure from a reviewed crop after an existing runtime and pinned model are configured. Model verification does not establish chemical correctness; runtime compatibility is checked when recognition starts. Review chemical drawings before publication.</p><p>PNG export has limits of 128 million pixels, 32,767 pixels per side, and a conservative 512 MiB estimated peak memory budget. Some shapes can exceed the memory budget even below the dimension limits. The app reports an error instead of changing your requested resolution. Default margins are 2% of total width per side.</p><p id="engine-version"></p><h3>Keyboard</h3><p>V select · A atom · B bond · R ring · E erase<br>Ctrl+Z undo · Ctrl+Y redo · Ctrl+S save project<br>Ctrl+O open · Ctrl+2 clean preview · Delete removes selection<br>Alt-drag pans; scrolling zooms.</p></dialog>
+<input id="file-input" type="file" accept=".mol,.smi,.smiles,.nivram,.json" hidden>
+<dialog id="supplied-3d-dialog" class="supplied-3d-dialog" aria-labelledby="supplied-3d-title" aria-describedby="supplied-3d-description">
+  <div class="supplied-3d-heading"><h2 id="supplied-3d-title">3D molecular view</h2><button id="supplied-3d-close" type="button">Close 3D view</button></div>
+  <p id="supplied-3d-description">Inspect supplied coordinates or generate one local conformer from a copy of the current 2D drawing. For PNG input, complete recognition/manual correction and accept the reviewed graph first. A PNG alone cannot establish molecular identity. Your 2D drawing is unchanged.</p>
+  <div class="supplied-3d-controls"><button id="supplied-3d-generate" type="button">Generate from current drawing</button><button id="supplied-3d-cancel" type="button" disabled>Cancel 3D operation</button></div>
+  <p class="muted">Generation: bounded local RDKit model, hydrogens added temporarily during embedding, no energy minimization. Up to 128 source atoms, 256 atoms with hydrogens and 512 bonds in one supported connected molecule. Unspecified potential stereochemistry is rejected rather than silently assigned. See provenance for method and limitations.</p>
+  <label class="supplied-3d-file" for="supplied-3d-file">Open one 3D MOL V2000 or supported V3000 file (up to 256 KiB)<input id="supplied-3d-file" type="file" accept=".mol,chemical/x-mdl-molfile"></label>
+  <p class="muted">Supplied V2000: 1–256 elemental atoms and up to 512 single/double/triple/aromatic bonds. V3000: 1–128 atoms from H/B/C/N/O/F/Si/P/S/Cl/Br/I and up to 256 single/double/triple bonds. Both require an explicit 3D header. V2000 preserves inline charge codes (excluding radical code 4), fixed-width M CHG (−8 to +8) and absolute M ISO (1–400); M CHG or M RAD replaces the whole inline charge/radical channel. M RAD and V3000 RAD preserve literal codes 0 (none), 1 (singlet), 2 (doublet), 3 (triplet) as unverified declarations, not unpaired-electron counts or verified spin. RAD mixed with CFG/VAL is unsupported. Nonzero inline isotope mass differences remain unsupported. V3000 additionally preserves declared charge (−8 to +8), isotope mass (1–400) and atom map (0–999999). These are unverified declarations, not chemical identities or links to the drawing. Supported V3000 CFG/VAL declarations require fresh local RDKit parse-consistency validation; contradictions and normalized-away declarations reject. Other V2000 properties, ambiguous/enhanced stereo, other properties, queries, SDF, PDB and XYZ are unsupported. An unsupported file is not necessarily an invalid molecule.</p>
+  <label class="supplied-3d-file" for="supplied-3d-png-file">Open 3D PNG (up to 32 MiB)<input id="supplied-3d-png-file" type="file" accept=".png,image/png"></label>
+  <p class="muted">3D PNG recovery reads embedded coordinates, not image pixels. Recovered file claims remain historical and unverified, detached from the current drawing. Export embeds exact MOL coordinates and bounded scientific provenance, recoverable by anyone receiving the PNG.</p>
+  <div class="supplied-3d-controls" role="group" aria-label="3D view controls"><button type="button" data-3d-action="left">Rotate left</button><button type="button" data-3d-action="right">Rotate right</button><button type="button" data-3d-action="up">Rotate up</button><button type="button" data-3d-action="down">Rotate down</button><button type="button" data-3d-action="in">Zoom in</button><button type="button" data-3d-action="out">Zoom out</button><button type="button" data-3d-action="fit">Fit / reset</button></div>
+  <div class="supplied-3d-controls" role="group" aria-label="3D display options">
+    <label for="supplied-3d-style">Representation <select id="supplied-3d-style"><option value="ball-and-stick">Ball-and-stick</option><option value="space-filling">Space-filling (van der Waals radii)</option></select></label>
+    <label for="supplied-3d-hydrogens"><input id="supplied-3d-hydrogens" type="checkbox"> Explicit hydrogen</label>
+    <label for="supplied-3d-rotate"><input id="supplied-3d-rotate" type="checkbox"> Slow rotate</label>
+    <label for="supplied-3d-direction">Rotation direction <select id="supplied-3d-direction"><option value="left-to-right">Left to right</option><option value="right-to-left">Right to left</option></select></label>
+  </div>
+  <p id="supplied-3d-display-note" class="muted" role="status">Display controls never add hydrogen coordinates or change the source molecule. Slow rotation is off by default and disabled by reduced motion.</p>
+  <fieldset><legend>Coordinate measurements</legend>
+  <p class="muted">Choose visible atoms in order. These are Cartesian measurements, not chemical validation. Enable explicit H to select existing H coordinates; attachment H is labeled separately. Changing the model or H display clears selection.</p>
+  <label>Measurement <select id="supplied-3d-measure-mode"><option value="2">Distance</option><option value="3">Angle (vertex 2)</option><option value="4">Signed torsion (1–2–3–4)</option></select></label>
+  <label>Atom 1 <select id="supplied-3d-measure-1" aria-label="Measurement atom 1"></select></label>
+  <label>Atom 2 <select id="supplied-3d-measure-2" aria-label="Measurement atom 2"></select></label>
+  <label>Atom 3 <select id="supplied-3d-measure-3" aria-label="Measurement atom 3"></select></label>
+  <label>Atom 4 <select id="supplied-3d-measure-4" aria-label="Measurement atom 4"></select></label>
+  <button id="supplied-3d-measure-clear" type="button">Clear measurement</button>
+  <p id="supplied-3d-measure-result" role="status" aria-live="polite"></p>
+  </fieldset>
+  <svg id="supplied-3d-scene" class="supplied-3d-scene" tabindex="0" role="img" aria-label="Empty supplied 3D coordinate view" aria-describedby="supplied-3d-help"></svg>
+  <p id="supplied-3d-help" class="muted">Drag to rotate, or focus the view and use arrow keys. + / − zoom; Home resets. Orthographic schematic. Slow rotation changes yaw only, never pitch. Ball-and-stick sizes are illustrative; space-filling uses conventional van der Waals radii.</p>
+  <p id="supplied-3d-status" class="supplied-3d-status" role="status" aria-live="polite">No supplied 3D file loaded.</p>
+  <div class="supplied-3d-controls"><button id="supplied-3d-export" type="button" disabled>Download original 3D MOL</button><label class="check-label"><input id="supplied-3d-transparent-background" type="checkbox"> Transparent background?</label><label class="check-label"><input id="supplied-3d-remove-chemistry-metadata" type="checkbox" autocomplete="off"> Remove chemistry metadata?</label><button id="supplied-3d-export-png" type="button" disabled>Export 3D PNG</button><button id="supplied-3d-export-provenance" type="button" disabled>Download provenance</button></div>
+  <details><summary>Accessible atom and bond coordinates</summary><p>Coordinates below belong to the active view. Supplied numbers and declarations are preserved exactly. When required, provenance reports a limited native parse-consistency check; it does not verify experimental origin. Generated geometry is a local model. Provenance distinguishes their origin.</p><div class="supplied-3d-tables"><table><caption>All source atoms (including display-hidden H)</caption><thead><tr><th scope="col">Atom</th><th scope="col">Element</th><th scope="col">x</th><th scope="col">y</th><th scope="col">z</th><th scope="col">Charge</th><th scope="col">Isotope</th><th scope="col">Source atom</th><th scope="col">Declared atom map</th><th scope="col">Declared atom CFG</th><th scope="col">Declared VAL</th><th scope="col">RAD declaration (not electron count)</th></tr></thead><tbody id="supplied-3d-atoms"></tbody></table><table><caption>All source bonds</caption><thead><tr><th scope="col">Bond</th><th scope="col">From</th><th scope="col">To</th><th scope="col">Order</th><th scope="col">Declared bond CFG</th></tr></thead><tbody id="supplied-3d-bonds"></tbody></table></div></details>
+  <details><summary>Input provenance and limitations</summary><pre id="supplied-3d-provenance">No input identity yet.</pre></details>
+</dialog>
+</body></html>

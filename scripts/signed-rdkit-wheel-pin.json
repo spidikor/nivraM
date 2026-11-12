@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "version": "2025.9.6+nivram.2",
+  "wheelFilename": "rdkit-2025.9.6+nivram.2-cp312-cp312-win_amd64.whl",
+  "wheelSha256": "d88f7f54f920f07c7d0d1376dc16e9e867d1e0cc0545d746ff9d718aa9f9e403",
+  "provenanceSha256": "18ea5b58ea5fe4bf828033a9515eb52f98980ba8edf6b09a60dd180668d79ba2",
+  "recipeSha256": "1fbaaae8db871aed01960430aeb60670fc5ac52d4d455ea9c86229ff9060e236",
+  "lockSha256": "3031e4ad7dfb3e2e3e0800732f1ff0831b1d99326a8789eab40c06507727cd61",
+  "nativeCount": 194,
+  "source": "ten pinned Anaconda archives; local nivraM adaptation",
+  "redistributionQualified": false
+}

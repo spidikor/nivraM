@@ -1,0 +1,73 @@
+{
+  "states": [
+    {
+      "state_id": "HA",
+      "protonation_id": "HA",
+      "tautomer_id": "t0",
+      "stereoisomer_id": "fixed",
+      "conformer_id": "c0",
+      "structure_id": "synthetic-HA",
+      "atom_ids": [
+        "a0",
+        "a1"
+      ],
+      "formal_charge": 0,
+      "relative_protons": 1,
+      "free_energy_at_reference": 0,
+      "degeneracy": 1
+    },
+    {
+      "state_id": "A",
+      "protonation_id": "A",
+      "tautomer_id": "t0",
+      "stereoisomer_id": "fixed",
+      "conformer_id": "c0",
+      "structure_id": "synthetic-A",
+      "atom_ids": [
+        "a0",
+        "a1"
+      ],
+      "formal_charge": -1,
+      "relative_protons": 0,
+      "free_energy_at_reference": 0,
+      "degeneracy": 1
+    }
+  ],
+  "conditions": {
+    "temperature_kelvin": 298.15,
+    "solvent": "water",
+    "ionic_strength_mol_l": null,
+    "activity_convention": "Synthetic analytical convention",
+    "reference_ph": 7.0,
+    "ph_min": 0,
+    "ph_max": 14,
+    "energy_unit": "kJ/mol",
+    "energy_basis": "aqueous_transformed_gibbs_at_reference_ph",
+    "standard_state": "Synthetic common standard",
+    "solvation_model": "Synthetic input only",
+    "thermal_entropy_treatment": "Included by synthetic assertion",
+    "degeneracy_convention": "explicit",
+    "sampling_method": "Two synthetic states",
+    "truncation_treatment": "Explicit synthetic fixture"
+  },
+  "provenance": {
+    "input_identity": "synthetic-not-a-drawing",
+    "engine": "synthetic-test",
+    "engine_version": "1",
+    "model_name": "two-state arithmetic",
+    "model_version": "1",
+    "source": "Synthetic analytical test data only",
+    "created_utc": "2026-09-20T00:00:00Z",
+    "applicability": "Mathematics test only",
+    "validation": "No molecular validation",
+    "source_kind": "synthetic_analytical",
+    "transformations": []
+  },
+  "reference_state_id": "HA",
+  "supported_classes": [
+    "protonation"
+  ],
+  "equilibrium_scope": "conditional_configuration",
+  "equilibrium_justification": "Synthetic fixed configuration",
+  "ensemble_complete": true
+}

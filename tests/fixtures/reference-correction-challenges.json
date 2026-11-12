@@ -1,0 +1,1115 @@
+{
+  "schema": "nivram-development-correction-challenges/1",
+  "status": "exposed-development-only",
+  "provenance": "Fresh explicit synthetic records authored from elementary graph specifications; no archive pixels, traced coordinates, model output, chemical importer or renderer used to generate targets.",
+  "scalePolicy": "Coordinates are arbitrary test inputs. They are not physical scale, typography or reference-layout targets.",
+  "limits": [
+    "No OCR was run.",
+    "No native chemical interpretation or absolute stereochemistry validation was run.",
+    "These exposed cases cannot establish blind accuracy or independent held-out performance."
+  ],
+  "cases": [
+    {
+      "id": "same-count-connectivity",
+      "label": "Ethanol proposal to dimethyl-ether target",
+      "mode": "manual",
+      "suppliedText": "CCO",
+      "purpose": "Same element counts do not establish equal connectivity.",
+      "proposal": {
+        "atoms": [
+          {
+            "id": "c1",
+            "symbol": "C",
+            "x": -2,
+            "y": 1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c2",
+            "symbol": "C",
+            "x": 0,
+            "y": -1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "o",
+            "symbol": "O",
+            "x": 3,
+            "y": 2,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          }
+        ],
+        "bonds": [
+          {
+            "id": "b12",
+            "begin": "c1",
+            "end": "c2",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "b23",
+            "begin": "c2",
+            "end": "o",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          }
+        ]
+      },
+      "target": {
+        "atoms": [
+          {
+            "id": "c1",
+            "symbol": "C",
+            "x": -2,
+            "y": 1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c2",
+            "symbol": "C",
+            "x": 0,
+            "y": -1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "o",
+            "symbol": "O",
+            "x": 3,
+            "y": 2,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          }
+        ],
+        "bonds": [
+          {
+            "id": "b23",
+            "begin": "c2",
+            "end": "o",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "b13",
+            "begin": "c1",
+            "end": "o",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          }
+        ]
+      },
+      "operations": [
+        {
+          "kind": "deleteBond",
+          "bondId": "b12"
+        },
+        {
+          "kind": "createBond",
+          "begin": "c1",
+          "end": "o",
+          "id": "b13"
+        }
+      ]
+    },
+    {
+      "id": "charge-hydrogen-counterion",
+      "label": "Explicit ammonium annotation with separate chloride",
+      "mode": "optical",
+      "purpose": "Correct charge and H count together without deleting a separate counterion or isotope.",
+      "proposal": {
+        "atoms": [
+          {
+            "id": "c1",
+            "symbol": "C",
+            "x": 1,
+            "y": 1,
+            "charge": 0,
+            "isotope": 13,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c2",
+            "symbol": "C",
+            "x": 2,
+            "y": 0,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "n",
+            "symbol": "N",
+            "x": 4,
+            "y": 1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 2,
+            "noImplicit": true,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "cl",
+            "symbol": "Cl",
+            "x": 19,
+            "y": -7,
+            "charge": -1,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": true,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          }
+        ],
+        "bonds": [
+          {
+            "id": "b12",
+            "begin": "c1",
+            "end": "c2",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "b2n",
+            "begin": "c2",
+            "end": "n",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          }
+        ]
+      },
+      "target": {
+        "atoms": [
+          {
+            "id": "c1",
+            "symbol": "C",
+            "x": 1,
+            "y": 1,
+            "charge": 0,
+            "isotope": 13,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c2",
+            "symbol": "C",
+            "x": 2,
+            "y": 0,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "n",
+            "symbol": "N",
+            "x": 4,
+            "y": 1,
+            "charge": 1,
+            "isotope": 0,
+            "explicitHs": 3,
+            "noImplicit": true,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "cl",
+            "symbol": "Cl",
+            "x": 19,
+            "y": -7,
+            "charge": -1,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": true,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          }
+        ],
+        "bonds": [
+          {
+            "id": "b12",
+            "begin": "c1",
+            "end": "c2",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "b2n",
+            "begin": "c2",
+            "end": "n",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          }
+        ]
+      },
+      "operations": [
+        {
+          "kind": "atomProperties",
+          "atomId": "n",
+          "charge": 1,
+          "explicitHs": 3,
+          "noImplicit": true
+        }
+      ]
+    },
+    {
+      "id": "targeted-stereobond",
+      "label": "Wedge-to-hash correction between adjacent annotated centers",
+      "mode": "optical",
+      "purpose": "Clear the changed source-center tag, retain the remote center and other directional bond. This is annotation semantics, not R/S validation.",
+      "proposal": {
+        "atoms": [
+          {
+            "id": "a",
+            "symbol": "C",
+            "x": -1,
+            "y": 0,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 1,
+            "noImplicit": true,
+            "aromatic": false,
+            "chiralTag": 1,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "b",
+            "symbol": "C",
+            "x": 2,
+            "y": 0,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 1,
+            "noImplicit": true,
+            "aromatic": false,
+            "chiralTag": 2,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "f",
+            "symbol": "F",
+            "x": -2,
+            "y": 1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "cl",
+            "symbol": "Cl",
+            "x": -2,
+            "y": -1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "br",
+            "symbol": "Br",
+            "x": 3,
+            "y": 1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "i",
+            "symbol": "I",
+            "x": 3,
+            "y": -1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          }
+        ],
+        "bonds": [
+          {
+            "id": "ab",
+            "begin": "a",
+            "end": "b",
+            "order": 1,
+            "direction": 1,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "af",
+            "begin": "a",
+            "end": "f",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "acl",
+            "begin": "a",
+            "end": "cl",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "bbr",
+            "begin": "b",
+            "end": "br",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "bi",
+            "begin": "b",
+            "end": "i",
+            "order": 1,
+            "direction": 2,
+            "stereo": 0,
+            "stereoAtoms": []
+          }
+        ]
+      },
+      "target": {
+        "atoms": [
+          {
+            "id": "a",
+            "symbol": "C",
+            "x": -1,
+            "y": 0,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 1,
+            "noImplicit": true,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "b",
+            "symbol": "C",
+            "x": 2,
+            "y": 0,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 1,
+            "noImplicit": true,
+            "aromatic": false,
+            "chiralTag": 2,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "f",
+            "symbol": "F",
+            "x": -2,
+            "y": 1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "cl",
+            "symbol": "Cl",
+            "x": -2,
+            "y": -1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "br",
+            "symbol": "Br",
+            "x": 3,
+            "y": 1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "i",
+            "symbol": "I",
+            "x": 3,
+            "y": -1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          }
+        ],
+        "bonds": [
+          {
+            "id": "ab",
+            "begin": "a",
+            "end": "b",
+            "order": 1,
+            "direction": 2,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "af",
+            "begin": "a",
+            "end": "f",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "acl",
+            "begin": "a",
+            "end": "cl",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "bbr",
+            "begin": "b",
+            "end": "br",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "bi",
+            "begin": "b",
+            "end": "i",
+            "order": 1,
+            "direction": 2,
+            "stereo": 0,
+            "stereoAtoms": []
+          }
+        ]
+      },
+      "operations": [
+        {
+          "kind": "bondKind",
+          "bondId": "ab",
+          "value": "dash"
+        }
+      ]
+    },
+    {
+      "id": "cyclic-carbonyl",
+      "label": "Carbonyl order correction in an N-methyl lactam skeleton",
+      "mode": "manual",
+      "suppliedText": "CN1CCCC1O",
+      "purpose": "Restore C=O without changing the five-membered ring or N-methyl attachment.",
+      "proposal": {
+        "atoms": [
+          {
+            "id": "n",
+            "symbol": "N",
+            "x": 0,
+            "y": 0,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c1",
+            "symbol": "C",
+            "x": 2,
+            "y": 0,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c2",
+            "symbol": "C",
+            "x": 3,
+            "y": 2,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c3",
+            "symbol": "C",
+            "x": 1,
+            "y": 4,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "co",
+            "symbol": "C",
+            "x": -1,
+            "y": 2,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "o",
+            "symbol": "O",
+            "x": -3,
+            "y": 3,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "me",
+            "symbol": "C",
+            "x": -1,
+            "y": -2,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          }
+        ],
+        "bonds": [
+          {
+            "id": "n1",
+            "begin": "n",
+            "end": "c1",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "12",
+            "begin": "c1",
+            "end": "c2",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "23",
+            "begin": "c2",
+            "end": "c3",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "3co",
+            "begin": "c3",
+            "end": "co",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "con",
+            "begin": "co",
+            "end": "n",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "oxo",
+            "begin": "co",
+            "end": "o",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "nme",
+            "begin": "n",
+            "end": "me",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          }
+        ]
+      },
+      "target": {
+        "atoms": [
+          {
+            "id": "n",
+            "symbol": "N",
+            "x": 0,
+            "y": 0,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c1",
+            "symbol": "C",
+            "x": 2,
+            "y": 0,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c2",
+            "symbol": "C",
+            "x": 3,
+            "y": 2,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c3",
+            "symbol": "C",
+            "x": 1,
+            "y": 4,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "co",
+            "symbol": "C",
+            "x": -1,
+            "y": 2,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "o",
+            "symbol": "O",
+            "x": -3,
+            "y": 3,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "me",
+            "symbol": "C",
+            "x": -1,
+            "y": -2,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          }
+        ],
+        "bonds": [
+          {
+            "id": "n1",
+            "begin": "n",
+            "end": "c1",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "12",
+            "begin": "c1",
+            "end": "c2",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "23",
+            "begin": "c2",
+            "end": "c3",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "3co",
+            "begin": "c3",
+            "end": "co",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "con",
+            "begin": "co",
+            "end": "n",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "oxo",
+            "begin": "co",
+            "end": "o",
+            "order": 2,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "nme",
+            "begin": "n",
+            "end": "me",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          }
+        ]
+      },
+      "operations": [
+        {
+          "kind": "bondKind",
+          "bondId": "oxo",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "id": "heteroatom-symbol",
+      "label": "Sulfur-to-oxygen correction in a two-carbon chain",
+      "mode": "optical",
+      "purpose": "Change the heteroatom while preserving atom mapping, isotope and graph connectivity.",
+      "proposal": {
+        "atoms": [
+          {
+            "id": "c1",
+            "symbol": "C",
+            "x": 0,
+            "y": 0,
+            "charge": 0,
+            "isotope": 13,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c2",
+            "symbol": "C",
+            "x": 3,
+            "y": 1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "x",
+            "symbol": "S",
+            "x": 4,
+            "y": 3,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 7
+          }
+        ],
+        "bonds": [
+          {
+            "id": "b12",
+            "begin": "c1",
+            "end": "c2",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "b2x",
+            "begin": "c2",
+            "end": "x",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          }
+        ]
+      },
+      "target": {
+        "atoms": [
+          {
+            "id": "c1",
+            "symbol": "C",
+            "x": 0,
+            "y": 0,
+            "charge": 0,
+            "isotope": 13,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "c2",
+            "symbol": "C",
+            "x": 3,
+            "y": 1,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 0
+          },
+          {
+            "id": "x",
+            "symbol": "O",
+            "x": 4,
+            "y": 3,
+            "charge": 0,
+            "isotope": 0,
+            "explicitHs": 0,
+            "noImplicit": false,
+            "aromatic": false,
+            "chiralTag": 0,
+            "radicals": 0,
+            "mapNum": 7
+          }
+        ],
+        "bonds": [
+          {
+            "id": "b12",
+            "begin": "c1",
+            "end": "c2",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          },
+          {
+            "id": "b2x",
+            "begin": "c2",
+            "end": "x",
+            "order": 1,
+            "direction": 0,
+            "stereo": 0,
+            "stereoAtoms": []
+          }
+        ]
+      },
+      "operations": [
+        {
+          "kind": "element",
+          "atomId": "x",
+          "symbol": "O"
+        }
+      ]
+    }
+  ]
+}

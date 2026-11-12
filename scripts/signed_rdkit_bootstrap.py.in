@@ -1,0 +1,21 @@
+# nivraM local signed-runtime preparation; DLL bytes are unchanged.
+import hashlib as _nv_hashlib
+import json as _nv_json
+import os as _nv_os
+from pathlib import Path as _NvPath
+_nv_dir=_NvPath(__file__).parent/'_nivram_native'
+_nv_manifest=(_nv_dir/'manifest.json').read_bytes()
+if _nv_hashlib.sha256(_nv_manifest).hexdigest()!=MANIFEST_PIN:
+    raise ImportError('Signed RDKit native manifest differs from its prepared pin')
+_nv_data=_nv_json.loads(_nv_manifest)
+if _nv_dir.is_symlink() or _nv_dir.is_junction():
+    raise ImportError('Redirected signed RDKit native directory')
+for _nv_item in _nv_data['dlls']:
+    _nv_file=_nv_dir/_nv_item['name']
+    if (_nv_file.name!=_nv_item['name'] or _nv_file.is_symlink() or _nv_file.is_junction()
+            or _nv_hashlib.sha256(_nv_file.read_bytes()).hexdigest()!=_nv_item['sha256']):
+        raise ImportError('Signed RDKit native component differs from its prepared pin')
+_nv_dll_directory=_nv_os.add_dll_directory(str(_nv_dir))
+del _nv_manifest,_nv_data,_nv_item,_nv_file
+# End nivraM local runtime bootstrap.
+

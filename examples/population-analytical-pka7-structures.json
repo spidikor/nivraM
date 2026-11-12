@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "fileKind": "nivram-population-state-structures",
+  "modelInputHash": "3720c82126e63af46b39f130bf4cdd4f9e808e6b5fc000c59b8d66fb73c27e86",
+  "structures": [
+    {
+      "stateId": "HA",
+      "structureId": "synthetic-HA",
+      "format": "smiles",
+      "source": "[CH3:1][OH:2]",
+      "coreAtomMaps": [{"atomId": "a0", "mapNum": 1}, {"atomId": "a1", "mapNum": 2}]
+    },
+    {
+      "stateId": "A",
+      "structureId": "synthetic-A",
+      "format": "smiles",
+      "source": "[CH3:1][O-:2]",
+      "coreAtomMaps": [{"atomId": "a0", "mapNum": 1}, {"atomId": "a1", "mapNum": 2}]
+    }
+  ]
+}

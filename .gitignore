@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+/build/
+/dist/
+/verification/*-profile/
+/verification/*-profile-*/

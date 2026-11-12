@@ -1,0 +1,937 @@
+{
+  "updated_utc": "2026-09-30T13:26:46.677870+00:00",
+  "goal_status": "active",
+  "release_candidate": "Historical optical-setup candidate: source 5dde62c27baf95da4750f21ee728aeb1bcec64aa6978d0f4d6a6d05903cb2ade; unsigned installer b47465bc60cdf776bc35a8785696d83c69da470b8dcc3e280d37521245295c85. PNG review/crop/correction, supplied SMILES/2D MOL, draft Undo/Redo, drop/paste and native local runtime/model setup are implemented. The delivery records 123 focused staged Python tests, 62 JavaScript/browser checks with only two explicitly bound backend repair differences, packaged native startup, and pinned-model byte verification by the packaged worker. The model is available. An earlier one-aspirin source-runtime inference passed at its original source identity; it does not validate recognition accuracy or the optical interaction in this package. The installer has not been executed or installed; no fresh installer antivirus result, full suite, complete native setup/chooser interaction, broader accuracy or clean-machine acceptance is claimed. The follow-on source implements non-interlaced 16-bit PNG preview/crop support with rounded 8-bit derivatives and full-precision transparent-key matching; it is absent from this immutable installer. Consult the matching follow-on receipts for validation and package outcomes. Other feature choices remain unranked/pending, 3D remains deferred, and the complete Goal remains active.",
+  "requirements": [
+    {
+      "id": "3.1",
+      "requirement": "Chemical editing and document integrity",
+      "implementation": "partial",
+      "evidence": "Transactional commits and stale-result protection implemented. Coordinate/stereo contradictions and unrepresentable MOL precision changes are rejected; no-op bond edits preserve chirality; multi-record/CXSMILES and unsupported annotations are rejected. 115 focused affected Python checks and 63 JavaScript checks passed before final 302/86 suites. Full chemical-domain and installed acceptance remains incomplete.",
+      "evidence_status": "partial; see scoped evidence and remaining gates"
+    },
+    {
+      "id": "3.2",
+      "requirement": "Mirrored Marvin wordmark and visual calibration",
+      "implementation": "partial",
+      "evidence": "Complete literal Marvin wordmark mirrored including glyphs; accessible nivraM label. Drawing appearance exposes multiple-bond spacing and extra atom-label clearance, and eligible straight colored bonds use a short vector transition. Installed Windows Arial outlines address the estimated-width label alignment mismatch, with unchanged molecular coordinates. A separate permitted prior-exposure reference supports a short filled-wedge color transition; eligible opaque triangle/quadrilateral pairs preserve geometry and use contextual full bond width with isolated fill/stroke paint in main, preview and batch paths. The source candidate adds optional hashed-stereobond appearance: unchanged Engine spacing remains the default; Thicker, spaced bars couples full ordinary width to a provisional approximately 3.4-width center step, preserves taper endpoints and chemical coordinates, and rejects unsupported groups before commit. Consult its matching fresh focused receipts for outcomes; earlier checks do not verify this candidate. Reference-font fidelity, colored-hash transition appearance and broader calibration remain unresolved. See docs/drawing-appearance.md and matching source/package receipts; source edits do not change previous installers.",
+      "evidence_status": "partial; see scoped evidence and remaining gates"
+    },
+    {
+      "id": "3.3",
+      "requirement": "Exact Marvin JS cleanup compatibility",
+      "implementation": "unmet",
+      "evidence": "RDKit local backend only. Bounded review considered official hosted legacy demo, linked service API and licensed local Web Services; exact deployed client/backend/options and applicable fixture-reuse rights remain unresolved. No cleanup service calls or structure uploads were performed. Exact parity gate unmet.",
+      "evidence_status": "partial; see scoped evidence and remaining gates"
+    },
+    {
+      "id": "3.4",
+      "requirement": "Exact PNG export",
+      "implementation": "partial",
+      "evidence": "The exact final installed executable saved and decoded a 9999x744 PNG with 200 px opaque white margins and unchanged document; native download completion was observed. Production browser checks verify pixel-identical main/preview/batch output in both themes on both synthetic fixtures, including the exact preserved original SVG. Tall/tiny/memory/cancellation source checks also pass. Whole-corpus visible-ink bounds and broad platform/font calibration remain unverified.",
+      "evidence_status": "partial; see scoped evidence and remaining gates"
+    },
+    {
+      "id": "E1",
+      "requirement": "Native save/recovery",
+      "implementation": "partial",
+      "evidence": "The confirmed older-autosave/latest-recovery inversion is repaired across storage, bridge autosave and CloseCoordinator using a host-controlled generation and safe integer revision. Storage reserves revision/document/timestamp before filesystem effects, rejects stale generations/revisions, verifies matching duplicate candidates and keeps the fence after uncertainty. Existing schema1 files remain readable. Native before_load resets context; manual save remains available during bounded context initialization. Source42d60592 passed8 real crash/restart/recovery checks (readable at2.172s), and10 real clean/dirty-decline/edit/approve/reopen/save checks; all scoped helpers normal and ordinary closes exit0. Controlled actual-store concurrency and close-producer integration pass; native checks do not inject that interleaving. Powerloss,corruption/migration,storage-failure UI,existing-file native conflict/cancel/uncertainty,packaged/installed/cleanWindows and fullrelease acceptance remain incomplete.",
+      "evidence_status": "Partial; ordering defect repaired and scoped source/native evidence passed; full Python release gate still has one intermittent HTTP error."
+    },
+    {
+      "id": "E2",
+      "requirement": "Cleanup preview",
+      "implementation": "partial",
+      "evidence": "Staged current/proposed Apply/Cancel implemented;8pure cleanup tests pass. Browser behavior completed but teardown failed; native final candidate acceptance pending. No Marvin parity claim.",
+      "evidence_status": "partial; see scoped evidence and remaining gates"
+    },
+    {
+      "id": "E3",
+      "requirement": "Versioned rendering profiles/export preview",
+      "implementation": "partial",
+      "evidence": "Immutable named profile revisions and exact PNG preview pass backend/pure tests and historical native source save/reopen/apply checks. Historical2000x720preview had an opaque white top-left sample and inlineCSSwidth times reportedDPR1.25 equal to2000; graph unchanged. This does not independently measure physical screen pixels or every preview margin. Current readiness probe has a realbrowser paused-decode regression; newcandidate native scope is recorded separately.",
+      "evidence_status": "partial; see scoped evidence and remaining gates"
+    },
+    {
+      "id": "E4",
+      "requirement": "Batch PNG export",
+      "implementation": "partial",
+      "evidence": "22 Python, 11 pure JavaScript and 3 real headless Edge batch checks passed. Native batch chooser/progress/cancel acceptance remains unverified.",
+      "evidence_status": "partial; see scoped evidence and remaining gates"
+    },
+    {
+      "id": "E5",
+      "requirement": "Laptop/accessibility",
+      "implementation": "partial",
+      "evidence": "Earlier emulated display checks passed eight nominal viewport/scale cases, 96 reachability checks, zero horizontal overflow and sampled contrast >=4.65:1. Unbuilt source supports keyboard atom/bond/ring editing, selection/movement/deletion and charge/isotope controls through shared pointer commands. Latest pure/controller suite passed 124 tests; combined production-route browser suite passed five pointer and four keyboard scenarios, all exit 0. The Alt-modified shortcut guard is repaired; a final focused valence-assertion check also passed. Historical theme/export fixtures retained unchanged white PNG output. Actual Windows scaling, screen-reader behavior, native modal-focus coverage and all chemical-artwork contrast remain open.",
+      "evidence_status": "Partial. Latest source/browser evidence: 124 pure/controller checks plus five pointer and four keyboard scenarios passed. Alt guard repaired. These results do not establish actual Windows scaling, assistive technology, broader native focus or complete artwork contrast. See docs/keyboard-editing.md."
+    },
+    {
+      "id": "E6",
+      "requirement": "Desktop lifecycle/security",
+      "implementation": "partial",
+      "evidence": "Current native bridge has 22 narrow methods with explicit dispatch protections. Existing runtime and PNG workers retain bounded input/output/cancellation behavior. Historical source f5acdd57 passed ten ordinary native close/recovery checks with three normal app exits, 27 normal helper exits and new-session removal. Later production integration removes pre-destroy service teardown, records actual native FormClosed before vendor work, makes late-close evidence terminal, and uses an owned hidden STA guard with exactly-once resource finalization. Four affected source suites passed 73 tests. Post-disposal cleanup requires matching BrowserProcessExited collection evidence; uncertain sessions are retained. No native app acceptance, build or installation of this integration has occurred. The watchdog requires a responsive STA and cannot interrupt a synchronous native callback stalled on that thread. Independent total-runtime traffic and full descendant cleanup remain open. Later historical source4c979c9c passed ordinary native10 and injected-before-destruction close-failure8 checks with owned process cleanup. This excludes arbitrary vendor hangs/partial destruction and does not validate the newer pH source. The production-route pH close-review regression failed before repair and passed afterward. Strict browser external-request gate remains failed.",
+      "evidence_status": "Partial. Frozen source integration passes 73 focused tests, including failed/vetoed close, late-close/resume race, duplicate cleanup and failure paths. The earlier four-case synthetic lifetime spike establishes feasibility only. Integrated native service recovery, ordinary close/recovery revalidation and packaged acceptance are pending. Historical f5acdd57 native results do not certify current runtime 17c8eec8."
+    },
+    {
+      "id": "E7",
+      "requirement": "Windows release/upgrade",
+      "implementation": "partial",
+      "evidence": "Source92a24ff6:329 Python and 99 unchanged pure JavaScript tests passed, exit 0. Both production-route browser fixtures pass. Exact dual-executable Windows build and unsigned inventory-bound installer compiled successfully. Isolated installation passed 6 checks: refusal of an overlong destination, all 768 file hashes, native acceptance, unchanged user shortcut, same-package reinstall and owned uninstall preserving external profile data. Final per-user installation is verified and retained. Clean Windows, cross-version upgrade/rollback and public redistribution/transitive licensing remain unmet. Current source records pinned local Chart.js4.5.1 and embedded @kurkle/color0.3.2 bytes, provenance and MIT notices; seven build-evidence tests verify inventory plus missing/tampered asset rejection. Actual new bundle/SBOM/installer acceptance is pending.",
+      "evidence_status": "Partial. Installed23f09d94 update and exact769member inventory verified; previous3builds preserved. Clean Windows, cross-version migration/rollback and redistribution remain open."
+    },
+    {
+      "id": "E8",
+      "requirement": "Private offline diagnostics",
+      "implementation": "partial",
+      "evidence": "Metadata-only inspectable diagnostics have privacy tests. The exact final per-user installed executable passed native inspect/save byte-match verification. No automatic uploads are configured. Broader independent total-runtime traffic remains a separate unverified gate.",
+      "evidence_status": "partial; see scoped evidence and remaining gates"
+    },
+    {
+      "id": "3.6",
+      "requirement": "LogP/properties",
+      "implementation": "partial",
+      "evidence": "Twelve property backend checks and exact installed native synthetic ethanol checks pass for formula, average mass, exact mass, SMILES, Crippen LogP and document nonmutation. Isotope/charge/mixture applicability boundaries are retained. Same-engine reproducibility is not experimental validation; broader scientific domain validation remains unmet.",
+      "evidence_status": "partial; see scoped evidence and remaining gates"
+    },
+    {
+      "id": "3.7",
+      "requirement": "Systematic naming",
+      "implementation": "partial",
+      "evidence": "NISPO 0.1.7 plus OPSIN 2.9.0 with app-local Temurin 25.0.4.1+1: 13 public fixtures produced 11 matching parser round trips and 2 correctly rejected mismatches. Worker cancellation/shutdown and bounded naming observation are tested. Exact source 92a24ff6 passed both isolated and final per-user installed ethanol naming UI and exact round-trip checks, without document mutation. Earlier failed naming/PNG runs remain historical evidence. Optional PubChem lookup is now implemented with exact per-request disclosure/consent and strict returned-structure matching; one live public ethanol lookup passed. See docs/optional-pubchem.md. Native/package PubChem acceptance, broader chemical-domain validation and any Preferred IUPAC Name claim remain unsupported.",
+      "evidence_status": "partial; see scoped evidence and remaining gates"
+    },
+    {
+      "id": "3.8",
+      "requirement": "Editable PNG import",
+      "implementation": "partial",
+      "evidence": "Current capability correction: the source already implements all legal core Adam7 types/depths through16-bit. The pending-format statements below describe historical tranches, not the current source; see the November10 section of docs/png-encodings.md. PNG chooser/drop/paste, metadata and configured optical draft review, bounded overview/crop review, atom/bond correction, supplied SMILES/2D MOL drafts and replacements, draft Undo/Redo, explicit acceptance as one main-editor Undo and PNG import view restoration are implemented. Original bytes, crop identity, provenance and review authority are retained; parsing alone does not prove image correspondence. Delivered source 5dde62c27baf adds native local runtime/model selection, trusted pinned-model verification and activation for future recognition without restarting or changing the current review. Setup never executes the selected ML runtime or downloads a model; compatibility is checked during recognition and model integrity is rechecked for every recognition request. The pinned checkpoint is available. An earlier source 07234083 aspirin fixture returned the expected structure in 48.828 seconds; it remains one historical source-runtime result. Current package evidence separately records 123 focused staged Python tests, 62 JavaScript/browser tests with two backend-only repairs recorded, native startup and packaged model hashing without inference. Installed native intake/setup and complete native chooser interaction, wider chemical/image-corpus accuracy, independent traffic coverage and broader compatibility remain incomplete. The follow-on source implements non-interlaced 16-bit preview/crop support with original bytes preserved; interlaced/color-managed PNG support is not completed by it. See docs/png-encodings.md for format coverage, docs/optical-setup.md for setup, docs/optical-resource-limits.md for the 90-second/4-GiB recognition boundaries, and the immutable delivery report for exact scopes. Fresh 2026-10-21 derivative work adds bounded Adam7 RGB8 backend overview/exact crop with direct byte filters, full pass-stream validation and unchanged source provenance. Fifteen authored tests and 51 selected existing preview regressions passed on Windows Python3.12.14. One authored13x9 backend component fixture verified overview,3x2crop and late-cancel rejection with injected metadata/preview transport and inert preparation/optical dependencies. Independent scoped code/security review found no blocking issue. This is fresh implementation, not historical cloud restoration; it does not establish real-worker/native/GUI/Linux qualification, whole-process memory bounds or large-image performance. At that RGB8 checkpoint RGBA8 was pending. The subsequent bounded RGBA8 increment preserves exact unassociated alpha and hidden RGB with four-byte pass/filter/buffer accounting and unchanged full-stream guards. Eight new RGBA tests plus15 existing Adam7 tests and51 affected preview regressions passed (74total, no errors/skips). One authored13x9 injected backend component verified RGBA overview,exact3x2crop,source/provenance nonmutation,snapshot cleanup and late-cancel rejection. Independent actual-diff code/security review found no blocking issue. Other Adam7 encodings, color management and existing broader acceptance gaps remain pending; no real-worker/native/GUI/Linux qualification or full requirement3.8 closure is established. Fresh indexed Adam7 work adds depths1/2/4/8 with packed pass rows, one-byte filters, actual-index validation across the full stream, ignored padding and unchanged palette transparency/source provenance. Twelve new indexed tests plus23 existing Adam7 tests and51 affected regressions passed (86total, no failures/errors/skips). One authored13x9 indexed fixture passed an actual unmocked preview-worker3x2crop through the accepted adapted bootstrap, retaining exact alpha/hiddenRGB, source identity and metadata-free output. Child exit, supervised I/O, jobs shutdown and owned-cache emptiness were confirmed separately. Independent actual-diff code/security review found no blocking issue. This single normal adapted worker result does not qualify default dependency discovery, GUI/native/Linux, descendant containment, OS memory enforcement or timeout/cancellation behavior. Adam7 grayscale/16-bit and color-managed formats remain pending; requirement3.8 remains partial. Final core Adam7 tranche adds grayscale0 at1/2/4/8 and grayscale-alpha4 at8bits, completing legal core combinations at8bits or below under the bounded decoder strict chunk policy. Packedgray predictor1 and grayalpha predictor2 feed existing sample scaling/tRNS masking and unassociated alpha expansion. Thirteen new tests plus35 prior Adam7 tests and51 affected regressions passed (99total, zero failures/errors/skips), including full-stream/outside-selection malformed data and resource/deadline checks. One actual authored13x9 grayalpha worker3x2crop through the accepted adapted bootstrap preserved exact alpha0/64/128/255, hidden(68,68,68,0), source/provenance and metadata-free output; child exit, I/O, shutdown and empty cache verified separately. Independent code/security review found no blocker. No16bit expansion, every-PNG claim, color-management/animation, editable-import/recognition, default startup, GUI/native/Linux or full requirement3.8 qualification. Requirement remains partial.",
+      "evidence_status": "Partial. Current source supports every legal core Adam7 color/depth combination through16-bit, plus bounded non-interlaced formats and canonical sRGB metadata compatibility. Existing16-bit Adam7 tests passed10/10 on the current Linux source; this is a capability reconciliation, not a new decoder implementation or Windows/native/browser/installed acceptance. Optical accuracy, general color transforms and broader qualification remain open. See docs/png-encodings.md."
+    },
+    {
+      "id": "3.9-math",
+      "requirement": "Joint-state mathematical evaluator",
+      "implementation": "partial",
+      "evidence_status": "unit-tested arithmetic; no molecular scientific validation",
+      "evidence": "22 mathematical checks pass for the state/energy contract. Arithmetic is not an actual molecule-to-population engine."
+    },
+    {
+      "id": "3.9-predictors",
+      "requirement": "Aqueous protonation, tautomer, R/S/E/Z, conformer and rotamer populations",
+      "implementation": "unmet",
+      "evidence_status": "three-stack documentary feasibility only; no quantitative outputs",
+      "evidence": "No validated molecular predictor for any required state class. Actual37C support, compatible aqueous energies/microequilibria, condition-matched independent validation and sampling convergence remain unmet. See docs/scientific-feasibility.md."
+    },
+    {
+      "id": "3.11",
+      "requirement": "Interactive pH plots, accessible tables, exports and state adoption",
+      "implementation": "partial",
+      "evidence_status": "Supplied-model charts, tables and exports plus explicit supported 2D state preview/adoption are implemented. The current source adds non-destructive in-dialog physiological reference switching; focused controlled-DOM tests preserve cached model values, pH, visibility and state-review ownership. See docs/population-reference-context.md; browser/Windows acceptance remains unverified. Scoped source/worker/browser evidence is recorded in docs/population-state-adoption.md and the delivery report. Validated molecular prediction, physical 3D conformer adoption and installed workflow acceptance remain open.",
+      "evidence": "State inspection is independent of curve visibility and pH selection. An explicit structure file binds to the exact model text; the protected import worker checks selected/reference atom maps, elements/isotopes, charges, hydrogen differences and supported stereo identity before returning a 2D preview. The drawing stays unchanged until explicit adoption, which preserves settings and records compact provenance as one undoable edit. Missing structures and missing pH populations cannot authorize adoption. Close, state changes and document edits revoke pending work. Supplied structure/energy correspondence remains unverified; no molecular predictor or physical 3D conformer geometry is inferred. Existing numerical JSON/CSV and opaque-white PNG exports remain separate from the structure file. The current source preserves exact supplied-model integer/float values in JSON/CSV, including repeated conditions; see docs/population-numeric-fidelity.md for offline evidence and remaining authenticity/native acceptance limits."
+    },
+    {
+      "id": "3.12",
+      "requirement": "Qualified physiology/nephron overlays",
+      "implementation": "partial",
+      "evidence": "Nineteen contexts retain eight numeric entries and eleven explicit gaps. Production reference chart preserves unrounded7.35/7.45 boundaries, distinct interval/point/uncertainty meanings, source metadata and session-only unverified comparisons. Browser downloads preserve the Bowman-space gap and exact custom range without modifying the document. A reviewed screenshot shows the arterial reference and table. Missing numerical evidence remains missing; no renal trajectory or in-vivo molecular distribution is inferred.",
+      "evidence_status": "Reference dataset and browser chart integration are partial; no new biological source claims or native acceptance."
+    },
+    {
+      "id": "3.13",
+      "requirement": "Optional online providers",
+      "implementation": "partial",
+      "evidence": "PubChem IUPACName+SMILES adapter implemented with local review, explicit one-use consent, exact input binding, immutable snapshot,120s expiry,bounded proposal registry,one active request,min1s admission interval,cancellation and owned worker shutdown. Thirty-eight focused offline/provider/registry/loopback tests passed after a reproduced cancel/completion race was repaired. One production authenticated loopback-to-provider ethanol request returned HTTP200,CID702,ethanol,CCO matched,with confirmed cleanup. Browser consent/stale-result tests and exact remaining limits are recorded in external increment evidence. No private data uploaded; no automatic provider requests. No molecular population provider was enabled. The complete 11-case browser suite subsequently passed, including consent expiry, 25-second preparation/lookup deadlines and late-result rejection; all 11 owned browsers closed normally without fallback. These checks use local synthetic responses and do not replace native/provider acceptance.",
+      "evidence_status": "Partial: source and one public provider fixture verified; native Windows UI, packaging/installation and broad chemical applicability remain open."
+    },
+    {
+      "id": "4.4",
+      "requirement": "Reference calibration",
+      "implementation": "unmet",
+      "evidence": "Private reference inventory and calibration evidence are not published in this source tree. Independent held-out validation, ground truth, typography, appearance and cleanup equivalence remain unestablished. See docs/PUBLIC-SOURCE.md.",
+      "evidence_status": "partial; see scoped evidence and remaining gates"
+    },
+    {
+      "id": "4.5",
+      "requirement": "Windows acceptance and user installation",
+      "implementation": "partial",
+      "evidence": "Exact source 92a24ff6 passed isolated install, all 768 file hashes, 18native checks, same-package reinstall and test-uninstall preserving external profile data. Final per-user installation at LOCALAPPDATA/Programs/nivraM also passed all768hashes and18native checks including naming roundtrip, theme isolation, PNG preservation/oneundo and9999x744 export with 200 pxopaque white margins. Normal WebView2 exit, managed-session removal and owned-worker exits confirmed. Actual user installation remains in place. Native acceptance used separate synthetic profiles; clean Windows and cross-version upgrade/rollback remain unverified. Ordinary installed-executable startup separately passed six checks with PATH restricted to System32: Ready, engine version, second-instance rejection, normal close and session-directory removal. Start menu shortcut target verified. This used a fresh test profile, not a clean OS. A later575a9408 update installed successfully and passed all769file hashes and shortcut checks, but its native acceptance failed after10checks with forcedtermination at180.516s. Separate normalstartup passed6checks in14.406s with unchanged exactexe hash and normalclosure/session removal. No later fullinstalled acceptance is implied.",
+      "evidence_status": "Partial. Latest installed23f09d94 passed20native and6ordinary-startup checks; all769installedfiles freshly matched. Earlier failed candidates remain historical. Clean Windows and broad lifecycle/recovery acceptance are not established."
+    },
+    {
+      "id": "user-dark-mode",
+      "requirement": "View-only dark mode with preserved element colors and unchanged white PNG output",
+      "implementation": "implemented",
+      "evidence_status": "Verified on bounded fixtures in actual production-route Edge and exact final installed native executable; full visual corpus/accessibility claims remain open.",
+      "evidence": "The view-only header toggle changes canonical black bonds, wedges and identified open joins to light grey, while original chemical element colors and SVG/document/history remain unchanged. Three pure controller tests and real production-route Edge checks pass. Radical fixture: six 640x552 outputs identical RGBA. Exact original SVG fixture: 12 checks, six 640x647 outputs identical RGBA, 13 px opaque white margins and successful bounds-failure cleanup/retry. Edge changed from 153.0.4234.32 to .48, so sole causal attribution of the historical discrepancy to code is not established. Exact source 92a24ff6 final installed executable also passed grey-bond rendering, identical light/dark PNG bytes and unchanged SVG/history. Dark labels retain their colors and may have low contrast; full chemical-artwork contrast/accessibility and whole-corpus calibration are unverified."
+    },
+    {
+      "id": "user-png-transparency",
+      "requirement": "Default-unchecked Transparent background? option for PNG image saving; white by default",
+      "implementation": "partial",
+      "evidence_status": "Source implementation and non-browser raster/native-byte validation verified; browser/Windows/installed acceptance remains unverified.",
+      "evidence": "Drawing, exact preview/profile/batch, 3D and both chart PNG paths support captured strict Boolean transparency. Real non-browser raster/encoder checks establish decoded alpha and default white; native checks cover filtered alpha/white margins and unchanged metadata bounds. Old projects default to white. See docs/png-transparency.md. Historical white-only test receipts elsewhere are not transparency acceptance."
+    }
+  ],
+  "verification": {
+    "historical_before_current_edits": {
+      "python": {
+        "passed": 302,
+        "log": "evidence/final-source-python-tests.log"
+      },
+      "javascript": {
+        "passed": 86,
+        "log": "evidence/final-source-javascript-tests.log"
+      },
+      "native_source": {
+        "checks": 16,
+        "status": "passed",
+        "receipt": "evidence/native-visible-hardened-2.json"
+      }
+    },
+    "python": {
+      "passed": 329,
+      "failed": 0,
+      "exit_code": 0,
+      "receipt": "evidence/source-python-short-temp.json",
+      "scope": "Historical 329-test source suite; superseded for current runtime assessment by close_and_editor_increment_20260921."
+    },
+    "javascript": {
+      "passed": 99,
+      "failed": 0,
+      "exit_code": 0,
+      "receipt": "evidence/source-javascript-integrated.json",
+      "scope": "Historical 99-test pure JavaScript suite; latest pure/controller and browser results are recorded separately."
+    },
+    "naming_acceptance_helper": {
+      "passed": 15,
+      "failed": 0,
+      "exit_code": 0,
+      "coverage": "included in source Python suite; old 11-test receipt is historical"
+    },
+    "changed_javascript_syntax": {
+      "exit_code": 0,
+      "files": [
+        "public/app.mjs",
+        "public/modules/analysis.mjs",
+        "public/modules/physiology.mjs",
+        "public/modules/theme.mjs"
+      ]
+    },
+    "limits": "Verification entries retain their original revision scopes. The installed 23f09d94 baseline remains current; earlier candidate and source results are historical. Latest unbuilt runtime evidence is in close_and_editor_increment_20260921. That runtime identity precedes this documentation-only reconciliation. No current integrated native/build/install pass is implied.",
+    "browser": {
+      "receipt": "evidence/dark-mode-browser/final-integrated/receipt.json",
+      "checks": 11,
+      "exit_code": 0,
+      "scope": "Production server in headless Edge; nativeHost false; non-loopback AdGuard injection attempts blocked by harness, not a zero-attempt networking claim."
+    },
+    "original_fixture_regression": {
+      "receipt": "evidence/dark-mode-browser/original-verified-20260920/receipt.json",
+      "exit_code": 0,
+      "checks": 12,
+      "status": "passed on exact preserved SVG, six 640x647 outputs with identical RGBA; Edge153.0.4234.48"
+    },
+    "installed_prior_candidate": {
+      "status": "failed",
+      "passed_checks": 15,
+      "source_sha256": "60b27810a708da39ee966ca1ead57642aad62318bc12fb0b1454e16b76ecc7ec",
+      "receipt": "evidence/installer-isolated-20260920T213556583373Z/native-acceptance.json",
+      "details": "Naming UI and round trip, display-only dark mode, native save/open and other checks passed. PNG import wait timed out; stage unknown; collection exit unconfirmed and cache retained."
+    },
+    "atomic_short_temp": {
+      "passed": 19,
+      "failed": 0,
+      "exit_code": 0,
+      "receipt": "evidence/atomic-short-temp-regression.json"
+    },
+    "historical_native_source_diagnostic": {
+      "status": "passed",
+      "checks": 18,
+      "exit_code": 0,
+      "receipt": "evidence/native-png-stages-source-1.json",
+      "scope": "Historical source-route diagnostic pass before the atomic-write repair; current installed results are recorded separately."
+    },
+    "prior_installed_source": "92a24ff63506c7bbe32f57b52aea71072ddec12500dc91d4d6031139779494b2",
+    "png_region_increment": {
+      "python": {
+        "passed": 383,
+        "failed": 0,
+        "exit_code": 0,
+        "duration_seconds": 26.321,
+        "command": "../venv/Scripts/python.exe -m unittest discover -s tests",
+        "chunks": [
+          "01e765",
+          "c69f9b",
+          "d82b82"
+        ]
+      },
+      "javascript": {
+        "passed": 110,
+        "failed": 0,
+        "skipped": 0,
+        "exit_code": 0,
+        "duration_seconds": 4.3241918,
+        "chunk": "eb443b",
+        "scope": "Explicit15-file pure JavaScript suite; browser fixtures run separately"
+      },
+      "focused_frontend": {
+        "command": "node --test --test-isolation=none tests/image-region.test.mjs tests/image-review.test.mjs tests/image-region-browser.test.mjs tests/image-import-browser.test.mjs",
+        "sessionId": 1916,
+        "exitCode": 0,
+        "passed": 23,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 12623.8714,
+        "browserParentPids": [
+          98680,
+          98428,
+          88956
+        ],
+        "normalOwnedBrowserExitObserved": true,
+        "transcript": "work/reference-audit/png-region-frontend-checks.txt"
+      },
+      "native": {
+        "receipt": "verification/png-preview/source-native-1.json",
+        "checks": 20,
+        "exit_code": 0,
+        "duration_seconds": 29.172,
+        "worker_shutdown_confirmed": true
+      },
+      "failed_checks_retained": [
+        {
+          "check": "Initial browser teardown",
+          "status": "failed; helper repaired; fresh focused run passed",
+          "receipt": "verification/png-preview/frontend-checks.json"
+        },
+        {
+          "check": "Overbroad JavaScript file selection",
+          "exit_code": 1,
+          "passed": 110,
+          "failed": 1,
+          "skipped": 1,
+          "cause": "app-state.test.mjs requires Playwright; NODE_PATH not configured in a purported pure suite",
+          "resolution": "Explicit pure suite110 passed; no claim of complete unrelated browser coverage"
+        }
+      ],
+      "build": "Historical575a9408 and5cd95237 exact frozen builds each passed20native checks. Current preview-readiness source has not been rebuilt.",
+      "installed": "Current5cd95237 installation passed installer/file/shortcut checks; fullnative failed gracefully during preview. Prior575a9408 fullnative timeout and separate6normalstartup pass preserved.",
+      "scope": "Historical PNG-region increment and candidate statuses; references to current inside this preserved block refer to that historical increment."
+    },
+    "historical_installed_92a24ff6": {
+      "status": "passed",
+      "sourceSha256": "92a24ff63506c7bbe32f57b52aea71072ddec12500dc91d4d6031139779494b2",
+      "nativeChecks": 18,
+      "receipt": "evidence/installer-user-install-20260920T221848744324Z/native-acceptance.json"
+    },
+    "historical_normal_launch_92a24ff6": {
+      "status": "passed",
+      "checks": 6,
+      "exit_code": 0,
+      "seconds": 12.172,
+      "scope": "Exact installed executable, ordinary startup without acceptance mode, PATH SystemRoot/System32 only, fresh isolated profile",
+      "receipt": "evidence/normal-launch-installed-short-temp.json"
+    },
+    "native_harness_repair": {
+      "sourceFocusedTests": {
+        "passed": 18,
+        "exitCode": 0,
+        "scope": "latest evaluator/reporting tests including asynccallback compatibility; superseded by finalsource suite receipt"
+      },
+      "sourceNative": {
+        "status": "passed",
+        "checks": 20,
+        "exitCode": 0,
+        "elapsedSeconds": 26.813,
+        "receipt": "verification/native-harness/source-native-2.json",
+        "fixtureShutdownsConfirmed": 6,
+        "evaluatorExited": true,
+        "forcedTermination": false
+      },
+      "rebuiltFrozen": {
+        "status": "passed",
+        "checks": 20,
+        "exitCode": 0,
+        "elapsedSeconds": 36.328,
+        "receipt": "verification/native-harness/frozen-native-1.json",
+        "binding": "verification/native-harness/frozen-artifact-binding.json"
+      },
+      "newInstalled": {
+        "status": "failed",
+        "installerExitCode": 0,
+        "installedFilesAndShortcutVerified": true,
+        "functionalChecksBeforeFailure": 9,
+        "nativeLoopReturned": true,
+        "exitCode": 1,
+        "elapsedSeconds": 16.25,
+        "forcedTermination": false,
+        "errorKind": "TypeError",
+        "receipt": "work/upgrade-tests/3402814a3844/native-acceptance.json",
+        "exactReturnedValueCaptured": false,
+        "ordinaryStartup": "not checked for this candidate"
+      },
+      "preservedFailure": "work/upgrade-tests/a8eb4964195f/native-acceptance.json",
+      "details": "docs/native-acceptance.md",
+      "finalSourceSuite": "verification/native-harness/source-checks.json",
+      "historicalSourceFailure": {
+        "receipt": "verification/native-harness/source-native-1.json",
+        "kind": "TypeError",
+        "cause": "new wrapper initially omitted the existing asynchronous callback argument; repaired and regressiontested",
+        "exitCode": 1,
+        "forcedTermination": false
+      },
+      "sourceSha256": "5cd95237d9afc08d69a4e6b07c5dc0b32bf851d078135afd2d2245d42237835e"
+    },
+    "preview_readiness_repair": {
+      "focusedPython": {
+        "passed": 27,
+        "exitCode": 0,
+        "seconds": 1.168,
+        "scope": "preview/evaluator/reporting including actual Windows sharing conflict"
+      },
+      "browserRegression": {
+        "passed": 1,
+        "exitCode": 0,
+        "seconds": 12.932,
+        "receipt": "verification/preview-readiness/browser-regression.json",
+        "scope": "Actual production profile and PNG export modules with real image decode continuation deliberately paused; exact Python probe imported. Native installed failed value not reconstructed."
+      },
+      "repairedSourceNative": "verification/preview-readiness/source-native-final.json (pending)",
+      "repairedFrozen": "pending",
+      "repairedInstalled": "pending",
+      "details": "docs/native-acceptance.md",
+      "preservedSourceSuiteFailure": {
+        "receipt": "verification/preview-readiness/source-checks.json",
+        "tests": 431,
+        "errors": 1,
+        "exitCode": 1,
+        "kind": "ConnectionResetError WinError10054 in foreign-origin HTTP response",
+        "cause": "not established; focused20repeat passed; bounded rejection teardown hardening tracked separately"
+      },
+      "preservedNativeFailure": {
+        "receipt": "verification/preview-readiness/source-native-1.json",
+        "functionalChecksPassed": 17,
+        "nativeLoopReturned": true,
+        "exitCode": 1,
+        "seconds": 27.203,
+        "kind": "PermissionError at atomic evidence replacement",
+        "forcedTermination": false,
+        "cleanup": "all started fixtures/evaluator/scientific workers/WebView session confirmed closed",
+        "cause": "concurrent reader sharing interference plausible; original numeric OS code unavailable; actual Windows sharing mechanism separately reproduced"
+      },
+      "finalSourceSuite": "verification/preview-readiness/source-checks-final.json",
+      "serverRejectionHardening": {
+        "receipt": "verification/preview-readiness/server-rejection-regression-final.json",
+        "scope": "Final response before capped64KiB receive drain with single250ms deadline; rejected data not parsed or dispatched. Staged-close regression, not deterministic reproduction of original connectionreset.",
+        "implementation": "nivram/server.py",
+        "tests": "tests/test_server_rejection.py"
+      },
+      "preservedIntermediateSuiteFailure": {
+        "receipt": "verification/preview-readiness/source-checks-2.json",
+        "tests": 445,
+        "errors": 1,
+        "exitCode": 1,
+        "kind": "ConnectionResetError in new oversized-body fixture",
+        "scope": "Fixture sent beyond discard cap and wrongly required readable rejection despite explicit oversized-peer limitation. Fixture revised to read response first, then assert actual and requested receive byte cap; ordinary403 expectation unchanged."
+      }
+    },
+    "current_installed_23f09d94": {
+      "sourceSha256": "23f09d94a99a656c92732443c18ce923f27ae5263ae0ac6264f7c78eaf866cc8",
+      "status": "passed",
+      "nativeChecks": 20,
+      "ordinaryChecks": 6,
+      "receipt": "work/preview-upgrade-tests/716c8a26499f/receipt.json",
+      "normalReceipt": "work/normal-launch-installed-preview-23f09d94.json",
+      "freshBundleReadback": {
+        "members": 769,
+        "exitCode": 0,
+        "toolChunk": "948f30"
+      },
+      "scope": "Same Windows installation, synthetic isolated profiles. Not clean Windows or complete product acceptance."
+    },
+    "reliability_increment": {
+      "status": "Historical earlier reliability increment; current frozen integration is recorded separately.",
+      "closeFocused": {
+        "passed": 14,
+        "exitCode": 0,
+        "seconds": 0.372,
+        "toolChunk": "52c155",
+        "scope": "Historical 14-test close-review suite before the native lifetime integration."
+      },
+      "saveRace": "Confirmed late external replacement after final hash check; production save unchanged. Five-case Windows guard/rename probe found no safe conditional commit; no TxF used.",
+      "nativeRecovery": "Installed23f09d94 attempt2 passed9 checks, exit0: recovery observed2.172s after pre-Load timestamp, exact recovery survived owned-process crash, production UI recovery saved separately with newer file unchanged; restarted app0 and26helpers0, new session removed. Crash residue retained; not powerloss/cleanWindows/all-descendants acceptance.",
+      "nativeReceipt": "work/native-recovery-installed-23f09d94-2.json",
+      "details": "docs/reliability-progress.md",
+      "preservedNativeFailure": "work/native-recovery-installed-23f09d94-1.json",
+      "helperTests": {
+        "passed": 18,
+        "exitCode": 0,
+        "toolChunk": "067162"
+      }
+    },
+    "keyboard_and_close_increment": {
+      "runtimeSourceSha256": "f5acdd57b04200579663f88975be5421ea64ab4936be65f6b131c6887ea1c881",
+      "javascriptPassed": 128,
+      "javascriptExitCode": 0,
+      "pythonPassed": 453,
+      "pythonFailed": 1,
+      "pythonExitCode": 1,
+      "sourceNativeClosePassed": 10,
+      "sourceNativeCloseExitCode": 0,
+      "nativeReceipt": "work/native-close-source-f5acdd57-1.json",
+      "details": "docs/keyboard-editing.md",
+      "notBuilt": true,
+      "notInstalled": true,
+      "scope": "Historical source/runtime evidence for f5acdd57; later production code changes are recorded in close_and_editor_increment_20260921. The save race remains unresolved."
+    },
+    "close_and_editor_increment_20260921": {
+      "status": "frozen source; unbuilt and uninstalled; integrated native acceptance pending",
+      "testedRuntimeSourceSha256": "17c8eec81fbed7a510d2e964b1db09bf95b7d902a6551e5b5c16d7e89328da08",
+      "runtimeIdentityScope": "Tested runtime snapshot before this documentation-only reconciliation; not a self-referential final source hash.",
+      "sourceSnapshot": {
+        "files": 179,
+        "exitCode": 0,
+        "toolChunk": "e6a467"
+      },
+      "closeFocused": {
+        "passed": 73,
+        "exitCode": 0,
+        "seconds": 1.195,
+        "toolChunk": "3717e2"
+      },
+      "regressionsBeforeRepair": [
+        {
+          "cases": 3,
+          "exitCode": 1,
+          "toolChunk": "1f44ae",
+          "scope": "Premature service teardown, veto mistaken for closure, closed-then-exception"
+        },
+        {
+          "cases": 1,
+          "exitCode": 1,
+          "toolChunk": "75a82c",
+          "scope": "Closed notification between negative closed check and resume"
+        }
+      ],
+      "sourceValidation": {
+        "files": 9,
+        "exitCode": 0,
+        "toolChunk": "0ae31e",
+        "scope": "AST, whitespace, final newline, conflict markers and git diff check"
+      },
+      "python": {
+        "run": 477,
+        "passed": 476,
+        "failed": 1,
+        "errors": 0,
+        "exitCode": 1,
+        "seconds": 33.936,
+        "toolChunks": [
+          "59acaa",
+          "3e429a",
+          "d6f44c"
+        ],
+        "failure": "Known existing-file late external replacement regression; production persistence unchanged"
+      },
+      "javascriptPure": {
+        "passed": 124,
+        "exitCode": 0,
+        "seconds": 6.82,
+        "toolChunk": "8940ca"
+      },
+      "browser": {
+        "passed": 9,
+        "pointer": 5,
+        "keyboard": 4,
+        "exitCode": 0,
+        "seconds": 71.434,
+        "toolChunks": [
+          "b17f17",
+          "2a3372",
+          "8e7594",
+          "72435a"
+        ],
+        "scope": "Production-route browser checks; no integrated native accessibility claim"
+      },
+      "focusedValenceAssertion": {
+        "exitCode": 0,
+        "seconds": 7.908,
+        "toolChunk": "c602a5"
+      },
+      "altShortcutGuard": "repaired",
+      "integratedNativeAcceptance": "not run",
+      "lifetimeLimit": "The STA timer watchdog requires a responsive native thread; it cannot interrupt a synchronous native callback stalled on that thread. Finalizer return or process exit alone does not prove every cleanup stage succeeded.",
+      "saveExperiment": {
+        "decision": "tested WinRT commit protocol rejected after counterexample; persistence unchanged",
+        "receipt": "work/save-protocol/winrt_commit_run_9ba1c62ee28a48388471fba553c5f2c8/receipt.json",
+        "receiptSha256": "0533ff8ba13bb4f0dfe11b602007e47d966aa08dcc43424f62b61c24bbf1601d",
+        "controlsPassed": 9,
+        "firstCounterexample": "inplace-delay0",
+        "remainingContenderCasesNotRun": 7,
+        "interleaving": "Foreign in-place write and fresh readback during CommitAsync, followed by transaction bytes after disposal and competitor exit.",
+        "exitCode": 0,
+        "toolChunk": "5d2edf",
+        "exitCodeMeaning": "Counterexample recorded, not a safe save guarantee",
+        "independentVerifier": "work/save-protocol/verify_counterexample_9ba1c62e.py",
+        "independentVerificationExitCode": 0,
+        "independentVerificationToolChunk": "3b9a97",
+        "ownedChildrenReaped": 13,
+        "normalExitZero": 12,
+        "intentionalStagedTerminationExitOne": 1,
+        "transactionalNTFSUsed": false
+      },
+      "details": [
+        "docs/reliability-progress.md",
+        "docs/keyboard-editing.md"
+      ]
+    }
+  },
+  "last_fully_accepted_installed_candidate": {
+    "sourceSha256": "23f09d94a99a656c92732443c18ce923f27ae5263ae0ac6264f7c78eaf866cc8",
+    "installerSha256": "f92d55f4e076d3c280c01a25bd0e566636930ce877b884bd299f6c593b8c90b0",
+    "scope": "Guarded same-version build upgrade and synthetic installed native acceptance; cross-version migration/rollback and clean Windows remain open.",
+    "receipt": "evidence/upgrade/receipt.json"
+  },
+  "claims_before_ph_reference_integration": {
+    "updated_utc": "2026-09-21T04:46:24.986166+00:00",
+    "release_candidate": "Installed 23f09d94 remains the verified local development baseline: installed-native 20 and ordinary-startup 6 passed. Current source includes frozen, unbuilt close-lifetime integration, keyboard/pointer regressions and the Alt shortcut guard. The focused close suites passed 73 tests; current full Python ran 477 with 476 passes and the known save-race failure. Production persistence is unchanged; the tested WinRT commit proposal was rejected by a counterexample. No native app acceptance, build or installation of this increment has occurred. Complete Goal remains incomplete.",
+    "requirements": [
+      {
+        "id": "E1",
+        "requirement": "Native save/recovery",
+        "implementation": "partial",
+        "evidence": "Historical persistence/crash tests covered recovery history, simulated storage faults, new-destination conflicts, native dialogs and short temporary names. The existing persistence regression set has 12 passing tests and one failing late external replacement test; production persistence.py remains unchanged. Installed 23f09d94 synthetic crash/restart recovery passed nine checks including 2.172-second readable recovery and newer saved-file preservation through separate Save As. Historical source f5acdd57 ordinary close/recovery passed ten checks. The initial eight-case WinRT held-transaction experiment did not cover the internal commit interval. A later commit-overlap experiment found a foreign in-place write/readback during CommitAsync overwritten by transaction bytes after disposal; the tested proposal was rejected. Current full Python: 477 run, 476 passed, this known failure, zero errors, exit 1. Power-loss durability, native storage-failure breadth and migration/rollback remain incomplete.",
+        "evidence_status": "Partial. Historical installed recovery remains valid for 23f09d94. Existing-target lost-update race is reproduced and unresolved. WinRT proposal rejected; experimental exit 0 denotes counterexample capture, not safe persistence. Later close integration has source tests only; broader failure/migration/power-loss acceptance remains open."
+      },
+      {
+        "id": "E6",
+        "requirement": "Desktop lifecycle/security",
+        "implementation": "partial",
+        "evidence": "Current native bridge has 22 narrow methods with explicit dispatch protections. Existing runtime and PNG workers retain bounded input/output/cancellation behavior. Historical source f5acdd57 passed ten ordinary native close/recovery checks with three normal app exits, 27 normal helper exits and new-session removal. Later production integration removes pre-destroy service teardown, records actual native FormClosed before vendor work, makes late-close evidence terminal, and uses an owned hidden STA guard with exactly-once resource finalization. Four affected source suites passed 73 tests. Post-disposal cleanup requires matching BrowserProcessExited collection evidence; uncertain sessions are retained. No native app acceptance, build or installation of this integration has occurred. The watchdog requires a responsive STA and cannot interrupt a synchronous native callback stalled on that thread. Independent total-runtime traffic and full descendant cleanup remain open.",
+        "evidence_status": "Partial. Frozen source integration passes 73 focused tests, including failed/vetoed close, late-close/resume race, duplicate cleanup and failure paths. The earlier four-case synthetic lifetime spike establishes feasibility only. Integrated native service recovery, ordinary close/recovery revalidation and packaged acceptance are pending. Historical f5acdd57 native results do not certify current runtime 17c8eec8."
+      },
+      {
+        "id": "E7",
+        "requirement": "Windows release/upgrade",
+        "implementation": "partial",
+        "evidence": "Source92a24ff6:329 Python and 99 unchanged pure JavaScript tests passed, exit 0. Both production-route browser fixtures pass. Exact dual-executable Windows build and unsigned inventory-bound installer compiled successfully. Isolated installation passed 6 checks: refusal of an overlong destination, all 768 file hashes, native acceptance, unchanged user shortcut, same-package reinstall and owned uninstall preserving external profile data. Final per-user installation is verified and retained. Clean Windows, cross-version upgrade/rollback and public redistribution/transitive licensing remain unmet.",
+        "evidence_status": "Partial. Installed23f09d94 update and exact769member inventory verified; previous3builds preserved. Clean Windows, cross-version migration/rollback and redistribution remain open."
+      },
+      {
+        "id": "3.11",
+        "requirement": "Interactive pH plots, accessible tables, exports and state adoption",
+        "implementation": "unmet",
+        "evidence_status": "not implemented",
+        "evidence": "Shared0.1pH crosshair/keyboard selection, linked state views, stable curves, tabular/CSV/JSON/chart export and undoable selected-state adoption remain unmet."
+      },
+      {
+        "id": "3.12",
+        "requirement": "Qualified physiology/nephron overlays",
+        "implementation": "partial",
+        "evidence": "Dataset remains 19 contexts: 8 numeric and 11 explicit gaps, with no new numerical source claims. Text explorer now supports session-only custom comparisons, exact off-grid bounds, distinct equal-endpoint markers, explicit unverified applicability, and preserved source gaps. Ten focused pure tests pass; independent static review found no actionable issue. Real Edge form checks pass for exact 7.35ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ7.45 bounds, equal-value marker, four invalid proposals retaining the prior valid value, context switching/removal, retained source gap and unchanged document. Actual plot bands/markers and molecular prediction remain unimplemented.",
+        "evidence_status": "Custom comparison source, pure behavior and actual browser form verified; native plot integration remains unimplemented."
+      }
+    ]
+  },
+  "ph_reference_increment": {
+    "evidence": "work/ph-reference-integration-20260921/progress.json",
+    "checks": {
+      "exportBrandRed": {
+        "chunk": "3c3133",
+        "exitCode": 1,
+        "reason": "Presentation cloned the validated reference, breaking JSON/CSV export."
+      },
+      "exportBrandGreen": {
+        "chunk": "cb81eb",
+        "exitCode": 0,
+        "passed": 17
+      },
+      "closeReviewRed": {
+        "chunk": "14e747",
+        "exitCode": 1,
+        "passed": 0,
+        "failed": 1,
+        "reason": "Delayed physiology loading re-enabled chart controls during native close review.",
+        "cleanup": "Browser deadline failed; owned process later confirmed absent."
+      },
+      "closeReviewGreen": {
+        "chunk": "b3d445",
+        "exitCode": 0,
+        "passed": 1,
+        "durationMs": 6743.3425,
+        "cleanup": "Owned browser 28508 exited normally."
+      },
+      "pythonFull": {
+        "chunks": [
+          "c09014",
+          "075e68"
+        ],
+        "exitCode": 1,
+        "run": 484,
+        "passed": 483,
+        "failed": 1,
+        "errors": 0,
+        "durationSeconds": 31.675,
+        "failure": "test_external_replacement_after_final_check_is_not_overwritten: SaveConflict not raised"
+      },
+      "javascriptPure": {
+        "chunk": "c9ae68",
+        "exitCode": 0,
+        "files": 17,
+        "passed": 141,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 3770.0546
+      },
+      "browserFirstRun": {
+        "chunk": "8a3ae2",
+        "exitCode": 1,
+        "passed": 0,
+        "failed": 4,
+        "reason": "One real exporter defect plus test label/readiness defects and cleanup failures; all owned browser processes later absent."
+      },
+      "browserSecondRun": {
+        "chunk": "38a0c1",
+        "exitCode": 1,
+        "passed": 1,
+        "failed": 3,
+        "reason": "Theme/PNG passed; strict external-request gate, cleanup timeout and missing-option race failed."
+      },
+      "browserDiagnosticRun": {
+        "chunk": "54e3a0",
+        "exitCode": 1,
+        "passed": 2,
+        "failed": 2,
+        "durationMs": 18157,
+        "reason": "Reference provenance/CSV and theme/PNG passed. Strict external-request gate and one incorrect ASCII-dash expectation failed.",
+        "cleanup": "All four owned browsers exited normally."
+      },
+      "readmeCheck": {
+        "chunk": "0b79aa",
+        "exitCode": 0,
+        "scope": "UTF-8, final newline, whitespace and reference-only scope."
+      },
+      "capabilityRetryBrowser": {
+        "chunk": "809cc9",
+        "exitCode": 0,
+        "passed": 1,
+        "durationSeconds": 4.746,
+        "cleanup": "Owned browser 26120 exited normally."
+      },
+      "strictNetworkBrowser": {
+        "chunk": "4445e7",
+        "exitCode": 1,
+        "failed": 1,
+        "durationSeconds": 5.804,
+        "reason": "Functional chart assertions passed, but two additional external script elements in received HTML caused blocked external parser requests. Gate preserved; injecting process unknown.",
+        "cleanup": "Owned browser 34540 exited normally."
+      },
+      "browserFinalSyntax": {
+        "chunk": "571c8b",
+        "exitCode": 0
+      },
+      "browserReceiptValidation": {
+        "chunk": "6e2594",
+        "exitCode": 0,
+        "sha256": "dca0da7e0d257803c5a8ea3adb088d3b711229a10390ae028375bc7b8923717a"
+      },
+      "txfWriteIndependentReceiptReview": {
+        "chunks": [
+          "e384d1",
+          "9589ae"
+        ],
+        "exitCode": 0,
+        "recomputedCaseVerdicts": 8,
+        "rawObservations": 234,
+        "recognizedPayloads": 233,
+        "expectedDeleteRecreateGap": 1,
+        "balancedNativeHandlePairs": 243,
+        "sha256": "4937e3c7a75c3f14fd4e025b84912d6a885c30816cc572aa34780334a4050365",
+        "nativeRerun": false
+      },
+      "txfWritePureRoot": {
+        "chunk": "5a17e1",
+        "exitCode": 0,
+        "passed": 69,
+        "durationSeconds": 0.151
+      },
+      "txfWriteNative": {
+        "chunk": "dfabf1",
+        "exitCode": 0,
+        "cases": 8,
+        "durationSeconds": 4.8691658,
+        "status": "sampled_cases_passed_not_proof",
+        "receipt": "work/save-protocol/txf-write-feasibility/run-734edc0cb9564c038731e130c85f4e83/receipt.json",
+        "sha256": "bd348ee19dac095f746b20dc775dc8ebcf60320a1a06d85f006fec6540c46591",
+        "rootReadback": "7956c9 exit0",
+        "ownedChildren": 14,
+        "allChildrenExit0": true,
+        "allHandlesClosed": true,
+        "forcedCleanup": false,
+        "criticalCommitOverlap": "none_observed",
+        "productionAdopted": false
+      }
+    },
+    "browserReview": "work/ph-reference-integration-20260921/browser-review.json",
+    "nativeAcceptance": "not run for this increment",
+    "fullGoalComplete": false
+  },
+  "historical_before_pubchem_20260921": {
+    "updated_utc": "2026-09-21T13:53:23.757748+00:00",
+    "release_candidate": "Installed23f09d94 remains historical installed acceptance. Current source includes the new local pH reference dialog and is unbuilt/uninstalled. Pure JavaScript141 passed; full Python484 ran with483 passes and the known save-race failure. Reference provenance, theme/PNG, capability retry and close-review browser checks passed in their recorded runs; strict network isolation failed. Separate TxF content-write experiment passed eight sampled cases with no observed commit-call overlap and has not been adopted. The complete Goal remains incomplete.",
+    "requirements": [
+      {
+        "id": "E1",
+        "requirement": "Native save/recovery",
+        "implementation": "partial",
+        "evidence": "Historical installed23f09d94 recovery remains scoped to its receipts. Production persistence.py is unchanged. Fresh full Python:484 run,483 passed,1 failed,0 errors,exit1; late external replacement still does not raise SaveConflict. The earlier WinRT commit protocol was rejected by a lost-update counterexample; the TxF rename experiment failed before commit. A separate reviewed TxF same-handle content-write experiment passed8 finite cases,14 children exited0 and all owned handles closed. No competing target syscall/read overlapped CommitTransaction in that run. No production adoption, crash/power-loss, varied-size, storage-failure, sync/non-NTFS or future-Windows guarantee follows. See external increment evidence.",
+        "evidence_status": "Partial; known production lost-update defect remains failed. Successful isolated experiment is not a repaired save path."
+      },
+      {
+        "id": "3.7",
+        "requirement": "Systematic naming",
+        "implementation": "partial",
+        "evidence": "NISPO 0.1.7 plus OPSIN 2.9.0 with app-local Temurin 25.0.4.1+1: 13 public fixtures produced 11 matching parser round trips and 2 correctly rejected mismatches. Worker cancellation/shutdown and bounded naming observation are tested. Exact source 92a24ff6 passed both isolated and final per-user installed ethanol naming UI and exact round-trip checks, without document mutation. Earlier failed naming/PNG runs remain historical evidence. PubChem integration, broader installed chemical-domain validation and any Preferred IUPAC Name claim remain unsupported.",
+        "evidence_status": "partial; see scoped evidence and remaining gates"
+      },
+      {
+        "id": "3.13",
+        "requirement": "Optional online providers",
+        "implementation": "unmet",
+        "evidence": "All disabled; no PubChem/predictor adapters orconsentUI yet.",
+        "evidence_status": "partial; see scoped evidence and remaining gates"
+      }
+    ]
+  },
+  "evidence_history_scope": "Dated reports, counters and source identities outside the current requirement rows retain their historical scope. Current release narrative and updated rows supersede older implementation descriptions; older failures remain preserved.",
+  "native_reference_save_increment": {
+    "implementation": "dedicated scoped native JSON/CSV/PNG Save dialog with token-first validation, bounded content, protected replacement, exact readback receipt and owned shutdown",
+    "checks": "26 focused saver,13 bridge and14 lifecycle checks; included in604 full Python tests. Five pure JavaScript saver checks; included in163 pure JavaScript tests. Three fake-native browser boundary cases plus three browser download activation cases passed. Actual serializers and saver round-tripped196 files across19 reference contexts, no context and custom comparisons.",
+    "native_acceptance": "Source812511fed3cfbe5d698a09a4e8ea424a916ff39325cc73196642087ca655a98c passed12 checks in native-812511fe-reference-save-diagnostics-1.json (exit0):JSON4597B,CSV6539B preserving70 scalar leaves,light/dark PNG45865B byte-identical at1000x560 and decoded-RGBA-identical,opaque/white borders,unchanged complete saved project,ordinary exit0 and session removal. All39 owned helper processes exited0 without forced cleanup. The preceding context expansion failure remains historical; the successful run observed Expanded on its first poll31ms into the unchanged2s wait,without invoking the optional fresh-pattern observation. No causal fix is claimed. Keyboard/full-pH acceptance and native overwrite/cancel/conflict/shutdown-during-save remain outside this successful run.",
+    "limits": "Reference-only transport, no molecular population validation. Browser-only downloads remain separate. Current source unbuilt/uninstalled; existing conditional-writer filesystem limits retained.",
+    "documentation": "docs/native-reference-saving.md"
+  },
+  "source_recovery_previous_release_narrative": "Installed source 23f09d94 remains the historical installed candidate. Newer unbuilt/uninstalled source includes conditional saving, pH references, optional PubChem lookup and a dedicated native reference-export saver. Source checks pass604 Python tests and163 pure JavaScript tests; the complete11-case PubChem browser suite passes with normal owned-browser closure. Exact source812511fe passed12 native reference-export checks:JSON,CSV with complete provenance,identical opaque white-background light/dark PNGs,unchanged saved project,and ordinary application shutdown. All39 helpers exited normally. This excludes keyboard/full-pH,packaged,installed and clean-Windows acceptance. Earlier naming,browser cleanup,context expansion and WebView download failures retain unresolved causes. This documentation update changes no executable source. Exact inventories and receipts are external. Full Goal remains active and incomplete.",
+  "source_recovery_previous_e1": {
+    "id": "E1",
+    "requirement": "Native save/recovery",
+    "implementation": "partial",
+    "evidence": "The production conditional-save adapter has been adopted since the historical lost-update failure and scoped source tests pass. Two controlled Windows post-success commit/close acknowledgment-loss cases preserved exact backups and later writer content, with26handles closedonce. Controlled backend recovery timing passed but excluded frontend debounce and native commit concurrency. Settled-UI recoverywithin5seconds, uncertain-save/SaveAs, interruption/restart, corruption/migration, storage failures, conflicting content and supported filesystem/location boundaries still need acceptance. These results do not prove power-loss durability or universal Windows/filesystem support.",
+    "evidence_status": "Partial implementation and bounded backend/native evidence. Earlier unchanged-persistence and failed-regression statements below are historical, not the current implementation status."
+  },
+  "recovery_ordering_previous_release_narrative": "Full Goal remains active and incomplete. Current source is unbuilt/uninstalled; last recorded installed source is 23f09d94. This increment repairs the project Save As confirmation/hash race and false or stale recovery status. 608 Python tests: 0 failures, 0 errors, 0 skips, exit 0; 174 pure JavaScript tests passed. Source 59d147c9 passed 8 ordinary native crash/recovery checks, including readable recovery at 2.172 seconds, restart, unsaved recovery, new-destination save, newer-original preservation and normal reopened exit. All 26 helpers exited normally. A controlled real-storage reproduction also confirms that an older overlapping autosave can become the latest recovery entry; this defect remains unfixed. Earlier full-suite HTTP JSON failures remain unexplained even if a later observed run passes. Historical reference-export/browser evidence retains its original source scope.",
+  "recovery_ordering_previous_e1": {
+    "id": "E1",
+    "requirement": "Native save/recovery",
+    "implementation": "partial",
+    "evidence": "Project Save As binds the existing destination hash before overwrite confirmation; 8 focused checks pass. Frontend recovery acknowledgements require a valid receipt and cannot regress the acknowledged revision or overwrite newer status; 11 new checks pass, included in 174 pure JavaScript tests. Ordinary source-native CCN/CCO edit/crash/restart/recovery/new-destination-save flow passed 8 checks at source 59d147c9, recovery readable in 2.172 seconds measured before Load invocation, exact recovered document and complete newer-original hash preserved, reopened exit 0, new session removed, crash residue retained, 26 helpers exit 0. A deterministic actual ProjectStore interleaving confirms stale latest-recovery selection: older publication can rank above newer publication; both copies remained in the default 10-entry history. Shared generation/revision ordering across bridge autosave and close review is still required. Native conflict/cancel/uncertainty, storage faults, corruption/migration, power-loss and packaged/installed acceptance remain incomplete.",
+    "evidence_status": "Partial; known recovery publication-order defect remains open. Single-edit native success does not cover competing writes."
+  },
+  "recovery_ordering_increment": {
+    "source": "42d605925ec7f8461e2762c3e78beba1a2b504e0c838c636a810785e2804a047",
+    "documentation": "docs/recovery-ordering.md",
+    "fullPython": {
+      "tests": 636,
+      "passed": 635,
+      "errors": 1,
+      "exitCode": 1
+    },
+    "pureJavaScriptPassed": 192,
+    "nativeCrashRecoveryChecks": 8,
+    "nativeCloseChecks": 10,
+    "orderingRepairImplemented": true,
+    "installed": false
+  },
+  "optical_setup_documentation_reconciliation": {
+    "scope": "Documentation reconciliation after the immutable optical-setup delivery; no code, build, installation, security clearance or new decoding capability is established by this record.",
+    "delivery": {
+      "source_sha256": "5dde62c27baf95da4750f21ee728aeb1bcec64aa6978d0f4d6a6d05903cb2ade",
+      "installer_sha256": "b47465bc60cdf776bc35a8785696d83c69da470b8dcc3e280d37521245295c85",
+      "report": "outputs/nivraM-optical-setup-5dde62c27baf-b47465bc/delivery-report.json",
+      "staged_python_tests_passed": 123,
+      "javascript_browser_tests_passed": 62,
+      "javascript_backend_only_differences": [
+        "nivram/optical_setup.py",
+        "tests/test_optical_setup.py"
+      ],
+      "native_startup": "passed",
+      "packaged_model_verifier": "passed; hashing only, no inference",
+      "installed": false
+    },
+    "source_setup_check": {
+      "receipt": "work/checks/optical-setup-real-model-20260930-final/result.json",
+      "scope": "Two real-model hash checks plus isolated-profile new/existing settings save, backup/readback, live activation, configuration reload and cleanup; no native chooser, selected ML runtime execution or inference."
+    },
+    "historical_inference": {
+      "receipt": "work/optical-post-validator-fix-20260929/aspirin-inference.json",
+      "source_sha256": "07234083ea2a652e3c4c5899608523fb13e92f37cb7531995fc51c8455b95ec2",
+      "fixture": "aspirin",
+      "elapsed_seconds": 48.828,
+      "scope": "One earlier source-runtime expected-structure match; not recognition accuracy or current packaged optical interaction."
+    },
+    "current_follow_on_work": "Non-interlaced16-bit PNG preview/crop source implementation; consult docs/png-encodings.md and matching source-check/delivery receipts. No interlaced/color-managed support claim.",
+    "feature_backlog": {
+      "ranked": false,
+      "other_user_choice": "pending",
+      "three_dimensional_work": "deferred",
+      "items": [
+        "Exact identified Marvin JS cleanup compatibility",
+        "Reference appearance/typography/geometry calibration",
+        "Validated aqueous protonation/microspecies and tautomer prediction",
+        "Further evidence-qualified physiology/nephron source curation and overlays",
+        "Additional optional provider adapters after a specific provider/purpose choice; PubChem naming already exists"
+      ]
+    },
+    "acceptance_and_release_work": [
+      "Native setup/chooser and installed intake workflow",
+      "Broader chemical/image accuracy and Windows accessibility/scaling",
+      "Clean-machine and cross-version upgrade/rollback acceptance",
+      "Independent traffic coverage",
+      "Public redistribution/transitive-license clearance"
+    ],
+    "historical_previous_release_candidate": "The current increment applies the planned Windows resource and lifetime bounds to optional optical recognition. Recognition and native chemistry validation use separately owned process trees with a shared 90-second total deadline beginning before crop preparation. Each private job has a 4 GiB aggregate committed-memory ceiling, verified before its suspended worker resumes; cancellation and failed/normal root exits stop remaining descendants. Source checks and packaging status are recorded in the matching immutable delivery report. Existing PNG draft correction, supplied SMILES/2D MOL, navigation and Undo/view restoration remain intact. See docs/optical-resource-limits.md. The pinned model is still unavailable: real inference, accuracy, cold/warm timing, actual memory fit and observed inference traffic remain unverified. No 3D change is included. The feature-building goal remains active.",
+    "historical_previous_editable_png_requirement": {
+      "id": "3.8",
+      "requirement": "Editable PNG import",
+      "implementation": "partial",
+      "evidence": "Current source supports PNG chooser/drop/paste, metadata and configured optical draft review, atom/bond corrections, text replacement with draft Undo/Redo, and an explicit first draft supplied as SMILES/2D MOL for an ordinary PNG. The row-bounded crop decoder additionally supports non-interlaced grayscale/indexed 1/2/4/8-bit and grayscale-alpha 8-bit PNGs, with palette/sample transparency and all source rows validated. Original bytes, crop identity and supplied baseline provenance are preserved. Source/crop changes and cancellation revoke pending authority; explicit acceptance is one main-editor Undo. This increment adds optional transient view context to that PNG import history step, including pre-import pan/zoom and automatic-fit restoration, the imported view on Redo, and manual center/display-scale preservation after resize. Automatic views fit the current viewport. Ordinary edits retain their current view; unchanged-document no-ops preserve the current view and add no molecular history. View context is not saved, exported or included in recovery/dirty identity. The view gap was reproduced. Focused history and browser checks cover the repair; consult the matching delivery report for exact outcomes. See docs/png-import-undo-view.md. See docs/png-manual-review.md, docs/png-encodings.md and the matching immutable delivery report for exact source, real worker and package outcomes. Real optical recognition remains unverified because the pinned checkpoint is unavailable. Installed native intake coverage, 16-bit/interlaced/color-managed PNGs and broader chemical/image-corpus validation remain incomplete. The current resource-limit increment isolates native optical-result parsing and adds verified Windows tree ownership, aggregate 4 GiB committed-memory limits and one 90-second deadline. See docs/optical-resource-limits.md and the matching source-check/delivery receipts; this does not establish successful model inference.",
+      "evidence_status": "Partial. PNG review/editing and Undo/view behavior are retained. Optional recognition resource/lifetime controls are implemented; consult bound checks for demonstrated Windows behavior. Real recognition remains unverified because the pinned checkpoint is unavailable."
+    }
+  },
+  "hashed_stereobond_appearance_candidate": {
+    "implementation_status": "source candidate; matching focused and package receipts required",
+    "style_field": "hashBondStyle",
+    "style_values": [
+      "engine",
+      "spaced"
+    ],
+    "default": "engine; existing SVG unchanged and legacy records normalized without rewriting original files",
+    "behavior": "spaced uses full ordinary width, uniform center spacing nearest the provisional 3.4-width target, at least three distinct nonoverlapping marks, original first/last taper endpoints and widening direction, prepared BEGINDASH identity, existing engine color sampling and no hash gradient",
+    "integrity": "graph, coordinates, scene positions, document version and all non-hash SVG bytes retained; ambiguous or unsupported groups reject before commit with an Engine spacing recovery hint",
+    "reference_scope": {
+      "status": "Private reference identifiers and measured statistics omitted from public source",
+      "colored_hash_transition": "unverified",
+      "independent_held_out_validation": "not established"
+    },
+    "focused_check_plan": [
+      "tests/test_hash_style.py",
+      "affected style/default expectations in tests/test_label_padding.py",
+      "tests/hash-style-browser.test.mjs",
+      "strengthened tests/bond-gradient-export-browser.test.mjs",
+      "import preparation protocol and profiles affected checks"
+    ],
+    "check_outcomes": "Consult matching fresh receipts; test authoring, syntax and earlier source checks do not establish passing behavior",
+    "unverified": [
+      "new build and packaged startup",
+      "installer execution and installed acceptance",
+      "antivirus/security clearance",
+      "clean-machine and upgrade/rollback acceptance",
+      "independent traffic coverage",
+      "model inference",
+      "colored-hash reference rule",
+      "whole-corpus drawing calibration",
+      "Marvin JS parity"
+    ],
+    "full_goal_complete": false,
+    "three_dimensional_work": "deferred until explicit user resumption",
+    "documentation": "docs/drawing-appearance.md"
+  }
+}

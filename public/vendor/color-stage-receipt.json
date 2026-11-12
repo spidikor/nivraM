@@ -1,0 +1,54 @@
+{
+  "name": "@kurkle/color",
+  "version": "0.3.2",
+  "metadata_url": "https://registry.npmjs.org/@kurkle%2fcolor/0.3.2",
+  "artifact_url": "https://registry.npmjs.org/@kurkle/color/-/color-0.3.2.tgz",
+  "published_integrity": "sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==",
+  "published_sha1": "5acd38242e8bde4f9986e7913c8fdf49d3aa199f",
+  "integrity_verified": true,
+  "sha1_verified": true,
+  "artifacts": [
+    {
+      "path": "kurkle-color-0.3.2.registry.json",
+      "bytes": 3384,
+      "sha256": "3068d6f2c6f5c398f0d83618d03415f85e5ca0f4de6d00cfc33fae3af02eac4f"
+    },
+    {
+      "path": "kurkle-color-0.3.2.tgz",
+      "bytes": 20576,
+      "sha256": "af9eaac0ecbb472fe2093d2a4525629f96541f4e6422c031d9c86d4dc8fc7511"
+    },
+    {
+      "path": "kurkle-color-0.3.2.archive-inventory.json",
+      "bytes": 815,
+      "sha256": "f36ba69d0b64873f9dc1716fb31cd4230a1bec56c2d298806bc455b225383f33"
+    },
+    {
+      "path": "kurkle-color-0.3.2.package.json",
+      "bytes": 1944,
+      "sha256": "96da41031bb1384e32bd053db6a7846b25c96a9ed17ebeafc02f55e53acb22e8"
+    },
+    {
+      "path": "kurkle-color-LICENSE.md",
+      "bytes": 1085,
+      "sha256": "2859c50313bad2ba77b081410c477beaf92b60ca13a77a248d89859a6dd6ac81",
+      "archive_member": "package/LICENSE.md"
+    }
+  ],
+  "member_count": 8,
+  "expanded_bytes": 86016,
+  "embedded_identity": {
+    "basis": "UMD version banner plus byte-identical Chart.js source-map source and versioned npm package member",
+    "umd_version_annotation": "0.3.2",
+    "chart_archive_member": "package/dist/chart.umd.min.js.map",
+    "chart_source_map_sha256": "8c328df49d295935c81d64d3b36d6ac1c20c385f1ba5b4df3ec12a26b3d64d9b",
+    "source_map_source": "../node_modules/.pnpm/@kurkle+color@0.3.2/node_modules/@kurkle/color/dist/color.esm.js",
+    "dependency_archive_member": "package/dist/color.esm.js",
+    "source_bytes": 12784,
+    "source_sha256": "fbbc5d795f48a3ce6cafd17c75e0e1239d16de919b83e31150cedc8770aa5427",
+    "source_byte_equality": true,
+    "limitation": "Artifact provenance/source correspondence; not an independent minifier rebuild or formal equivalence proof."
+  },
+  "code_executed": false,
+  "completed_utc": "2026-09-21T05:03:18.217113+00:00"
+}

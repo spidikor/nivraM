@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import {measureCoordinates as measure,mountMeasurements,measurementOrigin} from '../public/modules/three-d-measurements.mjs';
+const atoms=[[1,0,0],[0,0,0],[0,1,0],[0,1,1]].map(([x,y,z],i)=>({id:i+1,element:'C',x,y,z}));
+const before=JSON.stringify(atoms),near=(x,y)=>assert(Math.abs(x-y)<1e-10);
+near(measure(atoms,[1,2]).value,1);near(measure(atoms,[1,2,3]).value,90);near(measure(atoms,[1,2,3,4]).value,-90);
+near(measure(atoms.map(a=>({...a,z:-a.z})),[1,2,3,4]).value,90);
+const rotated=atoms.map(a=>({...a,x:a.z+20,y:a.x-10,z:a.y+9}));near(measure(rotated,[1,2,3,4]).value,-90);
+const line=[0,1,2,3].map((x,i)=>({id:i+1,x,y:0,z:0}));near(measure(line,[1,2,3]).value,180);near(measure(line,[2,1,3]).value,0);
+const coincident=line.map(a=>({...a,x:0}));near(measure(coincident,[1,2]).value,0);assert.throws(()=>measure(coincident,[1,2,3]),/coincident/);
+assert.throws(()=>measure(line,[1,2,3,4]),/collinear/);
+for(const value of [NaN,Infinity,10001])assert.throws(()=>measure([{...atoms[0],x:value},...atoms.slice(1)],[1,2]),/bounds/);
+for(const ids of [[1,1],[1,9],[1],[1,2,3,4,5]])assert.throws(()=>measure(atoms,ids));
+assert.throws(()=>measure([{...atoms[0],x:1e-10},...atoms.slice(1)],[1,2,3]),/coincident/);
+const almost=structuredClone(line);almost[0].y=1e-10;almost[3].z=1e-10;assert.throws(()=>measure(almost,[1,2,3,4]),/collinear/);
+assert.equal(JSON.stringify(atoms),before);
+class Node{constructor(){this.handlers={};this.children=[];this.value='';}addEventListener(t,f){(this.handlers[t]??=[]).push(f);}removeEventListener(t,f){this.handlers[t]=this.handlers[t].filter(x=>x!==f);}fire(t){for(const f of this.handlers[t]||[])f();}append(n){this.children.push(n);}replaceChildren(){this.children=[];}}
+const names=['mode','result','clear','1','2','3','4'],nodes=Object.fromEntries(names.map(n=>[n,new Node()]));nodes.mode.value='2';let model={kind:'supplied_coordinates',atoms},hidden=new Set();
+const control=mountMeasurements({dom:{createElement:()=>new Node()},find:id=>nodes[id.replace('supplied-3d-measure-','')],getModel:()=>model,getHydrogens:()=>({hidden})});
+nodes['1'].value='1';nodes['2'].value='2';nodes['2'].fire('change');assert.match(nodes.result.textContent,/1.0000 Å.*Supplied/);
+model={...model,kind:'recovered_coordinates'};control.reset();assert.equal(nodes['1'].value,'');assert(!nodes.result.textContent.includes('1.0000'));
+model={kind:'generated_coordinates',atoms:[...atoms,{id:5,element:'H',generatedId:'generated-h1',parentId:1,x:2,y:0,z:0}]};control.reset();assert.match(nodes['1'].children.at(-1).textContent,/attachment generated-h1/);
+hidden=new Set([5]);control.reset();assert.equal(nodes['1'].children.length,5);assert(nodes['3'].disabled);model=null;control.reset();assert(nodes['1'].disabled);control.destroy();
+assert.match(measurementOrigin({kind:'recovered_coordinates'}),/unverified/);
+console.log('PASS Cartesian fixtures, signed torsion/reflection/rotation, zero distance, angular degeneracy, finite bounds, source nonmutation, controlled selectors, reset, attachment labels and hidden H. Not a browser or chemistry test.');

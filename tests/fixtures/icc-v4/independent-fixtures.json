@@ -1,0 +1,602 @@
+[
+  {
+    "file": "linear-8.png",
+    "sha256": "12a60194d79710cfe0153137d7b516c2e6558a893b5a613e1c825e557406ed78",
+    "profileSha256": "bec5fcb2ca4529cae20d802755b210fcd863ad79f9414306f32cd2ebf9e5aa09",
+    "input": [
+      [
+        64,
+        128,
+        192,
+        0
+      ],
+      [
+        128,
+        64,
+        32,
+        128
+      ],
+      [
+        0,
+        255,
+        0,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        64
+      ]
+    ],
+    "expectedRGBA": [
+      [
+        137,
+        188,
+        225,
+        0
+      ],
+      [
+        188,
+        137,
+        99,
+        128
+      ],
+      [
+        0,
+        255,
+        0,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        64
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0,
+    "reference": "60-digit Decimal using encoded ICC coefficients; W3C CSS Color 4 sRGB rational matrix and Bradford D65 to D50. No production imports or CMS."
+  },
+  {
+    "file": "linear-16.png",
+    "sha256": "ec3272b664d6693e5a029de970fb4aed22f3cba77b0eee409d3faf9cd12eac33",
+    "profileSha256": "bec5fcb2ca4529cae20d802755b210fcd863ad79f9414306f32cd2ebf9e5aa09",
+    "input": [
+      [
+        128,
+        32768,
+        50001,
+        0
+      ],
+      [
+        129,
+        257,
+        65535,
+        32768
+      ],
+      [
+        32767,
+        32768,
+        32769,
+        65535
+      ],
+      [
+        65535,
+        0,
+        0,
+        257
+      ]
+    ],
+    "expectedRGBA": [
+      [
+        6,
+        188,
+        226,
+        0
+      ],
+      [
+        7,
+        13,
+        255,
+        128
+      ],
+      [
+        188,
+        188,
+        188,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        1
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0,
+    "reference": "60-digit Decimal using encoded ICC coefficients; W3C CSS Color 4 sRGB rational matrix and Bradford D65 to D50. No production imports or CMS."
+  },
+  {
+    "file": "gamma2-8.png",
+    "sha256": "f887ef04e2bb0c69bec9f44ca233fbf64b643ebe4a3d46415fe01d8b9641567d",
+    "profileSha256": "13d7b41a1cfa313f7258df6402e13dcb022fff155cd283cf10e73a4286e0b4c6",
+    "input": [
+      [
+        64,
+        128,
+        192,
+        0
+      ],
+      [
+        128,
+        64,
+        32,
+        128
+      ],
+      [
+        0,
+        255,
+        0,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        64
+      ]
+    ],
+    "expectedRGBA": [
+      [
+        71,
+        137,
+        198,
+        0
+      ],
+      [
+        137,
+        71,
+        34,
+        128
+      ],
+      [
+        0,
+        255,
+        0,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        64
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0,
+    "reference": "60-digit Decimal using encoded ICC coefficients; W3C CSS Color 4 sRGB rational matrix and Bradford D65 to D50. No production imports or CMS."
+  },
+  {
+    "file": "gamma2-16.png",
+    "sha256": "2c76a74c5bbb5a522f51944d4c3a04a366f3616f3343af400c37f027e955a8a4",
+    "profileSha256": "13d7b41a1cfa313f7258df6402e13dcb022fff155cd283cf10e73a4286e0b4c6",
+    "input": [
+      [
+        128,
+        32768,
+        50001,
+        0
+      ],
+      [
+        129,
+        257,
+        65535,
+        32768
+      ],
+      [
+        32767,
+        32768,
+        32769,
+        65535
+      ],
+      [
+        65535,
+        0,
+        0,
+        257
+      ]
+    ],
+    "expectedRGBA": [
+      [
+        0,
+        137,
+        201,
+        0
+      ],
+      [
+        0,
+        0,
+        255,
+        128
+      ],
+      [
+        137,
+        137,
+        137,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        1
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0,
+    "reference": "60-digit Decimal using encoded ICC coefficients; W3C CSS Color 4 sRGB rational matrix and Bradford D65 to D50. No production imports or CMS."
+  },
+  {
+    "file": "srgb-8.png",
+    "sha256": "f3991a4cd674853ab61c790a2596862ad89c32273acd30f3a407f9b619ada93d",
+    "profileSha256": "faf313041a2cfb12d83d800367452e69614f2b29172a3fbfdd09dc7d63bb809b",
+    "input": [
+      [
+        64,
+        128,
+        192,
+        0
+      ],
+      [
+        128,
+        64,
+        32,
+        128
+      ],
+      [
+        0,
+        255,
+        0,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        64
+      ]
+    ],
+    "expectedRGBA": [
+      [
+        64,
+        128,
+        192,
+        0
+      ],
+      [
+        128,
+        64,
+        32,
+        128
+      ],
+      [
+        0,
+        255,
+        0,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        64
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0,
+    "reference": "60-digit Decimal using encoded ICC coefficients; W3C CSS Color 4 sRGB rational matrix and Bradford D65 to D50. No production imports or CMS."
+  },
+  {
+    "file": "srgb-16.png",
+    "sha256": "ba1c3d77f651499b8062fefa79e5293041be3381fe2ccf1c77dc22bb5167ff15",
+    "profileSha256": "faf313041a2cfb12d83d800367452e69614f2b29172a3fbfdd09dc7d63bb809b",
+    "input": [
+      [
+        128,
+        32768,
+        50001,
+        0
+      ],
+      [
+        129,
+        257,
+        65535,
+        32768
+      ],
+      [
+        32767,
+        32768,
+        32769,
+        65535
+      ],
+      [
+        65535,
+        0,
+        0,
+        257
+      ]
+    ],
+    "expectedRGBA": [
+      [
+        0,
+        128,
+        195,
+        0
+      ],
+      [
+        1,
+        1,
+        255,
+        128
+      ],
+      [
+        127,
+        128,
+        128,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        1
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0,
+    "reference": "60-digit Decimal using encoded ICC coefficients; W3C CSS Color 4 sRGB rational matrix and Bradford D65 to D50. No production imports or CMS."
+  },
+  {
+    "file": "srgb-swapped-8.png",
+    "sha256": "c486e6e7b1f3737d8b49a9b3dca79bd61e6ddc02bcb68c7e98e580be9077ddde",
+    "profileSha256": "30a2fd24e581570a8f309b6963deca4d48848f8b5b33c8d74ba058b2fb0a379e",
+    "input": [
+      [
+        64,
+        128,
+        192,
+        0
+      ],
+      [
+        128,
+        64,
+        32,
+        128
+      ],
+      [
+        0,
+        255,
+        0,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        64
+      ]
+    ],
+    "expectedRGBA": [
+      [
+        128,
+        64,
+        192,
+        0
+      ],
+      [
+        64,
+        128,
+        32,
+        128
+      ],
+      [
+        255,
+        0,
+        0,
+        255
+      ],
+      [
+        0,
+        255,
+        0,
+        64
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0,
+    "reference": "60-digit Decimal using encoded ICC coefficients; W3C CSS Color 4 sRGB rational matrix and Bradford D65 to D50. No production imports or CMS."
+  },
+  {
+    "file": "srgb-swapped-16.png",
+    "sha256": "bdc95df6fb1af7f4a755bd412583ea42037a705177c7f401c814a11f5373d2a5",
+    "profileSha256": "30a2fd24e581570a8f309b6963deca4d48848f8b5b33c8d74ba058b2fb0a379e",
+    "input": [
+      [
+        128,
+        32768,
+        50001,
+        0
+      ],
+      [
+        129,
+        257,
+        65535,
+        32768
+      ],
+      [
+        32767,
+        32768,
+        32769,
+        65535
+      ],
+      [
+        65535,
+        0,
+        0,
+        257
+      ]
+    ],
+    "expectedRGBA": [
+      [
+        128,
+        0,
+        195,
+        0
+      ],
+      [
+        1,
+        1,
+        255,
+        128
+      ],
+      [
+        128,
+        127,
+        128,
+        255
+      ],
+      [
+        0,
+        255,
+        0,
+        1
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0,
+    "reference": "60-digit Decimal using encoded ICC coefficients; W3C CSS Color 4 sRGB rational matrix and Bradford D65 to D50. No production imports or CMS."
+  },
+  {
+    "file": "table-8.png",
+    "sha256": "7ed58ed7a69aa163fe0336a2dd9c37ab0398ca2c17882c5e7eac7e577cf98740",
+    "profileSha256": "e903854ef66e4e73f20b535aa85bee21044776668acda4fbb4c72e7c155e6910",
+    "input": [
+      [
+        64,
+        128,
+        192,
+        0
+      ],
+      [
+        128,
+        64,
+        32,
+        128
+      ],
+      [
+        0,
+        255,
+        0,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        64
+      ]
+    ],
+    "expectedRGBA": [
+      [
+        71,
+        138,
+        198,
+        0
+      ],
+      [
+        138,
+        71,
+        50,
+        128
+      ],
+      [
+        0,
+        255,
+        0,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        64
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0,
+    "reference": "60-digit Decimal using encoded ICC coefficients; W3C CSS Color 4 sRGB rational matrix and Bradford D65 to D50. No production imports or CMS."
+  },
+  {
+    "file": "table-16.png",
+    "sha256": "c7df754b768e6e2ba5c8f4337730a7ede173ce8309dbf3215f93382698a7a893",
+    "profileSha256": "e903854ef66e4e73f20b535aa85bee21044776668acda4fbb4c72e7c155e6910",
+    "input": [
+      [
+        128,
+        32768,
+        50001,
+        0
+      ],
+      [
+        129,
+        257,
+        65535,
+        32768
+      ],
+      [
+        32767,
+        32768,
+        32769,
+        65535
+      ],
+      [
+        65535,
+        0,
+        0,
+        257
+      ]
+    ],
+    "expectedRGBA": [
+      [
+        2,
+        137,
+        201,
+        0
+      ],
+      [
+        2,
+        3,
+        255,
+        128
+      ],
+      [
+        137,
+        137,
+        137,
+        255
+      ],
+      [
+        255,
+        0,
+        0,
+        1
+      ]
+    ],
+    "tolerancePerColorChannel": 1,
+    "alphaTolerance": 0,
+    "reference": "60-digit Decimal using encoded ICC coefficients; W3C CSS Color 4 sRGB rational matrix and Bradford D65 to D50. No production imports or CMS."
+  }
+]

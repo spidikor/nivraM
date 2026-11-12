@@ -1,0 +1,69 @@
+{
+  "name": "chart.js",
+  "version": "4.5.1",
+  "metadata_url": "https://registry.npmjs.org/chart.js/4.5.1",
+  "artifact_url": "https://registry.npmjs.org/chart.js/-/chart.js-4.5.1.tgz",
+  "published_integrity": "sha512-GIjfiT9dbmHRiYi6Nl2yFCq7kkwdkp1W/lp2J99rX0yo9tgJGn3lKQATztIjb5tVtevcBtIdICNWqlq5+E8/Pw==",
+  "published_sha1": "19dd1a9a386a3f6397691672231cb5fc9c052c35",
+  "integrity_verified": true,
+  "sha1_verified": true,
+  "artifacts": [
+    {
+      "path": "chart.js-4.5.1.registry.json",
+      "bytes": 4617,
+      "sha256": "4641a50391f88e57872b9bda202a4541229270c9206a3106e4b92f766ba478de"
+    },
+    {
+      "path": "chart.js-4.5.1.tgz",
+      "bytes": 1576314,
+      "sha256": "f540d98468457ac7a0aabb32006dfb066297e096c5ea063a5d80aa973d1c337a"
+    },
+    {
+      "path": "chart.js-4.5.1.archive-inventory.json",
+      "bytes": 12810,
+      "sha256": "54dd33d88443a17b7c1307853aa54dd60eecb9d2f3deba28e45cb57423ff00f7"
+    },
+    {
+      "path": "chart.js-4.5.1.package.json",
+      "bytes": 4293,
+      "sha256": "27ef92f77f147da2897d6ade86f84b1ea2eb14193d077668e1e947e03f0ca0c9"
+    },
+    {
+      "path": "chart.umd.min.js",
+      "bytes": 208522,
+      "sha256": "48444a82d4edcb5bec0f1965faacdde18d9c17db3063d042abada2f705c9f54a",
+      "archive_member": "package/dist/chart.umd.min.js"
+    },
+    {
+      "path": "Chart.js-LICENSE.md",
+      "bytes": 1093,
+      "sha256": "41a84aa2caba645f966a18d9c2056b73e6d3a81d80bc0046bc0011a2634d4cce",
+      "archive_member": "package/LICENSE.md"
+    }
+  ],
+  "member_count": 117,
+  "expanded_bytes": 6272512,
+  "umd_license_banners": [
+    "/*!\n * Chart.js v4.5.1\n * https://www.chartjs.org\n * (c) 2025 Chart.js Contributors\n * Released under the MIT License\n */",
+    "/*!\n * @kurkle/color v0.3.2\n * https://github.com/kurkle/color#readme\n * (c) 2023 Jukka Kurkela\n * Released under the MIT License\n */"
+  ],
+  "umd_chart_version_seen": true,
+  "declared_runtime_dependencies": {
+    "@kurkle/color": "^0.3.0"
+  },
+  "map_members": [
+    "package/dist/chart.cjs.map",
+    "package/dist/chart.js.map",
+    "package/dist/chart.umd.js.map",
+    "package/dist/chart.umd.min.js.map",
+    "package/dist/helpers.cjs.map",
+    "package/dist/chunks/helpers.dataset.cjs.map",
+    "package/dist/chunks/helpers.dataset.js.map",
+    "package/dist/helpers.js.map"
+  ],
+  "color_version_annotations": [
+    "0.3.2"
+  ],
+  "extracted_code_executed": false,
+  "completed_utc": "2026-09-21T05:02:13.481268+00:00"
+}

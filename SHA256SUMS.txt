@@ -1,0 +1,4 @@
+# Current build file hashes are generated in verification/bundle-manifest.json.
+# Installer identity is recorded in verification/installer-manifest.json.
+# The unchanged alpha checksum list is preserved in docs/history/alpha-SHA256SUMS.txt.
+# Do not use the alpha list to verify this modified development source.

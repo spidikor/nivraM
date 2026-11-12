@@ -1,0 +1,754 @@
+{
+  "schema_version": 1,
+  "dataset_version": "2026-11-11.1",
+  "reviewed_date": "2026-09-19",
+  "default_enabled": false,
+  "purpose": "Evidence-qualified aqueous-pH comparison contexts, not in-vivo molecular population predictions.",
+  "gap_label": "No verified numerical interval available",
+  "interpretation_rules": [
+    "Select overlays explicitly; never imply that a study preset measures the current user or drawing.",
+    "Preserve all source boundaries without snapping them to the 0.1-pH calculation grid.",
+    "Reference intervals, observed ranges, confidence intervals, and point estimates have distinct display semantics.",
+    "Do not manufacture a band around a point or reinterpret an unspecified plus/minus statistic.",
+    "Species, preparation, conditions, measurement handling and evidence gaps remain visible.",
+    "Synaptic cleft is separate from vesicle lumen and extracellular bathing solution.",
+    "Nephron luminal fluid is separate from plasma, renal cytosol, interstitium and peritubular blood.",
+    "Do not infer monotonic nephron acidification or join different nephron classes into one measured trajectory.",
+    "In-situ and equilibrium tubular-fluid pH are distinct measurement conditions; equilibrium pH can also be measured in vivo, and carbon-dioxide handling matters (DuBose 1982).",
+    "Final-urine overlays are intentionally excluded by the accepted scope correction.",
+    "Custom comparison ranges must be labeled user-defined and must not replace an evidence-gap record.",
+    "These contexts do not establish brain exposure, synaptic concentration, renal transport, trapping, clearance, receptor activity or patient-specific physiology."
+  ],
+  "sources": [
+    {
+      "id": "uvm-arterial-catalog",
+      "title": "University of Vermont Medical Center: BLOOD GAS, ARTERIAL (LAB3031)",
+      "url": "https://uvmlabs.testcatalog.org/show/LAB3031-1",
+      "source_type": "primary_clinical_catalog",
+      "publication_date": null,
+      "inspected_scope": "Primary laboratory catalog: specimen, method, and reference table",
+      "accessed_date": "2026-09-19",
+      "correction_review_status": "not_reviewed",
+      "limitations": [
+        "A laboratory reference interval; the catalog does not provide its reference-cohort derivation. Measurement temperature was not established from this page."
+      ]
+    },
+    {
+      "id": "bonnet-2019",
+      "title": "Levetiracetam mediates subtle pH-shifts in adult human neocortical pyramidal cells via an inhibition of the bicarbonate-driven neuronal pH-regulation",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30590026/",
+      "source_type": "primary_research",
+      "publication_date": "2019-05-01",
+      "inspected_scope": "Primary study abstract",
+      "accessed_date": "2026-09-19",
+      "correction_review_status": "not_reviewed",
+      "limitations": [
+        "The accessible abstract reports resting pHi and preparation, but the central-statistic definition, meaning of the reported plus/minus statistic, and measurement temperature are not established from it."
+      ]
+    },
+    {
+      "id": "merril-1961",
+      "title": "Total CO2, PCO2, and pH in human spinal fluid",
+      "url": "https://journals.physiology.org/doi/pdf/10.1152/jappl.1961.16.3.485",
+      "source_type": "primary_research",
+      "publication_date": "1961-05-01",
+      "inspected_scope": "Publisher-indexed primary study abstract",
+      "accessed_date": "2026-09-19",
+      "correction_review_status": "not_reviewed",
+      "limitations": [
+        "Historical study; full sampling, handling and temperature details were not established from the inspected abstract."
+      ]
+    },
+    {
+      "id": "dubose-1983",
+      "title": "Comparison of acidification parameters in superficial and deep nephrons of the rat",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/6405628/",
+      "source_type": "primary_research",
+      "publication_date": "1983-05",
+      "inspected_scope": "Primary study abstract",
+      "accessed_date": "2026-09-19",
+      "correction_review_status": "not_reviewed",
+      "limitations": [
+        "The abstract reports segment pH values and in-vivo rat microelectrode measurements. The central-statistic definition, strain, sex, anesthesia, fluid protocol, temperature, sample sizes, and meaning of plus/minus are not established from it."
+      ]
+    },
+    {
+      "id": "dubose-1982-handling",
+      "title": "Hydrogen ion secretion by the collecting duct as a determinant of the urine to blood PCO2 gradient in alkaline urine",
+      "url": "https://www.jci.org/articles/view/110425",
+      "source_type": "primary_research",
+      "publication_date": "1982-01-01",
+      "inspected_scope": "Primary study abstract",
+      "accessed_date": "2026-09-19",
+      "correction_review_status": "not_reviewed",
+      "limitations": [
+        "Used for the distinction between in-situ and equilibrated papillary fluid under interventions; no final-urine numerical overlay is imported."
+      ]
+    },
+    {
+      "id": "cleft-2023",
+      "title": "Postsynaptic Calcium Extrusion at the Mouse Neuromuscular Junction Alkalinizes the Synaptic Cleft",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10423045/",
+      "source_type": "primary_research",
+      "publication_date": "2023-08-09",
+      "inspected_scope": "Primary study abstract and indexed article text; no universal reference interval established",
+      "accessed_date": "2026-09-19",
+      "correction_review_status": "not_reviewed",
+      "limitations": [
+        "Activity-dependent cleft behavior is not a universal resting human interval. Bath pH and vesicular pH are different quantities. No absolute cleft interval is curated here."
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "id": "arterial-blood-uvm",
+      "group": "plasma_blood",
+      "label": "Arterial whole blood: laboratory reference interval",
+      "compartment": "Arterial whole blood",
+      "anatomical_site": "Arterial blood specimen",
+      "species": "Homo sapiens (human)",
+      "population": "Catalog category: people aged at least 6 months, all sexes",
+      "preparation": "Heparinized whole-blood specimen",
+      "condition": "Laboratory reference context; not a patient-specific measurement",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Catalog lists ion-selective electrode, amperometry and potentiometry; Siemens Rapid Point 500",
+      "specimen_handling": "Capped syringe without air bubbles; immediate transport on ice according to this laboratory catalog",
+      "statistic": "reference_interval",
+      "ph": {
+        "value": null,
+        "lower": 7.35,
+        "upper": 7.45,
+        "confidence_level": null
+      },
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [
+        "uvm-arterial-catalog"
+      ],
+      "evidence_limitations": [
+        "Arterial whole-blood context for the plasma/blood group; not an isolated-plasma measurement or a universal interval for all ages and conditions."
+      ],
+      "evidence_status": "source_qualified",
+      "display_kind": "reference_band",
+      "gap_label": null,
+      "gap_reason": null,
+      "nephron_class": null,
+      "join_trajectory": false
+    },
+    {
+      "id": "neuronal-cytosol-bonnet-2019",
+      "group": "neuronal_cytosol",
+      "label": "Human surgical cortical neurons: resting reported value",
+      "compartment": "Neuronal cytosol",
+      "anatomical_site": "Neocortical pyramidal cells, middle temporal gyrus",
+      "species": "Homo sapiens (human)",
+      "population": "Five adults with intractable temporal-lobe epilepsy; 20 studied pyramidal cells",
+      "preparation": "Fluorescently examined slices of surgically resected tissue",
+      "condition": "Resting baseline in the study of levetiracetam exposure",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "BCECF-AM fluorescence",
+      "specimen_handling": "Ex-vivo tissue slices; further handling not established from the abstract",
+      "statistic": "reported_value",
+      "ph": {
+        "value": 7.09,
+        "lower": null,
+        "upper": null,
+        "confidence_level": null
+      },
+      "reported_uncertainty": {
+        "value": 0.14,
+        "kind": "unspecified_in_abstract",
+        "plotted": false
+      },
+      "sample_size": {
+        "value": 20,
+        "unit": "cells",
+        "participant_count": 5
+      },
+      "source_ids": [
+        "bonnet-2019"
+      ],
+      "evidence_limitations": [
+        "A reported resting pHi from surgical epilepsy tissue, not a healthy-human neuronal reference interval; the central-statistic definition is not established from the inspected abstract.",
+        "The reported plus/minus value is preserved without assuming SD or SEM and is not plotted as a band."
+      ],
+      "evidence_status": "source_qualified",
+      "display_kind": "study_marker",
+      "gap_label": null,
+      "gap_reason": null,
+      "nephron_class": null,
+      "join_trajectory": false
+    },
+    {
+      "id": "csf-merril-1961",
+      "group": "csf",
+      "label": "Human spinal fluid: historical mean and 99% confidence interval",
+      "compartment": "Cerebrospinal fluid",
+      "anatomical_site": "Spinal fluid; precise collection site not verified from the abstract",
+      "species": "Homo sapiens (human)",
+      "population": "12 individuals described as normal by the original study",
+      "preparation": "Human spinal-fluid and arterial-blood comparison",
+      "condition": "Study normal-subject group",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "pH assessment; instrument details not established from the inspected abstract",
+      "specimen_handling": "Collection and equilibration handling not established from the inspected abstract",
+      "statistic": "mean_confidence_interval",
+      "ph": {
+        "value": 7.31,
+        "lower": 7.29,
+        "upper": 7.33,
+        "confidence_level": 0.99
+      },
+      "reported_uncertainty": null,
+      "sample_size": {
+        "value": 12,
+        "unit": "participants"
+      },
+      "source_ids": [
+        "merril-1961"
+      ],
+      "evidence_limitations": [
+        "The interval describes uncertainty of the reported mean; it is not a population reference interval.",
+        "Historical small study with incompletely curated measurement conditions."
+      ],
+      "evidence_status": "source_qualified",
+      "display_kind": "confidence_interval",
+      "gap_label": null,
+      "gap_reason": null,
+      "nephron_class": null,
+      "join_trajectory": false
+    },
+    {
+      "id": "synaptic-cleft-gap",
+      "group": "synaptic_cleft",
+      "label": "Synaptic cleft: numerical interval unavailable",
+      "compartment": "Synaptic cleft extracellular fluid",
+      "anatomical_site": "Synaptic cleft; synapse type and species must be specified",
+      "species": "Not established for a numeric preset",
+      "population": "No reference population established",
+      "preparation": "Not established",
+      "condition": "Not established",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Not established for this segment or context",
+      "specimen_handling": "Not established for this segment or context",
+      "statistic": "unavailable",
+      "ph": null,
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [
+        "cleft-2023"
+      ],
+      "evidence_limitations": [
+        "Stimulation, synapse type, species and experimental preparation affect cleft pH.",
+        "No vesicle-lumen or bathing-solution value is substituted for a cleft measurement."
+      ],
+      "evidence_status": "unavailable",
+      "display_kind": "gap",
+      "gap_label": "No verified numerical interval available",
+      "gap_reason": "No directly applicable numeric value has been verified for this specific compartment and condition.",
+      "nephron_class": null,
+      "join_trajectory": false
+    },
+    {
+      "id": "bowmans-space-gap",
+      "group": "nephron_bowmans",
+      "label": "Bowman's-space filtrate",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Bowman's space",
+      "species": "Not established for a numeric preset",
+      "population": "No reference population established",
+      "preparation": "Not established",
+      "condition": "Not established",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Not established for this segment or context",
+      "specimen_handling": "Not established for this segment or context",
+      "statistic": "unavailable",
+      "ph": null,
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [],
+      "evidence_limitations": [
+        "No directly applicable measurement curated for this segment. Plasma, renal-cell, interstitial, bath, and final-urine values are not substituted."
+      ],
+      "evidence_status": "unavailable",
+      "display_kind": "gap",
+      "gap_label": "No verified numerical interval available",
+      "gap_reason": "No directly applicable numeric value has been verified for this specific compartment and condition.",
+      "nephron_class": "Not established",
+      "join_trajectory": false
+    },
+    {
+      "id": "early-proximal-gap",
+      "group": "nephron_proximal",
+      "label": "Early proximal tubular fluid",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Early proximal tubule",
+      "species": "Not established for a numeric preset",
+      "population": "No reference population established",
+      "preparation": "Not established",
+      "condition": "Not established",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Not established for this segment or context",
+      "specimen_handling": "Not established for this segment or context",
+      "statistic": "unavailable",
+      "ph": null,
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [],
+      "evidence_limitations": [
+        "No directly applicable measurement curated for this segment. Plasma, renal-cell, interstitial, bath, and final-urine values are not substituted."
+      ],
+      "evidence_status": "unavailable",
+      "display_kind": "gap",
+      "gap_label": "No verified numerical interval available",
+      "gap_reason": "No directly applicable numeric value has been verified for this specific compartment and condition.",
+      "nephron_class": "Not established",
+      "join_trajectory": false
+    },
+    {
+      "id": "deep-proximal-gap",
+      "group": "nephron_proximal",
+      "label": "Deep-nephron proximal tubular fluid",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Proximal tubule of deep nephrons",
+      "species": "Not established for a numeric preset",
+      "population": "No reference population established",
+      "preparation": "Not established",
+      "condition": "Not established",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Not established for this segment or context",
+      "specimen_handling": "Not established for this segment or context",
+      "statistic": "unavailable",
+      "ph": null,
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [],
+      "evidence_limitations": [
+        "No directly applicable measurement curated for this segment. Plasma, renal-cell, interstitial, bath, and final-urine values are not substituted."
+      ],
+      "evidence_status": "unavailable",
+      "display_kind": "gap",
+      "gap_label": "No verified numerical interval available",
+      "gap_reason": "No directly applicable numeric value has been verified for this specific compartment and condition.",
+      "nephron_class": "Deep; no numeric preset established",
+      "join_trajectory": false
+    },
+    {
+      "id": "thin-descending-gap",
+      "group": "nephron_loop",
+      "label": "Thin descending limb fluid",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Thin descending limb of Henle",
+      "species": "Not established for a numeric preset",
+      "population": "No reference population established",
+      "preparation": "Not established",
+      "condition": "Not established",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Not established for this segment or context",
+      "specimen_handling": "Not established for this segment or context",
+      "statistic": "unavailable",
+      "ph": null,
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [],
+      "evidence_limitations": [
+        "No directly applicable measurement curated for this segment. Plasma, renal-cell, interstitial, bath, and final-urine values are not substituted."
+      ],
+      "evidence_status": "unavailable",
+      "display_kind": "gap",
+      "gap_label": "No verified numerical interval available",
+      "gap_reason": "No directly applicable numeric value has been verified for this specific compartment and condition.",
+      "nephron_class": "Not established",
+      "join_trajectory": false
+    },
+    {
+      "id": "thin-ascending-gap",
+      "group": "nephron_loop",
+      "label": "Thin ascending limb fluid",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Thin ascending limb of Henle",
+      "species": "Not established for a numeric preset",
+      "population": "No reference population established",
+      "preparation": "Not established",
+      "condition": "Not established",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Not established for this segment or context",
+      "specimen_handling": "Not established for this segment or context",
+      "statistic": "unavailable",
+      "ph": null,
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [],
+      "evidence_limitations": [
+        "No directly applicable measurement curated for this segment. Plasma, renal-cell, interstitial, bath, and final-urine values are not substituted."
+      ],
+      "evidence_status": "unavailable",
+      "display_kind": "gap",
+      "gap_label": "No verified numerical interval available",
+      "gap_reason": "No directly applicable numeric value has been verified for this specific compartment and condition.",
+      "nephron_class": "Not established",
+      "join_trajectory": false
+    },
+    {
+      "id": "thick-ascending-gap",
+      "group": "nephron_loop",
+      "label": "Thick ascending limb fluid",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Thick ascending limb of Henle",
+      "species": "Not established for a numeric preset",
+      "population": "No reference population established",
+      "preparation": "Not established",
+      "condition": "Not established",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Not established for this segment or context",
+      "specimen_handling": "Not established for this segment or context",
+      "statistic": "unavailable",
+      "ph": null,
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [],
+      "evidence_limitations": [
+        "No directly applicable measurement curated for this segment. Plasma, renal-cell, interstitial, bath, and final-urine values are not substituted."
+      ],
+      "evidence_status": "unavailable",
+      "display_kind": "gap",
+      "gap_label": "No verified numerical interval available",
+      "gap_reason": "No directly applicable numeric value has been verified for this specific compartment and condition.",
+      "nephron_class": "Not established",
+      "join_trajectory": false
+    },
+    {
+      "id": "early-distal-gap",
+      "group": "nephron_distal",
+      "label": "Early distal convoluted tubular fluid",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Early distal convoluted tubule",
+      "species": "Not established for a numeric preset",
+      "population": "No reference population established",
+      "preparation": "Not established",
+      "condition": "Not established",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Not established for this segment or context",
+      "specimen_handling": "Not established for this segment or context",
+      "statistic": "unavailable",
+      "ph": null,
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [],
+      "evidence_limitations": [
+        "No directly applicable measurement curated for this segment. Plasma, renal-cell, interstitial, bath, and final-urine values are not substituted."
+      ],
+      "evidence_status": "unavailable",
+      "display_kind": "gap",
+      "gap_label": "No verified numerical interval available",
+      "gap_reason": "No directly applicable numeric value has been verified for this specific compartment and condition.",
+      "nephron_class": "Not established",
+      "join_trajectory": false
+    },
+    {
+      "id": "connecting-tubule-gap",
+      "group": "nephron_distal",
+      "label": "Connecting tubular fluid",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Connecting tubule",
+      "species": "Not established for a numeric preset",
+      "population": "No reference population established",
+      "preparation": "Not established",
+      "condition": "Not established",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Not established for this segment or context",
+      "specimen_handling": "Not established for this segment or context",
+      "statistic": "unavailable",
+      "ph": null,
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [],
+      "evidence_limitations": [
+        "No directly applicable measurement curated for this segment. Plasma, renal-cell, interstitial, bath, and final-urine values are not substituted."
+      ],
+      "evidence_status": "unavailable",
+      "display_kind": "gap",
+      "gap_label": "No verified numerical interval available",
+      "gap_reason": "No directly applicable numeric value has been verified for this specific compartment and condition.",
+      "nephron_class": "Not established",
+      "join_trajectory": false
+    },
+    {
+      "id": "cortical-collecting-gap",
+      "group": "nephron_collecting",
+      "label": "Cortical collecting-duct fluid",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Cortical collecting duct",
+      "species": "Not established for a numeric preset",
+      "population": "No reference population established",
+      "preparation": "Not established",
+      "condition": "Not established",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Not established for this segment or context",
+      "specimen_handling": "Not established for this segment or context",
+      "statistic": "unavailable",
+      "ph": null,
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [],
+      "evidence_limitations": [
+        "No directly applicable measurement curated for this segment. Plasma, renal-cell, interstitial, bath, and final-urine values are not substituted."
+      ],
+      "evidence_status": "unavailable",
+      "display_kind": "gap",
+      "gap_label": "No verified numerical interval available",
+      "gap_reason": "No directly applicable numeric value has been verified for this specific compartment and condition.",
+      "nephron_class": "Not established",
+      "join_trajectory": false
+    },
+    {
+      "id": "outer-medullary-collecting-gap",
+      "group": "nephron_collecting",
+      "label": "Outer-medullary collecting-duct fluid",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Outer-medullary collecting duct",
+      "species": "Not established for a numeric preset",
+      "population": "No reference population established",
+      "preparation": "Not established",
+      "condition": "Not established",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Not established for this segment or context",
+      "specimen_handling": "Not established for this segment or context",
+      "statistic": "unavailable",
+      "ph": null,
+      "reported_uncertainty": null,
+      "sample_size": null,
+      "source_ids": [],
+      "evidence_limitations": [
+        "No directly applicable measurement curated for this segment. Plasma, renal-cell, interstitial, bath, and final-urine values are not substituted."
+      ],
+      "evidence_status": "unavailable",
+      "display_kind": "gap",
+      "gap_label": "No verified numerical interval available",
+      "gap_reason": "No directly applicable numeric value has been verified for this specific compartment and condition.",
+      "nephron_class": "Not established",
+      "join_trajectory": false
+    },
+    {
+      "id": "rat-late-proximal-dubose-1983",
+      "group": "nephron_proximal",
+      "label": "Rat superficial late proximal fluid: reported value",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Late proximal tubule",
+      "species": "Rat (species not specified in inspected abstract)",
+      "population": "Rats in the original in-vivo study; strain and sex not curated",
+      "preparation": "In-vivo nephron sampling",
+      "condition": "Original study comparison; anesthesia, fluid protocol and acid-base interventions not established from the abstract",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Microelectrode pH measurement",
+      "specimen_handling": "In-vivo luminal measurement; not an equilibrated final-urine specimen",
+      "statistic": "reported_value",
+      "ph": {
+        "value": 6.78,
+        "lower": null,
+        "upper": null,
+        "confidence_level": null
+      },
+      "reported_uncertainty": {
+        "value": 0.03,
+        "kind": "unspecified_in_abstract",
+        "plotted": false
+      },
+      "sample_size": null,
+      "source_ids": [
+        "dubose-1983"
+      ],
+      "evidence_limitations": [
+        "Study-specific animal pH value; not a human reference interval or individual-nephron trajectory.",
+        "The central-statistic definition, full experimental conditions, and plus/minus statistic are not established from the inspected abstract; only the reported pH value is plotted."
+      ],
+      "evidence_status": "source_qualified",
+      "display_kind": "study_marker",
+      "gap_label": null,
+      "gap_reason": null,
+      "nephron_class": "Superficial",
+      "join_trajectory": false
+    },
+    {
+      "id": "rat-deep-loop-bend-dubose-1983",
+      "group": "nephron_loop",
+      "label": "Rat deep loop-bend fluid: reported value",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Bend of deep loop of Henle",
+      "species": "Rat (species not specified in inspected abstract)",
+      "population": "Rats in the original in-vivo study; strain and sex not curated",
+      "preparation": "In-vivo nephron sampling",
+      "condition": "Original study comparison; anesthesia, fluid protocol and acid-base interventions not established from the abstract",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Microelectrode pH measurement",
+      "specimen_handling": "In-vivo luminal measurement; not an equilibrated final-urine specimen",
+      "statistic": "reported_value",
+      "ph": {
+        "value": 7.39,
+        "lower": null,
+        "upper": null,
+        "confidence_level": null
+      },
+      "reported_uncertainty": {
+        "value": 0.04,
+        "kind": "unspecified_in_abstract",
+        "plotted": false
+      },
+      "sample_size": null,
+      "source_ids": [
+        "dubose-1983"
+      ],
+      "evidence_limitations": [
+        "Study-specific animal pH value; not a human reference interval or individual-nephron trajectory.",
+        "The central-statistic definition, full experimental conditions, and plus/minus statistic are not established from the inspected abstract; only the reported pH value is plotted.",
+        "A deep loop-bend value does not characterize the entire loop or either limb. It is not a serial observation of the superficial proximal preset."
+      ],
+      "evidence_status": "source_qualified",
+      "display_kind": "study_marker",
+      "gap_label": null,
+      "gap_reason": null,
+      "nephron_class": "Juxtamedullary/deep",
+      "join_trajectory": false
+    },
+    {
+      "id": "rat-late-distal-dubose-1983",
+      "group": "nephron_distal",
+      "label": "Rat late distal fluid: original study location; reported value",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Late distal tubule as labeled by the original study",
+      "species": "Rat (species not specified in inspected abstract)",
+      "population": "Rats in the original in-vivo study; strain and sex not curated",
+      "preparation": "In-vivo nephron sampling",
+      "condition": "Original study comparison; anesthesia, fluid protocol and acid-base interventions not established from the abstract",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Microelectrode pH measurement",
+      "specimen_handling": "In-vivo luminal measurement; not an equilibrated final-urine specimen",
+      "statistic": "reported_value",
+      "ph": {
+        "value": 6.59,
+        "lower": null,
+        "upper": null,
+        "confidence_level": null
+      },
+      "reported_uncertainty": {
+        "value": 0.04,
+        "kind": "unspecified_in_abstract",
+        "plotted": false
+      },
+      "sample_size": null,
+      "source_ids": [
+        "dubose-1983"
+      ],
+      "evidence_limitations": [
+        "Study-specific animal pH value; not a human reference interval or individual-nephron trajectory.",
+        "The central-statistic definition, full experimental conditions, and plus/minus statistic are not established from the inspected abstract; only the reported pH value is plotted.",
+        "Historical late-distal nomenclature is preserved; this is not automatically mapped to the modern distal convoluted tubule."
+      ],
+      "evidence_status": "source_qualified",
+      "display_kind": "study_marker",
+      "gap_label": null,
+      "gap_reason": null,
+      "nephron_class": "Not further established from the abstract",
+      "join_trajectory": false
+    },
+    {
+      "id": "rat-papillary-base-dubose-1983",
+      "group": "nephron_collecting",
+      "label": "Rat papillary collecting-duct base: reported value",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Base of papillary collecting duct",
+      "species": "Rat (species not specified in inspected abstract)",
+      "population": "Rats in the original in-vivo study; strain and sex not curated",
+      "preparation": "In-vivo nephron sampling",
+      "condition": "Original study comparison; anesthesia, fluid protocol and acid-base interventions not established from the abstract",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Microelectrode pH measurement",
+      "specimen_handling": "In-vivo luminal measurement; not an equilibrated final-urine specimen",
+      "statistic": "reported_value",
+      "ph": {
+        "value": 6.24,
+        "lower": null,
+        "upper": null,
+        "confidence_level": null
+      },
+      "reported_uncertainty": {
+        "value": 0.07,
+        "kind": "unspecified_in_abstract",
+        "plotted": false
+      },
+      "sample_size": null,
+      "source_ids": [
+        "dubose-1983"
+      ],
+      "evidence_limitations": [
+        "Study-specific animal pH value; not a human reference interval or individual-nephron trajectory.",
+        "The central-statistic definition, full experimental conditions, and plus/minus statistic are not established from the inspected abstract; only the reported pH value is plotted."
+      ],
+      "evidence_status": "source_qualified",
+      "display_kind": "study_marker",
+      "gap_label": null,
+      "gap_reason": null,
+      "nephron_class": "Papillary collecting duct; contributing nephron mix unspecified",
+      "join_trajectory": false
+    },
+    {
+      "id": "rat-papillary-tip-dubose-1983",
+      "group": "nephron_collecting",
+      "label": "Rat papillary collecting-duct tip: reported value",
+      "compartment": "Nephron luminal fluid",
+      "anatomical_site": "Tip of papillary collecting duct",
+      "species": "Rat (species not specified in inspected abstract)",
+      "population": "Rats in the original in-vivo study; strain and sex not curated",
+      "preparation": "In-vivo nephron sampling",
+      "condition": "Original study comparison; anesthesia, fluid protocol and acid-base interventions not established from the abstract",
+      "temperature_c": null,
+      "temperature_note": "No applicable measurement temperature established in the curated evidence.",
+      "measurement_method": "Microelectrode pH measurement",
+      "specimen_handling": "In-vivo luminal measurement; not an equilibrated final-urine specimen",
+      "statistic": "reported_value",
+      "ph": {
+        "value": 6.12,
+        "lower": null,
+        "upper": null,
+        "confidence_level": null
+      },
+      "reported_uncertainty": {
+        "value": 0.03,
+        "kind": "unspecified_in_abstract",
+        "plotted": false
+      },
+      "sample_size": null,
+      "source_ids": [
+        "dubose-1983"
+      ],
+      "evidence_limitations": [
+        "Study-specific animal pH value; not a human reference interval or individual-nephron trajectory.",
+        "The central-statistic definition, full experimental conditions, and plus/minus statistic are not established from the inspected abstract; only the reported pH value is plotted."
+      ],
+      "evidence_status": "source_qualified",
+      "display_kind": "study_marker",
+      "gap_label": null,
+      "gap_reason": null,
+      "nephron_class": "Papillary collecting duct; contributing nephron mix unspecified",
+      "join_trajectory": false
+    }
+  ]
+}

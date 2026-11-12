@@ -1,0 +1,7 @@
+# Runtime versions exercised in the Linux verification environment.
+# Windows uses the locally prepared signed wheel; see docs/SIGNED-RDKIT-BUILD.md.
+# This Windows candidate is qualified only with CPython 3.12.14 x64.
+rdkit==2025.9.4; sys_platform != "win32"
+rdkit==2025.9.6+nivram.2; sys_platform == "win32"
+numpy==2.3.5
+Pillow==12.3.0
