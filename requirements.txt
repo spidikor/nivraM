@@ -4,4 +4,4 @@
 rdkit==2025.9.4; sys_platform != "win32"
 rdkit==2025.9.6+nivram.2; sys_platform == "win32"
 numpy==2.3.5
-Pillow==12.3.0
+Pillow==13.0.0
