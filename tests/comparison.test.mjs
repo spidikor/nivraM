@@ -1,3 +1,4 @@
+import {propertyReport} from './property-response-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -7,7 +8,11 @@ import {controlledDocument} from './svg-test-dom.mjs';
 const project=()=>({schema:'nivram/1',version:'0.2.0-dev.1',graph:{atoms:[{id:'a',symbol:'C',x:0,y:0}],bonds:[]},style:{...DEFAULT_STYLE},export:{...DEFAULT_EXPORT}});
 const request=()=>({requestId:'a'.repeat(32),pinId:'b'.repeat(32),documentRevision:2,pinned:{graph:project().graph,style:project().style},current:{graph:project().graph,style:project().style}});
 const side=()=>({status:'calculated',identity:{graphHash:'0'.repeat(64),structureHash:'1'.repeat(64),smiles:'C',documentRevision:2},engine:{name:'RDKit',version:'2025.09.4'},formula:'CH4',molecularWeight:16.043,exactMass:16.0313,formalCharge:0,fragmentCount:1,logP:{value:0.6361,status:'calculated',warnings:[]},warnings:[],preview:{status:'unavailable',scene:null,error:'font unavailable'}});
-const result=(req=request())=>({schema:'nivram-comparison/2',requestId:req.requestId,pinId:req.pinId,documentRevision:req.documentRevision,transformations:[],pinned:{...side(),identity:{...side().identity,documentRevision:req.documentRevision}},current:{...side(),identity:{...side().identity,documentRevision:req.documentRevision}}});
+const result=(req=request())=>{
+  const r={schema:'nivram-comparison/2',requestId:req.requestId,pinId:req.pinId,documentRevision:req.documentRevision,transformations:[],pinned:{...side(),identity:{...side().identity,documentRevision:req.documentRevision}},current:{...side(),identity:{...side().identity,documentRevision:req.documentRevision}}};
+  if(req.sourceBinding){r.sourceBinding=req.sourceBinding;for(const key of ['pinned','current'])Object.assign(r[key],{sourceGraph:structuredClone(req[key].graph),sourceIdentity:structuredClone(r[key].identity)});}
+  return r;
+};
 test('pin is independent, deep-frozen validated snapshot',()=>{const p=project(),pin=makeComparisonPin(p,'Saved <name>','b'.repeat(32));p.graph.atoms[0].x=99;assert.equal(pin.project.graph.atoms[0].x,0);assert.ok(Object.isFrozen(pin.project.graph.atoms[0]));assert.throws(()=>makeComparisonPin({...project(),schema:'other'},'x','b'.repeat(32)));});
 test('saved project read bounds precede file reads and preserve original',async()=>{let calls=0;await assert.rejects(()=>readComparisonFile({size:4000001,text:async()=>{calls++;}}));assert.equal(calls,0);await assert.rejects(()=>readComparisonFile({size:1,text:async()=>'{bad'}));await assert.rejects(()=>readComparisonFile({size:20,text:async()=>'[{"schema":"bad"}]'}));assert.deepEqual(await readComparisonFile({size:300,text:async()=>JSON.stringify(project())}),project());});
 test('closed result schema and source bindings reject bad responses',()=>{assert.deepEqual(validateComparison(result(),request()),result());for(const mutate of [r=>r.pinId='c'.repeat(32),r=>r.requestId='c'.repeat(32),r=>r.documentRevision++,r=>r.current.identity.documentRevision++,r=>r.current.molecularWeight=NaN,r=>r.current.logP.value=null,r=>r.current.preview.scene={},r=>r.current.preview.status='okay',r=>r.current.engine.version='other',r=>r.transformations.push('clean'),r=>r.extra=true,r=>r.current.formalCharge=0.2]){const r=result();mutate(r);assert.throws(()=>validateComparison(r,request()));}});
@@ -44,7 +49,7 @@ test('unknown either side or both gives no numeric mass delta',()=>{
   for(const sides of [['pinned'],['current'],['pinned','current']]){const r=result();sides.forEach(s=>markMissing(r[s]));const rows=comparisonRows(r);for(const i of [1,2]){assert.equal(rows[i][3],'Unavailable');for(const side of sides)assert.equal(rows[i][side==='pinned'?1:2],'Unavailable');}assert.equal(rows[5][3],'0.000');}
 });
 test('controlled scene null mass needs paired descriptor nulls and graph evidence',()=>{
-  const p=project();p.graph.atoms[0].isotope=400;const scene=fixtureScene();scene.mass=null;scene.properties={massUnavailable:missing(),molecularWeight:{value:null},exactMass:{value:null}};
+  const p=project();p.graph.atoms[0].isotope=400;const scene=fixtureScene();scene.mass=null;scene.properties=propertyReport('missing');scene.formula=scene.properties.formula;scene.smiles=scene.properties.smiles;
   const h=renderHarness();assert.equal(prepareRender({graph:p.graph,scene},p,h.dom).scene.mass,null);
   for(const mutate of [s=>delete s.properties,s=>s.properties.massUnavailable.isotopes=[],s=>s.properties.exactMass.value=400,s=>s.mass=400]){const bad=structuredClone(scene);mutate(bad);assert.throws(()=>prepareRender({graph:p.graph,scene:bad},p,h.dom));}
   assert.throws(()=>prepareRender({graph:project().graph,scene},project(),h.dom));

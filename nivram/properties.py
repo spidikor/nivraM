@@ -120,3 +120,24 @@ def calculate_properties(graph: dict, document_revision: int | str | None = None
         'warnings': warnings + ([MASS_MESSAGE] if missing else []),
         **({'massUnavailable': mass_unavailable} if missing else {}),
     }
+
+
+def property_response(data: dict) -> dict:
+    """Bind transport to an independent original snapshot; keep legacy reports."""
+    from .property_contract import SCHEMA, validate_properties
+    import re
+    if not isinstance(data, dict):
+        raise ValueError('Invalid molecular property request.')
+    bound = 'requestId' in data
+    if bound and (not isinstance(data['requestId'], str) or re.fullmatch('[0-9a-f]{32}', data['requestId']) is None):
+        raise ValueError('Invalid molecular property request identity.')
+    snapshot = copy.deepcopy(data.get('graph', {}))
+    revision = data.get('documentRevision')
+    identity = input_identity(snapshot, document_revision=revision)
+    # Do not pass the authoritative snapshot to a potentially mutating producer.
+    report = calculate_properties(copy.deepcopy(snapshot), revision)
+    validate_properties(report, snapshot, revision=revision, expected_identity=identity)
+    if not bound:
+        return report
+    return {'schema': SCHEMA, 'requestId': data['requestId'], 'sourceGraph': snapshot,
+            'sourceIdentity': identity, 'properties': report}

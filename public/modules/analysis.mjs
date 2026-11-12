@@ -1,3 +1,4 @@
+import {validatePropertyEnvelope} from './property-contract.mjs';
 import {createJobController} from './jobs.mjs';
 import {mountPhysiologyExplorer} from './physiology.mjs';
 import {mountPhReferenceDialog} from './ph-reference.mjs';
@@ -16,6 +17,7 @@ function randomId(){
 /** Cancellation uses a new request, not the calculation's aborted signal. */
 export async function requestAnalysis(action,task,{token,fetcher=globalThis.fetch}={}){
   const identity=action==='name'?{clientId:clientId??=randomId(),jobId:randomId(),expiresAt:Date.now()+30000}:null;
+  const propertyRequest=action==='properties'?JSON.parse(JSON.stringify({graph:task.input.graph,documentRevision:task.revision,requestId:randomId()})):null;
   let cancellationSent=false;
   const cancel=()=>{
     if(!identity||cancellationSent)return;
@@ -32,10 +34,16 @@ export async function requestAnalysis(action,task,{token,fetcher=globalThis.fetc
     if(task.signal.aborted){cancel();throw task.signal.reason;}
     const response=await fetcher(`/api/${action}`,{method:'POST',signal:task.signal,
       headers:{'Content-Type':'application/json','X-Nivram-Token':token},
-      body:JSON.stringify({graph:task.input.graph,documentRevision:task.revision,...identity})});
-    const result=await response.json();
+      body:JSON.stringify(propertyRequest??{graph:task.input.graph,documentRevision:task.revision,...identity})});
+    let result;
+    if(propertyRequest&&typeof response.text==='function'){
+      const text=await response.text();
+      if(new TextEncoder().encode(text).length>8*1024*1024)throw new Error('The property response exceeded the supported size.');
+      result=JSON.parse(text);
+    }else result=await response.json();
     if(!response.ok)throw new Error(result.error||'The local calculation failed.');
     task.assertCurrent();
+    if(propertyRequest)return validatePropertyEnvelope(result,propertyRequest);
     if(identity&&(result.clientId!==identity.clientId||result.jobId!==identity.jobId))throw new Error('The naming response does not match this job.');
     if(result.inputIdentity?.documentRevision!==task.revision)throw new Error('The result does not match this document revision.');
     return result;

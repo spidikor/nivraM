@@ -1,0 +1,186 @@
+{
+  "empty": {
+    "status": "empty",
+    "inputIdentity": {
+      "graphHash": "57f71479ca3af99b2f68c1cf261bec9994d82e645c96fb7c36f9c7c55fdece21",
+      "structureHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "smiles": "",
+      "documentRevision": null
+    },
+    "engine": {
+      "name": "RDKit",
+      "version": "2025.09.4"
+    },
+    "calculatedAt": "2026-11-12T17:10:53+00:00",
+    "transformations": [],
+    "formula": "",
+    "smiles": "",
+    "formalCharge": 0,
+    "fragmentCount": 0,
+    "molecularWeight": {
+      "value": null,
+      "unit": "g/mol",
+      "label": "Molecular weight / molar mass",
+      "method": "RDKit average atomic weights, with explicit isotope labels"
+    },
+    "exactMass": {
+      "value": null,
+      "unit": "Da",
+      "label": "Exact mass",
+      "method": "RDKit CalcExactMolWt; explicit isotopes and formal charge retained"
+    },
+    "logP": {
+      "value": null,
+      "unit": "dimensionless",
+      "label": "Calculated LogP - RDKit Wildman-Crippen",
+      "method": "Wildman-Crippen atom-fragment estimate",
+      "methodVersion": "1.2.0",
+      "status": "not_applicable",
+      "applicability": "As-drawn structure only; not experimental LogP or LogD",
+      "warnings": []
+    },
+    "warnings": []
+  },
+  "methane": {
+    "status": "calculated",
+    "inputIdentity": {
+      "graphHash": "3dc86e8e2f1c19dadd41bb47ae61f98b52fb70a871b194d7060bf2f9a60f6645",
+      "structureHash": "6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d",
+      "smiles": "C",
+      "documentRevision": null
+    },
+    "engine": {
+      "name": "RDKit",
+      "version": "2025.09.4"
+    },
+    "calculatedAt": "2026-11-12T17:10:53+00:00",
+    "transformations": [],
+    "formula": "CH4",
+    "smiles": "C",
+    "formalCharge": 0,
+    "fragmentCount": 1,
+    "molecularWeight": {
+      "value": 16.043,
+      "unit": "g/mol",
+      "label": "Molecular weight / molar mass",
+      "method": "RDKit average atomic weights, with explicit isotope labels"
+    },
+    "exactMass": {
+      "value": 16.031300127999998,
+      "unit": "Da",
+      "label": "Exact mass",
+      "method": "RDKit CalcExactMolWt; explicit isotopes and formal charge retained"
+    },
+    "logP": {
+      "value": 0.6361,
+      "unit": "dimensionless",
+      "label": "Calculated LogP - RDKit Wildman-Crippen",
+      "method": "Wildman-Crippen atom-fragment estimate",
+      "methodVersion": "1.2.0",
+      "status": "calculated",
+      "applicability": "As-drawn structure only; not experimental LogP or LogD",
+      "warnings": []
+    },
+    "warnings": []
+  },
+  "missing": {
+    "status": "calculated",
+    "inputIdentity": {
+      "graphHash": "f3d2773429b04023b5d28594f4626b77e4bfc6a0106461c85acd693c067f907e",
+      "structureHash": "a5cdd71aa0842890662447d4d253ccf69d8036e250f7e4faa79d12970fd23131",
+      "smiles": "[400CH4]",
+      "documentRevision": null
+    },
+    "engine": {
+      "name": "RDKit",
+      "version": "2025.09.4"
+    },
+    "calculatedAt": "2026-11-12T17:10:53+00:00",
+    "transformations": [],
+    "formula": "[400C]H4",
+    "smiles": "[400CH4]",
+    "formalCharge": 0,
+    "fragmentCount": 1,
+    "molecularWeight": {
+      "value": null,
+      "unit": "g/mol",
+      "label": "Molecular weight / molar mass",
+      "method": "RDKit average atomic weights, with explicit isotope labels"
+    },
+    "exactMass": {
+      "value": null,
+      "unit": "Da",
+      "label": "Exact mass",
+      "method": "RDKit CalcExactMolWt; explicit isotopes and formal charge retained"
+    },
+    "logP": {
+      "value": 0.6361,
+      "unit": "dimensionless",
+      "label": "Calculated LogP - RDKit Wildman-Crippen",
+      "method": "Wildman-Crippen atom-fragment estimate",
+      "methodVersion": "1.2.0",
+      "status": "calculated",
+      "applicability": "As-drawn structure only; not experimental LogP or LogD",
+      "warnings": []
+    },
+    "warnings": [
+      "Molar mass and exact mass are unavailable: the RDKit isotope mass table has no usable entry for one or more explicit isotope labels. The graph annotations are retained; this is not a claim about isotope existence or stability."
+    ],
+    "massUnavailable": {
+      "reason": "missing_isotope_mass",
+      "message": "Molar mass and exact mass are unavailable: the RDKit isotope mass table has no usable entry for one or more explicit isotope labels. The graph annotations are retained; this is not a claim about isotope existence or stability.",
+      "isotopes": [
+        {
+          "symbol": "C",
+          "isotope": 400
+        }
+      ]
+    }
+  },
+  "nitro": {
+    "status": "calculated",
+    "inputIdentity": {
+      "graphHash": "27d58a162e9d0d86c96fdaed652774dd43668e941de0f20a59a9088abdca92b2",
+      "structureHash": "9dd6477011e170df8c6a8b067c399b43a2ad6b900754d12dfb60c91c14231420",
+      "smiles": "C[N+](=O)[O-]",
+      "documentRevision": null
+    },
+    "engine": {
+      "name": "RDKit",
+      "version": "2025.09.4"
+    },
+    "calculatedAt": "2026-11-12T17:16:34+00:00",
+    "transformations": [],
+    "formula": "CH3NO2",
+    "smiles": "C[N+](=O)[O-]",
+    "formalCharge": 0,
+    "fragmentCount": 1,
+    "molecularWeight": {
+      "value": 61.040000000000006,
+      "unit": "g/mol",
+      "label": "Molecular weight / molar mass",
+      "method": "RDKit average atomic weights, with explicit isotope labels"
+    },
+    "exactMass": {
+      "value": 61.016378336,
+      "unit": "Da",
+      "label": "Exact mass",
+      "method": "RDKit CalcExactMolWt; explicit isotopes and formal charge retained"
+    },
+    "logP": {
+      "value": -0.10710000000000008,
+      "unit": "dimensionless",
+      "label": "Calculated LogP - RDKit Wildman-Crippen",
+      "method": "Wildman-Crippen atom-fragment estimate",
+      "methodVersion": "1.2.0",
+      "status": "calculated_with_warning",
+      "applicability": "As-drawn structure only; not experimental LogP or LogD",
+      "warnings": [
+        "The as-drawn structure contains charged atoms. Its fragment descriptor is not a validated neutral-species partition coefficient or pH-dependent LogD."
+      ]
+    },
+    "warnings": [
+      "The as-drawn structure contains charged atoms. Its fragment descriptor is not a validated neutral-species partition coefficient or pH-dependent LogD."
+    ]
+  }
+}

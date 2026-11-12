@@ -1,3 +1,4 @@
+import {boundedPropertyData,sameJson,validatePropertyIdentity,validatePropertySummary,validateProperties} from './property-contract.mjs';
 import {cloneData,validateProject,prepareRender} from './document.mjs';
 import {createJobController} from './jobs.mjs';
 import {validMassUnavailable} from './mass-contract.mjs';
@@ -19,18 +20,37 @@ export async function readComparisonFile(file){
   return validateProject(JSON.parse(text));
 }
 export function validateComparison(result,request){
-  if(!exact(result,['schema','requestId','pinId','documentRevision','transformations','pinned','current'])||result.schema!=='nivram-comparison/2'||result.requestId!==request.requestId||result.pinId!==request.pinId||result.documentRevision!==request.documentRevision||!Array.isArray(result.transformations)||result.transformations.length)fail();
+  boundedPropertyData(result);
+  const bound=Object.hasOwn(request,'sourceBinding');
+  if(bound&&(request.sourceBinding!=='nivram-source/1'||result.sourceBinding!==request.sourceBinding))fail();
+  if(!exact(result,['schema','requestId','pinId','documentRevision','transformations','pinned','current',...(bound?['sourceBinding']:[])])||result.schema!=='nivram-comparison/2'||result.requestId!==request.requestId||result.pinId!==request.pinId||result.documentRevision!==request.documentRevision||!Array.isArray(result.transformations)||result.transformations.length)fail();
   for(const side of ['pinned','current']){
     const r=result[side],g=request[side].graph;
     const unavailable=r&&Object.hasOwn(r,'massUnavailable');
-    if(!exact(r,['status','identity','engine','formula','molecularWeight','exactMass','formalCharge','fragmentCount','logP','warnings','preview',...(unavailable?['massUnavailable']:[])])||r.status!==(g.atoms.length?'calculated':'empty'))fail();
+    if(!exact(r,['status','identity','engine','formula','molecularWeight','exactMass','formalCharge','fragmentCount','logP','warnings','preview',...(unavailable?['massUnavailable']:[]),...(bound?['sourceGraph','sourceIdentity']:[])])||r.status!==(g.atoms.length?'calculated':'empty'))fail();
     if(unavailable&&!validMassUnavailable(r.massUnavailable,g))fail();
     if(!exact(r.identity,['graphHash','structureHash','smiles','documentRevision'])||!hash(r.identity.graphHash)||!hash(r.identity.structureHash)||!short(r.identity.smiles,100000)||r.identity.documentRevision!==request.documentRevision)fail();
     if(!exact(r.engine,['name','version'])||r.engine.name!=='RDKit'||!short(r.engine.version,80)||!short(r.formula,10000)||!warnings(r.warnings))fail();
     if(!['molecularWeight','exactMass'].every(k=>finiteOrNull(r[k])&&(g.atoms.length&&!unavailable?r[k]!==null:r[k]===null))||!Number.isInteger(r.formalCharge)||Math.abs(r.formalCharge)>4096||!Number.isInteger(r.fragmentCount)||r.fragmentCount<0||r.fragmentCount>g.atoms.length||g.atoms.length>0&&r.fragmentCount===0)fail();
     const l=r.logP;if(!exact(l,['value','status','warnings'])||!finiteOrNull(l.value)||!warnings(l.warnings)||!['calculated','calculated_with_warning','not_applicable'].includes(l.status)||(l.status==='not_applicable')!==(l.value===null))fail();
+    validatePropertySummary(r,g);
+    if(bound){
+      validatePropertyIdentity(r.sourceIdentity,request.documentRevision);
+      if(!sameJson(r.sourceGraph,g)||!sameJson(r.sourceIdentity,r.identity))fail();
+    }
     const p=r.preview;if(!exact(p,['status','scene','error']))fail();
-    if(p.status==='available'){if(!p.scene||typeof p.scene!=='object'||Array.isArray(p.scene)||p.error!==null)fail();}
+    if(p.status==='available'){
+      if(!p.scene||typeof p.scene!=='object'||Array.isArray(p.scene)||p.error!==null)fail();
+      const scene=p.scene;
+      if(scene.formula!==r.formula||scene.smiles!==r.identity.smiles)fail();
+      if(Object.hasOwn(scene,'properties')){
+        validateProperties(scene.properties,g);
+        const properties=scene.properties;
+        for(const key of ['graphHash','structureHash','smiles'])if(properties.inputIdentity[key]!==r.identity[key])fail();
+        if(properties.formula!==r.formula||properties.smiles!==r.identity.smiles||properties.molecularWeight.value!==r.molecularWeight||properties.exactMass.value!==r.exactMass||properties.logP.value!==r.logP.value||properties.logP.status!==r.logP.status||!sameJson(properties.warnings,r.warnings))fail();
+      }
+      if(g.atoms.length===0?scene.mass!==0:r.molecularWeight===null?scene.mass!==null:!Number.isFinite(scene.mass)||Math.abs(scene.mass-r.molecularWeight)>.000500001)fail();
+    }
     else if(p.status==='unavailable'){if(p.scene!==null||!short(p.error,1000)||!p.error)fail();}
     else fail();
   }
@@ -38,6 +58,7 @@ export function validateComparison(result,request){
   return cloneData(result);
 }
 export async function requestComparison(request,{token,signal,fetcher=globalThis.fetch}){
+  request=JSON.parse(JSON.stringify(request));
   const response=await fetcher('/api/comparison',{method:'POST',signal,headers:{'Content-Type':'application/json','X-Nivram-Token':token},body:JSON.stringify(request)});
   const text=await response.text();if(text.length>10000000)throw new Error('The comparison response exceeded the supported size.');
   const result=JSON.parse(text);if(!response.ok)throw new Error(short(result.error,1000)?result.error:'Local structure comparison failed.');
@@ -61,7 +82,8 @@ export function mountComparisonPreview({dom,host,source,result}){
   host.replaceChildren();
   if(result.preview.status!=='available'){host.textContent='Preview unavailable: '+result.preview.error;return false;}
   const scene=result.preview.scene;
-  if(scene.smiles!==result.identity.smiles||scene.formula!==result.formula)throw new Error('The preview does not match its property result.');
+  if(scene.smiles!==result.identity.smiles||scene.formula!==result.formula||scene.properties&&(scene.properties.molecularWeight?.value!==result.molecularWeight||scene.properties.exactMass?.value!==result.exactMass||scene.properties.logP?.value!==result.logP.value))throw new Error('The preview does not match its property result.');
+  if(scene.properties)for(const key of ['graphHash','structureHash','smiles'])if(scene.properties.inputIdentity?.[key]!==result.identity[key])throw new Error('The preview identity does not match its property result.');
   const prepared=prepareRender({graph:source.graph,scene},source,dom);
   if(JSON.stringify(prepared.project.style)!==JSON.stringify(source.style))throw new Error('The preview changed the source appearance.');
   const svg=dom.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox',`0 0 ${scene.width} ${scene.height}`);svg.setAttribute('role','img');svg.setAttribute('aria-label','Structure comparison preview');svg.append(prepared.fragment);host.append(svg);return true;
@@ -76,7 +98,7 @@ export function mountComparison({dom,events,editor,token,fetcher=globalThis.fetc
   async function runWithPin(chosen,commitPin=false){
     if(closed||destroyed||!chosen)return;
     invalidate('Comparing pinned and current snapshots locally…');const task=jobs.begin('comparison',{input:editor.getSnapshot().document});active=task;cancel.hidden=false;
-    const request={requestId:makeId(),pinId:chosen.id,documentRevision:task.revision,pinned:{graph:chosen.project.graph,style:chosen.project.style},current:{graph:task.input.graph,style:task.input.style}};
+    const request={sourceBinding:'nivram-source/1',requestId:makeId(),pinId:chosen.id,documentRevision:task.revision,pinned:{graph:chosen.project.graph,style:chosen.project.style},current:{graph:task.input.graph,style:task.input.style}};
     try{
       const result=await task.wait(requestComparison(request,{token,signal:task.signal,fetcher}));task.assertCurrent();if(!commitPin&&pin?.id!==chosen.id)throw new Error('The pinned structure changed.');
       // Admit a candidate pin only after both graphs and the response validate.

@@ -1,3 +1,4 @@
+import {validateProperties} from './property-contract.mjs';
 import {validateOptions} from './export.mjs';
 import {isElementSymbol} from './elements.mjs';
 import {applyBondPaint} from './bond-paint.mjs';
@@ -99,6 +100,12 @@ export function prepareRender(result,baseProject,ownerDocument=globalThis.docume
   }else{
     finite(scene.mass,'Molecular mass');
     if(scene.properties&&Object.hasOwn(scene.properties,'massUnavailable'))throw new Error('Inconsistent molecular mass availability.');
+  }
+  if(Object.hasOwn(scene,'properties')){
+    validateProperties(scene.properties,project.graph);
+    if(scene.formula!==scene.properties.formula||scene.smiles!==scene.properties.smiles)throw new Error('The scene does not match its property report.');
+    const mass=scene.properties.molecularWeight.value;
+    if(project.graph.atoms.length===0?scene.mass!==0:mass===null?scene.mass!==null:Math.abs(scene.mass-mass)>.000500001)throw new Error('The scene mass does not match its property report.');
   }
   const fragment=sanitizeSvg(scene.svg,ownerDocument,project.style);
   return {project,scene:freeze(scene),fragment};

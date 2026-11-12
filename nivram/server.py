@@ -472,8 +472,8 @@ class Handler(BaseHTTPRequestHandler):
                     from .stereo_inspector import inspect_request
                     return self._send(200,inspect_request(data))
                 if route=='/api/properties':
-                    from .properties import calculate_properties
-                    return self._send(200,calculate_properties(data.get('graph',{}),data.get('documentRevision')))
+                    from .properties import property_response
+                    return self._send(200,property_response(data))
                 elif route=='/api/render':
                     submitted=data.get('graph',{})
                     mol=graph_to_mol(submitted,allow_empty=True)

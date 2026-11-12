@@ -1,3 +1,4 @@
+import {propertyEnvelope} from './property-response-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {MASS_MESSAGE} from '../public/modules/mass-contract.mjs';
@@ -12,7 +13,7 @@ test('analysis DOM displays both unavailable masses, keeps LogP and ignores obso
   view.nivramDocument={ready:Promise.resolve(),getSnapshot:()=>({revision,document:{graph}}),subscribe:f=>{listeners.add(f);return()=>listeners.delete(f);}};
   globalThis.window=view;globalThis.document={getElementById:find,defaultView:view,documentElement:{dataset:{}},querySelector:()=>({content:'test'})};
   globalThis.fetch=(url,options)=>url==='/api/properties'?new Promise(resolve=>pending.push({resolve,body:JSON.parse(options.body)})):Promise.resolve({ok:false});
-  const reply=(i,unknown)=>pending[i].resolve({ok:true,json:async()=>({inputIdentity:{documentRevision:pending[i].body.documentRevision},formula:unknown?'[400C]H4':'CH4',molecularWeight:{value:unknown?null:16.043,unit:'g/mol'},exactMass:{value:unknown?null:16.0313,unit:'Da'},logP:{value:.6361,status:'calculated'},smiles:unknown?'[400CH4]':'C',engine:{name:'RDKit',version:'2025.09.4'},warnings:unknown?[MASS_MESSAGE]:[]})});
+  const reply=(i,unknown)=>pending[i].resolve({ok:true,json:async()=>propertyEnvelope(pending[i].body,unknown?'missing':'methane')});
   try{
     await import('../public/modules/analysis.mjs?isotope-dom');await tick();reply(0,true);await tick();
     assert.equal(find('property-mass').textContent,'Unavailable g/mol');assert.equal(find('property-exact-mass').textContent,'Unavailable Da');assert.equal(find('property-logp').textContent,'0.636');assert.equal(find('property-smiles').value,'[400CH4]');assert.match(find('property-provenance').textContent,/isotope mass table/);

@@ -1,3 +1,4 @@
+import {propertyEnvelope} from './property-response-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {requestAnalysis} from '../public/modules/analysis.mjs';
@@ -61,6 +62,6 @@ test('late success after cancellation remains rejected even if fetch ignores abo
 test('property requests retain compatibility without creating naming job IDs',async()=>{
   const job=task();let body;
   await requestAnalysis('properties',job,{token:'session',fetcher:async(url,options)=>{
-    body=JSON.parse(options.body);return response({inputIdentity:{documentRevision:7}});
+    body=JSON.parse(options.body);return response(propertyEnvelope(body,'empty'));
   }});job.finish();assert.equal('clientId' in body,false);assert.equal('jobId' in body,false);
 });

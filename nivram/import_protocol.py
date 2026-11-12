@@ -6,11 +6,9 @@ molecule or recalculating descriptors in the parent.
 """
 from __future__ import annotations
 import copy
-import hashlib
 import json
 import math
 import re
-from .mass_contract import valid_mass_unavailable
 
 MAX_SOURCE_BYTES = 4_000_000
 MAX_TRANSPORT_BYTES = 16 * 1024 * 1024
@@ -163,49 +161,12 @@ def _graph(graph):
 
 
 def _properties(properties, graph, scene):
-    keys = {'status', 'inputIdentity', 'engine', 'calculatedAt', 'transformations', 'formula', 'smiles',
-            'formalCharge', 'fragmentCount', 'molecularWeight', 'exactMass', 'logP', 'warnings'}
-    unavailable = isinstance(properties, dict) and 'massUnavailable' in properties
-    if unavailable:
-        keys.add('massUnavailable')
-        _require(valid_mass_unavailable(properties['massUnavailable'], graph))
-    _require(isinstance(properties, dict) and set(properties) == keys and properties['status'] == 'calculated')
-    identity = properties['inputIdentity']
-    _require(isinstance(identity, dict) and set(identity) == {'graphHash', 'structureHash', 'smiles', 'documentRevision'})
-    encoded = json.dumps(graph, sort_keys=True, separators=(',', ':'), ensure_ascii=True, allow_nan=False).encode()
-    _require(identity['graphHash'] == hashlib.sha256(encoded).hexdigest())
-    smiles = properties['smiles']
-    _text(smiles, 65536, empty=False)
-    _require(identity['smiles'] == scene['smiles'] == smiles and identity['documentRevision'] is None)
-    _require(identity['structureHash'] == hashlib.sha256(smiles.encode()).hexdigest())
-    _require(properties['formula'] == scene['formula'])
-    _text(properties['formula'], 65536, empty=False)
-    _integer(properties['formalCharge'], -4096, 4096)
-    _integer(properties['fragmentCount'], 1, len(graph['atoms']))
-    _require(properties['transformations'] == [])
-    _require(isinstance(properties['engine'], dict) and set(properties['engine']) == {'name', 'version'}
-             and properties['engine']['name'] == 'RDKit')
-    _text(properties['engine']['version'], 80, empty=False)
-    _text(properties['calculatedAt'], 80, empty=False)
-    for key in ('molecularWeight', 'exactMass', 'logP'):
-        descriptor = properties[key]
-        _require(isinstance(descriptor, dict))
-        required = {'value', 'unit', 'label', 'method'}
-        if key == 'logP':
-            required |= {'methodVersion', 'status', 'applicability', 'warnings'}
-        _require(set(descriptor) == required)
-        if key != 'logP' and unavailable:
-            _require(descriptor['value'] is None)
-        elif key != 'logP' or descriptor['value'] is not None:
-            _number(descriptor['value'], -1_000_000, 1_000_000)
-        for field in required - {'value', 'warnings'}:
-            _text(descriptor[field], 2000)
-    _require(scene['mass'] is None if unavailable else
-             scene['mass'] == round(properties['molecularWeight']['value'], 3))
-    for warnings in (properties['warnings'], properties['logP']['warnings']):
-        _require(isinstance(warnings, list) and len(warnings) <= 32)
-        for warning in warnings:
-            _text(warning, 2000)
+    from .property_contract import validate_properties
+    validate_properties(properties, graph)
+    _require(properties['status'] == 'calculated')
+    _require(properties['formula'] == scene['formula'] and properties['smiles'] == scene['smiles'])
+    mass = properties['molecularWeight']['value']
+    _require(scene['mass'] is None if mass is None else scene['mass'] == round(mass, 3))
 
 
 def validate_prepared_result(value, *, mode):

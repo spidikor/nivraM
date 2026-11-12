@@ -3,14 +3,17 @@ from __future__ import annotations
 import copy
 import re
 from .chemistry import ChemistryError
-from .properties import calculate_properties
+from .properties import calculate_properties, input_identity
+from .property_contract import validate_properties
 from .scene import checked_style, render_scene
 
 SCHEMA = 'nivram-comparison/2'
 
 
 def compare_request(data):
-    if (not isinstance(data, dict) or set(data) != {'requestId', 'pinId', 'documentRevision', 'pinned', 'current'}
+    bound = isinstance(data, dict) and 'sourceBinding' in data
+    if (not isinstance(data, dict) or set(data) != ({'requestId', 'pinId', 'documentRevision', 'pinned', 'current'} | ({'sourceBinding'} if bound else set()))
+            or bound and data['sourceBinding'] != 'nivram-source/1'
             or type(data['documentRevision']) is not int or not 0 <= data['documentRevision'] <= 9007199254740991
             or any(not isinstance(data[k], str) or re.fullmatch('[0-9a-f]{32}', data[k]) is None for k in ('requestId', 'pinId'))):
         raise ChemistryError('Invalid structure comparison request.')
@@ -23,7 +26,9 @@ def compare_request(data):
         if not isinstance(item, dict) or set(item) != {'graph', 'style'}:
             raise ChemistryError('Invalid comparison source.')
         item['style'] = checked_style(item['style'])
-        properties = calculate_properties(item['graph'], snapshot['documentRevision'])
+        identity = input_identity(item['graph'], document_revision=snapshot['documentRevision'])
+        properties = calculate_properties(copy.deepcopy(item['graph']), snapshot['documentRevision'])
+        validate_properties(properties, item['graph'], revision=snapshot['documentRevision'], expected_identity=identity)
         results[side] = {'status': properties['status'], 'identity': properties['inputIdentity'],
                          'engine': properties['engine'], 'formula': properties['formula'],
                          'molecularWeight': properties['molecularWeight']['value'],
@@ -33,6 +38,8 @@ def compare_request(data):
                          'warnings': properties['warnings'],
                          **({'massUnavailable': properties['massUnavailable']}
                             if 'massUnavailable' in properties else {})}
+        if bound:
+            results[side].update(sourceGraph=copy.deepcopy(item['graph']), sourceIdentity=identity)
     for side in ('pinned', 'current'):
         item = snapshot[side]
         try:
@@ -44,4 +51,5 @@ def compare_request(data):
             preview = {'status': 'unavailable', 'scene': None, 'error': str(exc)[:1000]}
         results[side]['preview'] = preview
     return {'schema': SCHEMA, 'requestId': snapshot['requestId'], 'pinId': snapshot['pinId'],
-            'documentRevision': snapshot['documentRevision'], 'transformations': [], **results}
+            'documentRevision': snapshot['documentRevision'], 'transformations': [],
+            **({'sourceBinding': 'nivram-source/1'} if bound else {}), **results}
