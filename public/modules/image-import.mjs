@@ -1,3 +1,4 @@
+import {requestRender} from './render-contract.mjs';
 import {prepareRender} from './document.mjs';
 import {createImageReview} from './image-review.mjs';
 import {validateCrop,regionImageData,overviewPoint,cropBetween} from './image-region.mjs';
@@ -64,11 +65,7 @@ async function initialize(){
     return true;
   }
   const review=createImageReview({editor,native:window.pywebview.api,sessionToken:document.querySelector('meta[name="nivram-token"]')?.content||'',prepare:(result,base)=>prepareRender(result,base,document),reviewSource:sourceReview,
-    render:async(graph,style,job)=>{
-      const response=await job.wait(fetch('/api/render',{method:'POST',headers:{'Content-Type':'application/json','X-Nivram-Token':document.querySelector('meta[name="nivram-token"]').content},body:JSON.stringify({graph,style}),signal:job.signal}));
-      const text=await job.wait(response.text());if(text.length>4_000_000)throw new Error('The local response exceeded the supported size.');
-      const result=JSON.parse(text);if(!response.ok)throw new Error(result.error||'The correction could not be validated.');return result;
-    },
+    render:(graph,style,job)=>requestRender('render',{graph,style},{job,token:document.querySelector('meta[name="nivram-token"]').content}),
     importSource:async(source,style,job)=>{
       const response=await job.wait(fetch('/api/import',{method:'POST',headers:{'Content-Type':'application/json','X-Nivram-Token':document.querySelector('meta[name="nivram-token"]').content},body:JSON.stringify({source,style}),signal:job.signal}));
       const text=await job.wait(response.text());if(text.length>4_000_000)throw new Error('The local response exceeded the supported size.');

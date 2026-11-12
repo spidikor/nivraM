@@ -1,3 +1,4 @@
+import {boundRenderFixture} from './bound-render-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
@@ -40,9 +41,10 @@ test('production profile PNG preview waits for decoded-image sizing before nativ
   const server=createServer(async(req,res)=>{
     try{
       if(req.url==='/api/render'){
-        for await(const _ of req){};
+        const chunks=[];for await(const chunk of req)chunks.push(chunk);
+        const data=JSON.parse(Buffer.concat(chunks).toString());
         res.setHeader('Content-Type','application/json');
-        return res.end(JSON.stringify({scene:{svg}}));
+        return res.end(JSON.stringify(boundRenderFixture('render',data,{graph:data.graph,scene:{svg,width:260,height:100,positions:data.graph.atoms.map(a=>({id:a.id,x:40+a.x*(160/3),y:65-a.y*40})),transform:{x0:40,y0:65,xScale:160/3,yScale:-40}}})));
       }
       if(req.url==='/'){
         res.setHeader('Content-Type','text/html');

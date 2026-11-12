@@ -3,6 +3,7 @@ from __future__ import annotations
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit, unquote
+import copy
 import hmac
 import json
 import mimetypes
@@ -15,6 +16,7 @@ from rdkit import Chem, rdBase
 from . import __version__
 from .chemistry import ChemistryError, AtomValenceError, graph_to_mol, mol_to_graph, clean_graph, export_mol
 from .scene import render_scene
+from .render_contract import begin_binding, finish_binding
 from .worker_processes import CancellationToken, WorkerCancelled, WorkerSupervisor
 from .pubchem_jobs import PubChemJobs, PubChemJobError
 from .import_preparation import ImportPreparationService, ImportPreparationError
@@ -465,6 +467,11 @@ class Handler(BaseHTTPRequestHandler):
                 self.server.worker_supervisor.check_cancelled(cancellation_token)
                 return self._send(200,result)
             with LOCK, rdBase.BlockLogs():  # Avoid emitting submitted structures in parser logs.
+                binding = None
+                if route in ('/api/render', '/api/clean', '/api/reflect', '/api/rotate'):
+                    binding = begin_binding(route.removeprefix('/api/'), data)
+                    if binding is not None:
+                        data = copy.deepcopy(data)
                 if route=='/api/comparison':
                     from .comparison import compare_request
                     return self._send(200,compare_request(data))
@@ -496,6 +503,8 @@ class Handler(BaseHTTPRequestHandler):
                 elif route=='/api/export-smiles':
                     return self._send(200,{'text':Chem.MolToSmiles(graph_to_mol(data.get('graph',{})),isomericSmiles=True)})
                 else:return self._send(404,{'error':'Unknown API action.'})
+                if binding is not None:
+                    return self._send(200,finish_binding(binding,graph,render_scene))
                 return self._send(200,{'graph':graph,'scene':render_scene(graph,data.get('style'))})
         except (NamingJobError,PubChemJobError) as exc:
             return self._send(exc.http_status,{'error':str(exc),'status':exc.state})

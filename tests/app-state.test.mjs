@@ -1,3 +1,4 @@
+import {boundRenderFixture} from './bound-render-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
@@ -34,7 +35,7 @@ async function fixture(t){
         if(fault.malformedNext){fault.malformedNext=false;result.scene.svg='<svg invalid';}
         if(fault.svgNext){result.scene.svg=fault.svgNext;fault.svgNext=null;}
         if(fault.deferNext){const started=fault.deferNext;fault.deferNext=null;await new Promise(resolve=>{fault.release=resolve;started();});}
-        res.setHeader('Content-Type','application/json');return res.end(JSON.stringify(result));
+        res.setHeader('Content-Type','application/json');return res.end(JSON.stringify(req.url==='/api/import'?result:boundRenderFixture(req.url.slice(5),data,result)));
       }
       const relative=req.url==='/'?'index.html':req.url.slice(1);
       const filename=path.resolve(publicPath,relative);

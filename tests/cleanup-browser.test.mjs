@@ -1,3 +1,4 @@
+import {boundRenderFixture} from './bound-render-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
@@ -37,7 +38,7 @@ async function fixture(t){
           fault.alter?.(graph);fault.alter=null;
           if(fault.defer){fault.defer=false;await new Promise(resolve=>{fault.release=resolve;fault.started?.();});}
         }
-        return res.end(JSON.stringify(resultFor(graph,data.style)));
+        return res.end(JSON.stringify(boundRenderFixture(req.url.slice(5),data,resultFor(graph,data.style))));
       }
       const relative=req.url==='/'?'index.html':req.url.slice(1),filename=path.resolve(publicPath,relative);
       if(!filename.startsWith(publicPath)){res.statusCode=404;return res.end();}

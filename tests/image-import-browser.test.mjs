@@ -1,3 +1,4 @@
+import {boundRenderFixture} from './bound-render-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
@@ -51,7 +52,8 @@ async function fixture(t){
         if(req.url==='/api/render'||req.url==='/api/import'){
           if(req.url==='/api/render')fault.renders.push(structuredClone(data.graph));
           if(fault.holdRender){fault.holdRender=false;await new Promise(resolve=>{fault.release=resolve;fault.started();});}
-          return res.end(JSON.stringify(render(req.url==='/api/import'?graph('pasted'):data.graph,data.style)));
+          const result=render(req.url==='/api/import'?graph('pasted'):data.graph,data.style);
+          return res.end(JSON.stringify(req.url==='/api/import'?result:boundRenderFixture('render',data,result)));
         }
         res.statusCode=503;return res.end(JSON.stringify({error:'Unavailable in this focused UI fixture.'}));
       }

@@ -1,4 +1,5 @@
-import {cloneData,validateProject,sanitizeSvg} from './document.mjs';
+import {requestRender} from './render-contract.mjs';
+import {cloneData,validateProject,prepareRender} from './document.mjs';
 import {exportPng,downloadBlob} from './export.mjs';
 
 export function projectWithProfile(document,profile){
@@ -99,16 +100,15 @@ export async function initializeProfiles(editor,native){
     dialog.showModal();info.textContent='Rendering the exact export dimensions…';
     try{
       const candidate=selected()?projectWithProfile(snapshot.document,selected()):cloneData(snapshot.document);
-      const response=await fetch('/api/render',{method:'POST',signal:controller.signal,
-        headers:{'Content-Type':'application/json','X-Nivram-Token':document.querySelector('meta[name="nivram-token"]').content},
-        body:JSON.stringify({graph:candidate.graph,style:candidate.style})});
-      const result=await response.json();if(!response.ok)throw new Error(result.error??'Rendering failed.');
-      if(editor.getSnapshot().revision!==snapshot.revision)throw new Error('The drawing changed during preview.');
+      const result=await requestRender('render',{graph:candidate.graph,style:candidate.style},{revision:snapshot.revision,signal:controller.signal,
+        token:document.querySelector('meta[name="nivram-token"]').content,
+        assertCurrent:()=>{if(controller.signal.aborted)throw controller.signal.reason;if(editor.getSnapshot().revision!==snapshot.revision)throw new Error('The drawing changed during preview.');}});
+      const prepared=prepareRender(result,candidate,document);
       stage=document.createElementNS('http://www.w3.org/2000/svg','svg');
       stage.setAttribute('width','1000');stage.setAttribute('height','1000');
       Object.assign(stage.style,{position:'fixed',left:'-100000px',visibility:'hidden'});
-      const group=document.createElementNS(stage.namespaceURI,'g');group.append(sanitizeSvg(result.scene.svg,document,candidate.style));stage.append(group);document.body.append(stage);
-      const output=await exportPng(group,candidate.export,{signal:controller.signal,graph:candidate.graph,removeChemistryMetadata});
+      const group=document.createElementNS(stage.namespaceURI,'g');group.append(prepared.fragment);stage.append(group);document.body.append(stage);
+      const output=await exportPng(group,candidate.export,{signal:controller.signal,graph:prepared.project.graph,removeChemistryMetadata});
       if(controller.signal.aborted||editor.getSnapshot().revision!==snapshot.revision)throw new Error('The preview is no longer current.');
       rendered=output;previewUrl=URL.createObjectURL(output.blob);image.src=previewUrl;
       await image.decode();if(controller.signal.aborted)throw new Error('Preview cancelled.');

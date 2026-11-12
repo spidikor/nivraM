@@ -1,3 +1,4 @@
+import {boundRenderFixture} from './bound-render-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
@@ -31,7 +32,7 @@ test('optical UI requires a configured model and explicit crop action, then disp
         const chunks=[];for await(const chunk of req)chunks.push(chunk);const data=chunks.length?JSON.parse(Buffer.concat(chunks)):{};res.setHeader('Content-Type','application/json');
         let result;
         if(req.url==='/api/status')result={version:'fixture',rdkit:'fixture'};
-        else if(req.url==='/api/render')result=render(data.graph,data.style);
+        else if(req.url==='/api/render')result=boundRenderFixture('render',data,render(data.graph,data.style));
         else if(req.url==='/fixture/inspect')result={status:'inspected',jobId:data.id,name:'ordinary.png',reviewAvailable:false,regionPreviewAvailable:true,inspection:inspection(),opticalRecognition:{status:state.configured?'configured':'missing-model',message:'Local recognition model is not installed.',modelSha256:modelHash}};
         else if(req.url==='/fixture/recognize'){
           state.recognitions.push(data);const bytes=png(data.rect.width,data.rect.height),pngSha256=createHash('sha256').update(bytes).digest('hex');

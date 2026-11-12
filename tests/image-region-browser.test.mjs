@@ -1,3 +1,4 @@
+import {boundRenderFixture} from './bound-render-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
@@ -28,7 +29,7 @@ async function fixture(t){
       if(req.url==='/api/status'){res.setHeader('Content-Type','application/json');return res.end(JSON.stringify({version:'fixture',rdkit:'test'}));}
       if(req.url.startsWith('/api/')||req.url.startsWith('/fixture/')){
         const chunks=[];for await(const value of req)chunks.push(value);const data=chunks.length?JSON.parse(Buffer.concat(chunks)):{};res.setHeader('Content-Type','application/json');
-        if(req.url==='/api/render')return res.end(JSON.stringify(render(data.graph,data.style)));
+        if(req.url==='/api/render')return res.end(JSON.stringify(boundRenderFixture('render',data,render(data.graph,data.style))));
         if(req.url==='/fixture/inspect')return res.end(JSON.stringify({status:'inspected',jobId:data.id,name:'synthetic-source.png',reviewAvailable:fault.small,regionPreviewAvailable:true,sourcePreview:fault.small?'data:image/png;base64,'+png(120,80).toString('base64'):null,inspection:{schemaVersion:1,originalSha256:hash,image:{width:fault.small?120:11559,height:fault.small?80:9999},engine:{name:'fixture',version:'1'},warnings:['Metadata coordinates are not image pixels.'],unsupportedSources:[{source:'metadata',features:['Annotations remain in the original PNG.']}],candidates:[{id:'c1',label:'Complete component',status:'supported',source:'metadata',formalCharge:0,graph,warnings:['Review every selected atom and bond.']}]}}));
         if(req.url==='/fixture/cancel'){detail=null;return res.end('{}');}
         if(req.url==='/fixture/cancel-region'){if(detail?.requestId===data.requestId)detail=null;return res.end('{}');}
