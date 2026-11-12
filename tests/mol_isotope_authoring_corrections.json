@@ -1,0 +1,62 @@
+{
+  "absolute_H2True": {
+    "policy": "identity",
+    "expected_smiles": "[H]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[H]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 1,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    },
+    "reason": "Oracle correction only. Actual frozen source has plain H, no MASS; VAL=-1 is valence, not isotope mass. Natural-label hydrogen atom [H] is the source identity."
+  },
+  "absolute_H3True": {
+    "policy": "identity",
+    "expected_smiles": "[H]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[H]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 1,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    },
+    "reason": "Oracle correction only. Actual frozen source has plain H, no MASS; VAL=-1 is valence, not isotope mass. Natural-label hydrogen atom [H] is the source identity."
+  },
+  "header_not_record": {
+    "policy": "identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    },
+    "reason": "Oracle/policy correction only. ISO-like text is in header line2, outside CTAB property records. Source is ordinary unlabeled carbon."
+  }
+}

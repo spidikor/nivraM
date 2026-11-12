@@ -1,0 +1,14 @@
+{
+  "after_end": {
+    "policy": "reject",
+    "expected_smiles": null,
+    "expected_graph": null,
+    "reason": "Existing application deliberately rejects trailing metadata after M END; preserve this safe boundary, rather than requiring raw RDKit's ignored-tail behavior."
+  },
+  "end_does_not_override": {
+    "policy": "reject",
+    "expected_smiles": null,
+    "expected_graph": null,
+    "reason": "Existing application rejects trailing metadata after M END, before native parsing."
+  }
+}

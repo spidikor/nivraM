@@ -1,0 +1,88 @@
+[
+  {
+    "name": "\"MASS= +13\"",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 \"MASS= +13\"\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "reject_or_identity",
+    "expected_smiles": "[13CH4]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]"
+    },
+    "wrong_smiles": "C",
+    "source_sha256": "20c6c043685024fd6beb34b21599ab88c3001adf175ac043d57dd5becc8e3bc0"
+  },
+  {
+    "name": "\"MASS= 13\"",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 \"MASS= 13\"\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "reject_or_identity",
+    "expected_smiles": "[13CH4]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]"
+    },
+    "wrong_smiles": "C",
+    "source_sha256": "cb9f506f89d4a5f4db16ffb46e39a53765646692339b9f34f4ca534875da009d"
+  },
+  {
+    "name": "\"MASS=+13 \"",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 \"MASS=+13 \"\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "reject_or_identity",
+    "expected_smiles": "[13CH4]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]"
+    },
+    "wrong_smiles": "C",
+    "source_sha256": "6eba9a89e286b9bbd10a3416c9d377acc2a21b01a94b3296c579bdcfca831295"
+  },
+  {
+    "name": "\"MASS=13 \"",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 \"MASS=13 \"\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "reject_or_identity",
+    "expected_smiles": "[13CH4]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]"
+    },
+    "wrong_smiles": "C",
+    "source_sha256": "c1717d1005968a518adc4c28405a1a6491a7d19645d7a047e4ce1c99e2c8ce9f"
+  },
+  {
+    "name": "\"MASS=  +13\"",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 \"MASS=  +13\"\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "reject_or_identity",
+    "expected_smiles": "[13CH4]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]"
+    },
+    "wrong_smiles": "C",
+    "source_sha256": "40d10815398a7fc3898c30c0f710593a4186d189f804edbdf023ef0fb4672afc"
+  },
+  {
+    "name": "\"MASS= +13 \"",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 \"MASS= +13 \"\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "reject_or_identity",
+    "expected_smiles": "[13CH4]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]"
+    },
+    "wrong_smiles": "C",
+    "source_sha256": "51cd93ea765c7d955528df460bb699a13f6907b20fbebe739a03a41d2826fd3a"
+  },
+  {
+    "name": "\"MASS= +0\"",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 \"MASS= +0\"\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "reject_or_identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C"
+    },
+    "wrong_smiles": null,
+    "source_sha256": "11793ca9110bac48b27829ba12faf5802d16d8e2caa28f7499474a24cb2c7ddb"
+  },
+  {
+    "name": "\"MASS= -1\"",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 \"MASS= -1\"\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "reject_or_identity",
+    "expected_smiles": null,
+    "expected_graph": null,
+    "wrong_smiles": null,
+    "source_sha256": "aad084b66d84e76eb1483e4fca4454cdc57688b1afeb20c316c4052e0c2a377f"
+  }
+]

@@ -1,4 +1,4 @@
-"""Bound input records, preserve signed charge fields and guard MOL radicals.
+"""Bound records, preserve MOL isotope/map/charge fields and guard radicals.
 
 Size guards are not chemical validation. The radical guard additionally rejects
 explicit singlets before RDKit loses their declaration. RDKit remains responsible
@@ -60,11 +60,57 @@ def _charge_record(line: str, atoms: int) -> None:
             raise ImportLimitError('Invalid V2000 charge atom or value; import cancelled.')
 
 
+def _annotation_integer(value: str, minimum: int, maximum: int, kind: str) -> int:
+    # Bound the token before conversion; do not accept native prefix truncation,
+    # Unicode numerals, internal spaces or floating-point isotope masses.
+    token = value.strip(' ')
+    if not re.fullmatch(r'[+-]?[0-9]{1,9}', token):
+        raise ImportLimitError(f'Malformed MOL {kind} integer; import cancelled.')
+    number = int(token)
+    if not minimum <= number <= maximum:
+        raise ImportLimitError(f'Unsupported MOL {kind} value; import cancelled.')
+    return number
+
+
+def _v2000_isotope_record(line: str, atoms: int, line_index: int, edits: list) -> int:
+    count = _annotation_integer(line[6:9], 0, 8, 'isotope count')
+    end = 9 + 8 * count
+    if len(line) < end or line[end:].strip():
+        raise ImportLimitError('Malformed V2000 isotope record; import cancelled.')
+    for offset in range(9, end, 8):
+        _annotation_integer(line[offset:offset + 4], 1, atoms, 'isotope atom')
+        field = line[offset + 4:offset + 8]
+        _annotation_integer(field, 0, 400, 'isotope')
+        if '+' in field:
+            edits.append((line_index, offset + 4, offset + 8, field.replace('+', ' ')))
+    # Count/reference signs already survive native parsing. Validate all entries,
+    # retaining pinned-native last assignment for repeated isotope declarations.
+    return count
+
+
 def _v2000_radicals(lines: list[str], atoms: int, bonds: int, edits: list) -> dict[int, int]:
     # Walk only property records, not header/atom/bond text or alias payloads.
     # A/G and S SKP consume subsequent physical lines in RDKit 2025.09.4.
     legacy = {}
+    mass_fields = []
     for index, line in enumerate(lines[4:4 + atoms]):
+        mass = line[34:36]
+        if len(mass) == 1:
+            raise ImportLimitError('Incomplete V2000 mass-difference field; import cancelled.')
+        if mass.strip(' '):
+            _annotation_integer(mass, -3, 4, 'legacy mass difference')
+        mass_fields.append((index + 4, mass))
+        # Native treats a complete noncanonical zero field as a present map0
+        # property, which cannot survive graph rebuilding. Canonicalize only
+        # this validated default; leave absent short-record fields absent.
+        if len(line) > 60:
+            field = line[60:63]
+            if len(field) != 3:
+                raise ImportLimitError('Incomplete V2000 atom-map field; import cancelled.')
+            number = _annotation_integer(field, 0, 999999, 'atom map') if field.strip(' ') else 0
+            replacement = '  0' if number == 0 else field.replace('+', ' ')
+            if replacement != field:
+                edits.append((index + 4, 60, 63, replacement))
         # Native records shorter than this have no charge field.
         field = line[36:39] if len(line) >= 39 else ''
         code = _charge_integer(field) if field.strip(' ') else 0
@@ -78,6 +124,7 @@ def _v2000_radicals(lines: list[str], atoms: int, bonds: int, edits: list) -> di
     seen = set()
     declared = {}
     overrides_legacy = False
+    overrides_mass = False
     while i < len(lines):
         line = lines[i]
         i += 1
@@ -98,6 +145,9 @@ def _v2000_radicals(lines: list[str], atoms: int, bonds: int, edits: list) -> di
             if '+' in line[6:end]:
                 edits.append((i - 1, 6, end, line[6:end].replace('+', ' ')))
             overrides_legacy = True
+        elif line.startswith('M  ISO'):
+            if _v2000_isotope_record(line, atoms, i - 1, edits):
+                overrides_mass = True
         elif line.startswith('M  RAD'):
             overrides_legacy = True
             count = _radical_integer(line[6:9])
@@ -115,6 +165,14 @@ def _v2000_radicals(lines: list[str], atoms: int, bonds: int, edits: list) -> di
     # atom-block charge/radical codes. ISO supersedes only isotope fields.
     if not overrides_legacy:
         declared.update(legacy)
+    for line_index, field in mass_fields:
+        # A nonempty effective ISO property supersedes ALL atom-block dd fields,
+        # not D/T symbols. Zero-entry compatibility is a no-op. Clearing source
+        # fields before parsing implements precedence without mutating atoms or
+        # choosing a different periodic-table isotope base.
+        replacement = ' 0' if overrides_mass and field else field.replace('+', ' ')
+        if replacement != field:
+            edits.append((line_index, 34, 36, replacement))
     return declared
 
 
@@ -137,8 +195,8 @@ def _v3000_atom_fields(record: str) -> list[tuple[str, int]]:
                 # even with no following space (X="a"RAD=1). Native tokenization
                 # strips the first/closing characters of this token.
                 key = record[start:i].partition('=')[0].upper()
-                if key in ('RAD', 'CHG'):
-                    kind = 'radical' if key == 'RAD' else 'charge'
+                if key in ('RAD', 'CHG', 'MASS'):
+                    kind = {'RAD': 'radical', 'CHG': 'charge', 'MASS': 'isotope'}[key]
                     raise ImportLimitError(f'Quoted V3000 {kind} values are unsupported; import cancelled.')
                 fields.append((record[start + 1:i], start + 1))
                 start = i + 1
@@ -164,12 +222,27 @@ def _v3000_atom_fields(record: str) -> list[tuple[str, int]]:
 def _v3000_atom_declarations(record: str, offsets: list[tuple[int, int]], edits: list) -> int:
     seen = False
     electrons = 0
-    for token, start in _v3000_atom_fields(record)[6:]:
+    fields = _v3000_atom_fields(record)
+    if len(fields) < 6:
+        raise ImportLimitError('Incomplete V3000 atom record; import cancelled.')
+    _annotation_integer(fields[5][0], 0, 999999, 'atom map')
+    for token, start in fields[6:]:
         # RDKit also recognizes a fully quoted assignment token.
         if token.startswith('"') and token.endswith('"'):
             token = token[1:-1]
             start += 1
         key, sep, value = token.partition('=')
+        if key.upper() == 'MASS':
+            if not sep:
+                raise ImportLimitError('Malformed V3000 isotope declaration; import cancelled.')
+            _annotation_integer(value, 0, 400, 'isotope')
+            # A fully quoted assignment can retain outer ASCII spaces around
+            # its integer. Locate the validated sign, not the untrimmed value's
+            # first character; offsets also cover physical continuations.
+            leading_spaces = len(value) - len(value.lstrip(' '))
+            if value[leading_spaces:].startswith('+'):
+                line, column = offsets[start + len(key) + 1 + leading_spaces]
+                edits.append((line, column, column + 1, ''))
         if key.upper() == 'CHG':
             if not sep or not re.fullmatch(r'[+-]?[0-9]{1,9}', value):
                 raise ImportLimitError('Malformed V3000 charge declaration; import cancelled.')
@@ -364,11 +437,13 @@ def check_mol(source: str, max_atoms: int, max_bonds: int) -> dict[int, int]:
 
 
 def prepare_mol(source: str, max_atoms: int, max_bonds: int) -> tuple[str, dict[int, int]]:
-    """Return an internal same-integer charge spelling copy and radical guards.
+    """Return a transient native-input copy and unchanged radical guards.
 
     RDKit 2025.09.4 loses leading-plus integers before sanitization. Edit only
-    validated charge fields, preserving physical lines and every unrelated byte.
-    No molecular roundtrip or chemical correction is performed. V3000 integer
+    validated charge/isotope/map fields. Effective V2000 ISO entries supersede
+    legacy mass differences, leaving D/T symbols intact; validated map zero is
+    canonicalized to native absence. All unrelated bytes and physical line endings
+    survive. No molecular roundtrip or post-parse atom mutation occurs. V3000 integer
     spelling is a bounded compatibility contract, not general CTfile conformance.
     """
     edits: list[tuple[int, int, int, str]] = []

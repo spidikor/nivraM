@@ -1,0 +1,2405 @@
+[
+  {
+    "name": "absolute_v2_13",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1  13\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "344b95d3517456723b42c48f7e2e6a4716c25918e8e8154e1b5ed9ac815a36c8",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_v3_13",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=13\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "d452791aacd06bc278d40abdc367a464d58ef948e77cc5e9c3546bcb9bef0d1e",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_v2_+13",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1 +13\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "f062c3410fc09719275e379eaa609fd0e13f33e4b9f913bc7489f19f8dd95d1f",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_v3_+13",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=+13\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "dc9c4809f2450854b22940d45ff3ddc43ca3bd433af332503e3b8f582a4e62d4",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_v2_12",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1  12\nM  END\n",
+    "expected_smiles": "[12CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "ceab2e35a627f257471b3657c5ad0e092f591cedc6e5915290bbeb8fa4d42567",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[12CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 12,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_v3_12",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=12\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[12CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "8dc9f563b970d7a5f4d16c8f7b1fac6baed2fb77df7d3efb5c2966453ba0693e",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[12CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 12,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_v2_+12",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1 +12\nM  END\n",
+    "expected_smiles": "[12CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "56d4ece06e3d45ae1198352fcc1db9559e764585c59677a99eb966e231bc2d49",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[12CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 12,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_v3_+12",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=+12\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[12CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "9fe0f2df4ec97ddea2e1b30d2a1f7e28e094a2c2adc07eb646fc1d243c8f39ea",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[12CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 12,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_v2_0",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1   0\nM  END\n",
+    "expected_smiles": "C",
+    "policy": "identity",
+    "wrong_smiles": "[12CH4]",
+    "source_sha256": "087be6a2906ddd4f8058051cdfb698502a2945096b78c2077a3dd35cdfd87a52",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_v3_0",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=0\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "C",
+    "policy": "identity",
+    "wrong_smiles": "[12CH4]",
+    "source_sha256": "bb68b92d4ed4160edf13cbaba9402cf3fd317bcb75f2423a89903ae5fd3c8a4c",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_v2_+0",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1  +0\nM  END\n",
+    "expected_smiles": "C",
+    "policy": "identity",
+    "wrong_smiles": "[12CH4]",
+    "source_sha256": "ee90b781a41cfed12bc1178226f4bdfc3ee89cf3f3cf69fd4e2316e5d66b22af",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_v3_+0",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=+0\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "C",
+    "policy": "identity",
+    "wrong_smiles": "[12CH4]",
+    "source_sha256": "83947b506d2adc3563172e89d97c7d3b55542bd57ecb06d0796a54540e899ae1",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "legacy_C_1",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "8ede22eb3086dcbe3cbefd1d90656a84db0836f42993ae9d89443a1b0a8a871d",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "legacy_C_+1",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C  +1  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "35416c148cf6800eb51398ae5b62ca83d4447dd7e68dc5dce2781d14b5064aff",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "legacy_C_-1",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C  -1  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": "[11CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "b647547f6b0e24246a8c1f7d28fa3b94569487b1e54e4384bc57ca6af3cb9557",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[11CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 11,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "legacy_C_0",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": "C",
+    "policy": "identity",
+    "wrong_smiles": "[12CH4]",
+    "source_sha256": "e387795fb0f8c211fdb71fc49fc222cf9cb28e9beb3fbb5142099a247ac5034a",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "legacy_C_+0",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C  +0  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": "C",
+    "policy": "identity",
+    "wrong_smiles": "[12CH4]",
+    "source_sha256": "e974964da49dc57a1efb7248ab9535c509d486ee3308133f9720cdab7c0a03d8",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "legacy_C_4",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   4  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": "[16CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "f09b80cd8e8048ddb9214a83cda393fed32c862cf7b7ed0c85d126a44389df4b",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[16CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 16,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "legacy_C_+4",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C  +4  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": "[16CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "e832f2ea334310908956d01a14f14dbdbf112affa524b2d1acf659ad9c5b8124",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[16CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 16,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "legacy_C_-3",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C  -3  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": "[9CH4]",
+    "policy": "identity",
+    "wrong_smiles": "C",
+    "source_sha256": "42d26175d5c0a75644db1cb5dc45311cf35d0fd6d40b006c9cd4074d0825b5c2",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[9CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 9,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "legacy_N",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 N  +1  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": "[15NH3]",
+    "policy": "identity",
+    "wrong_smiles": "N",
+    "source_sha256": "1a0bb784d6dce51e423251b9ef72514823399323faee168e8568ab6fd4dccd91",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[15NH3]",
+      "atoms": [
+        {
+          "atomic_number": 7,
+          "isotope": 15,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 3,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "legacy_O",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 O  +2  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": "[18OH2]",
+    "policy": "identity",
+    "wrong_smiles": "O",
+    "source_sha256": "ed01651db471782eab9ef0a5ebea1f69ee747297935fe6944251cc499325f151",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[18OH2]",
+      "atoms": [
+        {
+          "atomic_number": 8,
+          "isotope": 18,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 2,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "signed_count_ref",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO +1  +1  13\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "53949a09f6af81cd17ce061261b0aef9bcca89d2fe32542ebab7e69b8622bbbc",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_N15False",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 N   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1 +15\nM  END\n",
+    "expected_smiles": "[15NH3]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "c5ab3162e77b8365f910419fd7b6e35e4baf2ecfa804f7ce3461798cc6afa7d9",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[15NH3]",
+      "atoms": [
+        {
+          "atomic_number": 7,
+          "isotope": 15,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 3,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_N15True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 N 0.000000 0.000000 0.000000 0 MASS=+15\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[15NH3]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "80ccb0151a50012848b73015ad2ac3940277209e81b77ec0022b19128c6a7e93",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[15NH3]",
+      "atoms": [
+        {
+          "atomic_number": 7,
+          "isotope": 15,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 3,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_O18False",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1 +18\nM  END\n",
+    "expected_smiles": "[18OH2]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "5544f5265fe07381670b9c8a0a8fda26a2a61742ac1f9d4f0deba36eefc7df73",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[18OH2]",
+      "atoms": [
+        {
+          "atomic_number": 8,
+          "isotope": 18,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 2,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_O18True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 O 0.000000 0.000000 0.000000 0 MASS=+18\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[18OH2]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "10d1c0282c79a378097ac50bc0971fee77c755527d1fc49b2cb11a64e0c503af",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[18OH2]",
+      "atoms": [
+        {
+          "atomic_number": 8,
+          "isotope": 18,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 2,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_H2False",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 H   0  0  0  0  0 15  0  0  0  0  0  0\nM  ISO  1   1  +2\nM  END\n",
+    "expected_smiles": "[2H]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "f89c387bb79ec54a7c035ecc9eaca8ef6e2ceaa3e7f59a3f34a5cbc24b887dbc",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[2H]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 2,
+          "charge": 0,
+          "radicals": 1,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_H2True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 H 0.000000 0.000000 0.000000 0 VAL=-1\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[2H]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "27701fb937b8c468bb7a3277eb70384590e5d51964072e4645fb8ed1b1e515b2",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[2H]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 2,
+          "charge": 0,
+          "radicals": 1,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_H3False",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 H   0  0  0  0  0 15  0  0  0  0  0  0\nM  ISO  1   1  +3\nM  END\n",
+    "expected_smiles": "[3H]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "7081fd87bb3277525acfe05ab1534f6f88bccc183bce584d1d1c7295843e80f9",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[3H]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 3,
+          "charge": 0,
+          "radicals": 1,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "absolute_H3True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 H 0.000000 0.000000 0.000000 0 VAL=-1\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[3H]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "27701fb937b8c468bb7a3277eb70384590e5d51964072e4645fb8ed1b1e515b2",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[3H]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 3,
+          "charge": 0,
+          "radicals": 1,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "override_other",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\n    1.2990    0.7500    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  ISO  1   2 +18\nM  END\n",
+    "expected_smiles": "C[18OH]",
+    "policy": "identity",
+    "wrong_smiles": "[13CH3][18OH]",
+    "source_sha256": "a89a2a30557523081a7ba36be88ceed82f94d69e451275c15247ec22f8007007",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C[18OH]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 3,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 8,
+          "isotope": 18,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "override_same",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1 +12\nM  END\n",
+    "expected_smiles": "[12CH4]",
+    "policy": "identity",
+    "wrong_smiles": "[13CH4]",
+    "source_sha256": "9a1910727e62447b4ea068add833de52ac3b127e9d04112b1aa068dcba36d41b",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[12CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 12,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "zero_entry_legacy_compat",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  0\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "compatibility",
+    "wrong_smiles": null,
+    "source_sha256": "7c958cd75a94d82139fe24c8cd4b67a6369b31d8c0013e6217035997da58b427",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "effective_then_zero",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\n    1.2990    0.7500    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  ISO  1   2 +18\nM  ISO  0\nM  END\n",
+    "expected_smiles": "C[18OH]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "beea0d0b8d2d2e6383b1c94cc627f9557f46b698fce8c4af73e26cd4ca8b8d91",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C[18OH]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 3,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 8,
+          "isotope": 18,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "zero_then_effective",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\n    1.2990    0.7500    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  ISO  0\nM  ISO  1   2 +18\nM  END\n",
+    "expected_smiles": "C[18OH]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "671afd1eef413ba1c8701007fe462c90c9b64ed762bf4234373557739e5dceb6",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C[18OH]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 3,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 8,
+          "isotope": 18,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "repeated_distinct",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\n    1.2990    0.7500    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  ISO  1   1 +12\nM  ISO  1   2 +18\nM  END\n",
+    "expected_smiles": "[12CH3][18OH]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "02abee3cf1285443434fcb4cb9f7f02b061d1c730ab576c4ba69e37851b562fa",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[12CH3][18OH]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 12,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 3,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 8,
+          "isotope": 18,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "repeated_same",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1  13\nM  ISO  1   1 +14\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject_or_native_last",
+    "wrong_smiles": null,
+    "source_sha256": "be8abe6d96038a9345991af0c758e2a55279b0ecb128c0e9bfc6b74012eb6181"
+  },
+  {
+    "name": "symbol_DFalse",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    1.2990    0.7500    0.0000 D   0  0  0  0  0  0  0  0  0  0  0  0\n    0.0000    0.0000    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  END\n",
+    "expected_smiles": "[2H]O",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "ab0a841ff56a1d415814f8cb8287b4177ad173721e1723d92876feeadc9847bd",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[2H]O",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 2,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 8,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "symbol_other_iso_D",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    1.2990    0.7500    0.0000 D   0  0  0  0  0  0  0  0  0  0  0  0\n    0.0000    0.0000    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  ISO  1   2 +18\nM  END\n",
+    "expected_smiles": "[2H][18OH]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "101604ad9e6f528e0690d0df6d42d17a9a0b4745ecd50c3192a3c15bc4848c67",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[2H][18OH]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 2,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 8,
+          "isotope": 18,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "symbol_DTrue",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 2 1 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 D 1.299038 0.750000 0.000000 0\nM  V30 2 O 0.000000 0.000000 0.000000 0\nM  V30 END ATOM\nM  V30 BEGIN BOND\nM  V30 1 1 1 2\nM  V30 END BOND\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[2H]O",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "87fd45780a76f6de6043a691255a1c8bf94a4021ac0f8d8c687f9fc7557e8f97",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[2H]O",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 2,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 8,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "symbol_TFalse",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    1.2990    0.7500    0.0000 T   0  0  0  0  0  0  0  0  0  0  0  0\n    0.0000    0.0000    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  END\n",
+    "expected_smiles": "[3H]O",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "4f3532aa8dc56f456ca544d664531b237baee482730cd230ac92844809b8daac",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[3H]O",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 3,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 8,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "symbol_other_iso_T",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    1.2990    0.7500    0.0000 T   0  0  0  0  0  0  0  0  0  0  0  0\n    0.0000    0.0000    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  ISO  1   2 +18\nM  END\n",
+    "expected_smiles": "[3H][18OH]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "d54a78ba03354ec89c8acc2a30b949b3897cb0a7b156ca1836e484d4d42a95fb",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[3H][18OH]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 3,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 8,
+          "isotope": 18,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "symbol_TTrue",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 2 1 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 T 1.299038 0.750000 0.000000 0\nM  V30 2 O 0.000000 0.000000 0.000000 0\nM  V30 END ATOM\nM  V30 BEGIN BOND\nM  V30 1 1 1 2\nM  V30 END BOND\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[3H]O",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "24016cd58cdb0d5686156c49ef1294a8b376df410564854d38cfbc681a2cb8f5",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[3H]O",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 3,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 8,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "rich_[2H][NH2+:7][13CH3:9]False",
+    "molfile": "\n     RDKit          2D\n\n  3  2  0  0  0  0  0  0  0  0999 V2000\n    2.5981   -0.0000    0.0000 H   0  0  0  0  0  0  0  0  0  0  0  0\n    1.2990    0.7500    0.0000 N   0  0  0  0  0  0  0  0  0  7  0  0\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  9  0  0\n  1  2  1  0\n  2  3  1  0\nM  CHG  1   2   1\nM  ISO  2   1  +2   3 +13\nM  END\n",
+    "expected_smiles": "[2H][NH2+:7][13CH3:9]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "f0480c45b7c003f7f744e65a3ceb7670e84c82d99731c0be5914035363f4174e",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[2H][NH2+:7][13CH3:9]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 2,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 7,
+          "isotope": 0,
+          "charge": 1,
+          "radicals": 0,
+          "map": 7,
+          "totalHs": 2,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 9,
+          "totalHs": 3,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        },
+        {
+          "ends": [
+            1,
+            2
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "rich_[2H][NH2+:7][13CH3:9]True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 3 2 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 H 2.598076 -0.000000 0.000000 0 MASS=+2\nM  V30 2 N 1.299038 0.750000 0.000000 7 CHG=1\nM  V30 3 C 0.000000 0.000000 0.000000 9 MASS=+13\nM  V30 END ATOM\nM  V30 BEGIN BOND\nM  V30 1 1 1 2\nM  V30 2 1 2 3\nM  V30 END BOND\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[2H][NH2+:7][13CH3:9]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "d1a9e1b74ee0054923e3fd0808b43d1fddad1993b6052f68e3ac72f545befb70",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[2H][NH2+:7][13CH3:9]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 2,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 7,
+          "isotope": 0,
+          "charge": 1,
+          "radicals": 0,
+          "map": 7,
+          "totalHs": 2,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 9,
+          "totalHs": 3,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        },
+        {
+          "ends": [
+            1,
+            2
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "rich_[13CH3:9]False",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  3  0  0  0  9  0  0\nM  RAD  1   1   2\nM  ISO  1   1 +13\nM  END\n",
+    "expected_smiles": "[13CH3:9]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "7bfa0d30aedf728e878fc02528629aeb216dd1f043f55b96babe38a622492271",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH3:9]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 1,
+          "map": 9,
+          "totalHs": 3,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "rich_[13CH3:9]True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 9 MASS=+13 RAD=2 VAL=3\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[13CH3:9]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "ce88c85542e559b5590784e9587f5b74c75bd1061c9f7e71e4465e6040bdda29",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH3:9]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 1,
+          "map": 9,
+          "totalHs": 3,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "rich_[2H:1][C@](F)(Cl)[13CH3:2]False",
+    "molfile": "\n     RDKit          2D\n\n  5  4  0  0  0  0  0  0  0  0999 V2000\n    2.5981    1.5000    0.0000 H   0  0  0  0  0  0  0  0  0  1  0  0\n    1.2990    0.7500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n    0.5490    2.0490    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0\n    2.0490   -0.5490    0.0000 Cl  0  0  0  0  0  0  0  0  0  0  0  0\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  2  0  0\n  2  1  1  6\n  2  3  1  0\n  2  4  1  0\n  2  5  1  0\nM  ISO  2   1  +2   5 +13\nM  END\n",
+    "expected_smiles": "[2H:1][C@](F)(Cl)[13CH3:2]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "1509c1c8be650db8b7ff70ea7eaee3e8d06d43ebc83c05504e2f5f243fb7731a",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "F[C@](Cl)([2H:1])[13CH3:2]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 2,
+          "charge": 0,
+          "radicals": 0,
+          "map": 1,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 2
+        },
+        {
+          "atomic_number": 9,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 17,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 2,
+          "totalHs": 3,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        },
+        {
+          "ends": [
+            1,
+            2
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        },
+        {
+          "ends": [
+            1,
+            3
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        },
+        {
+          "ends": [
+            1,
+            4
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "rich_[2H:1][C@](F)(Cl)[13CH3:2]True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 5 4 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 H 2.598076 1.500000 0.000000 1 MASS=+2\nM  V30 2 C 1.299038 0.750000 0.000000 0\nM  V30 3 F 0.549038 2.049038 0.000000 0\nM  V30 4 Cl 2.049038 -0.549038 0.000000 0\nM  V30 5 C 0.000000 0.000000 0.000000 2 MASS=+13\nM  V30 END ATOM\nM  V30 BEGIN BOND\nM  V30 1 1 2 1 CFG=3\nM  V30 2 1 2 3\nM  V30 3 1 2 4\nM  V30 4 1 2 5\nM  V30 END BOND\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[2H:1][C@](F)(Cl)[13CH3:2]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "916f72ca3b9b7d3bca829d12542f8ab25c2ba662f71a69902472a315d2a7645d",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "F[C@](Cl)([2H:1])[13CH3:2]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 2,
+          "charge": 0,
+          "radicals": 0,
+          "map": 1,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 2
+        },
+        {
+          "atomic_number": 9,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 17,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 2,
+          "totalHs": 3,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        },
+        {
+          "ends": [
+            1,
+            2
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        },
+        {
+          "ends": [
+            1,
+            3
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        },
+        {
+          "ends": [
+            1,
+            4
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "rich_F/C=C/[13CH3:1]False",
+    "molfile": "\n     RDKit          2D\n\n  4  3  0  0  0  0  0  0  0  0999 V2000\n   -0.7500   -1.2990    0.0000 F   0  0  0  0  0  0  0  0  0  0  0  0\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n    1.5000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n    2.2500    1.2990    0.0000 C   0  0  0  0  0  0  0  0  0  1  0  0\n  1  2  1  0\n  2  3  2  0\n  3  4  1  0\nM  ISO  1   4 +13\nM  END\n",
+    "expected_smiles": "F/C=C/[13CH3:1]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "5a9a3ecc271848b7a436d08db2c0b9c1c9ff069454be7cf6cb2b45743285b6f9",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "F/C=C/[13CH3:1]",
+      "atoms": [
+        {
+          "atomic_number": 9,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 1,
+          "totalHs": 3,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        },
+        {
+          "ends": [
+            1,
+            2
+          ],
+          "order": 2.0,
+          "stereo": 3,
+          "stereo_atoms": [
+            0,
+            3
+          ]
+        },
+        {
+          "ends": [
+            2,
+            3
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "rich_F/C=C/[13CH3:1]True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 4 3 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 F -0.750000 -1.299038 0.000000 0\nM  V30 2 C 0.000000 0.000000 0.000000 0\nM  V30 3 C 1.500000 0.000000 0.000000 0\nM  V30 4 C 2.250000 1.299038 0.000000 1 MASS=+13\nM  V30 END ATOM\nM  V30 BEGIN BOND\nM  V30 1 1 1 2\nM  V30 2 2 2 3\nM  V30 3 1 3 4\nM  V30 END BOND\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "F/C=C/[13CH3:1]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "71de5f9fd02cdf65fc94295d7d02f3417e48b633bc3ffb88cb9d17148fa7925d",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "F/C=C/[13CH3:1]",
+      "atoms": [
+        {
+          "atomic_number": 9,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 1,
+          "chiral": 0
+        },
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 1,
+          "totalHs": 3,
+          "chiral": 0
+        }
+      ],
+      "bonds": [
+        {
+          "ends": [
+            0,
+            1
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        },
+        {
+          "ends": [
+            1,
+            2
+          ],
+          "order": 2.0,
+          "stereo": 3,
+          "stereo_atoms": [
+            0,
+            3
+          ]
+        },
+        {
+          "ends": [
+            2,
+            3
+          ],
+          "order": 1.0,
+          "stereo": 0,
+          "stereo_atoms": []
+        }
+      ]
+    }
+  },
+  {
+    "name": "token_\"MASS=+13\"",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 \"MASS=+13\"\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "c2144ba76bea1c21cafaeb4a473aa82e1d3032f4fa20f100a12b5ce6562afe5d",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "token_MASS=+-\nM  V30 13",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=+-\nM  V30 13\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "10180d0179b3088fb09bfb1eabf87015ab0852749572f1abbaaf7dac8d5e592d",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "token_MA-\nM  V30 SS=+13",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MA-\nM  V30 SS=+13\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "38ade6812b410ab5953647835186505104345d04cd0dd94ee4cd47deb3c1cd13",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "unsupported_token_MASS=\"13\"",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=\"13\"\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "c25b69d7f6a665667568c292160b88ab9b1892010a485f3c989993e1d9a5a9ca"
+  },
+  {
+    "name": "unsupported_token_MASS=(1 13)",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=(1 13)\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "1460f5e125d09746a104147e9d338400969f61be24b5dcbd6b12aefe87f1c214"
+  },
+  {
+    "name": "unsupported_token_MASS=13 MASS=14",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=13 MASS=14\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject_or_native_last",
+    "wrong_smiles": null,
+    "source_sha256": "ed244452086d05a0958cfd7ebfdb2823d3a9b0cdb26469afc8dcf1dd124f8c37"
+  },
+  {
+    "name": "nonsequential_signed_map",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 19 C 0.000000 0.000000 0.000000 +7 MASS=+13\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": "[13CH4:7]",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "c9e1e4468f1263ef52daa760060d571f9ccff1dfeb308e58cd762cc54334eefe",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4:7]",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 13,
+          "charge": 0,
+          "radicals": 0,
+          "map": 7,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "boundary_A    1",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nA    1\nM  ISO  1   1 +13\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "2504ae209d384db39fa214aa5c09d0fe6dd364162d17e515ce2c287dea860289"
+  },
+  {
+    "name": "boundary_G    1",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nG    1\nM  ISO  1   1 +13\nM  END\n",
+    "expected_smiles": null,
+    "policy": "native_boundary",
+    "wrong_smiles": null,
+    "source_sha256": "476c3cb6d680cf4cdbbe8b7e5c38c9475160306ad1b3c856a6d51dce9f7d1308"
+  },
+  {
+    "name": "boundary_S  SKP  1",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nS  SKP  1\nM  ISO  1   1 +13\nM  END\n",
+    "expected_smiles": "C",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "030c26734becb9161feafbec8d070b9cc6f1189c56d06e16aade78231530bea0",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "after_end",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  END\nM  ISO  1   1 +13\n",
+    "expected_smiles": "C",
+    "policy": "identity",
+    "wrong_smiles": null,
+    "source_sha256": "9549b6faa7a1203d642bd143cce661609af859274c1f88d623c3a7d93d2c3723",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C",
+      "atoms": [
+        {
+          "atomic_number": 6,
+          "isotope": 0,
+          "charge": 0,
+          "radicals": 0,
+          "map": 0,
+          "totalHs": 4,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    }
+  },
+  {
+    "name": "header_not_record",
+    "molfile": "\nM  ISO  1   1 +13     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "8c7c44c33d76329b4a71cf536df1bf108a84c6e65b892d4047f98a1c5eaddfbf"
+  },
+  {
+    "name": "bad_mass_-1False",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1  -1\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "f18cc078f785f8a1efa56c3d071fdeea04cc981007a132863b1c4c5ef40cda00"
+  },
+  {
+    "name": "bad_mass_-1True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=-1\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "6f9f3ec06dcdb0943f29e63a553c41842f36a8eb6d046b958148e0f4db400a7d"
+  },
+  {
+    "name": "bad_mass_13xFalse",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1 13x\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "5c705e7964ab17ce5aee4d4a94e21fcbb05688170b1175bd7536fa60dff3b3b3"
+  },
+  {
+    "name": "bad_mass_13xTrue",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=13x\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "a66b55eb28532872653ce4500739830530d026f6dd703442243d0e678c57812a"
+  },
+  {
+    "name": "bad_mass_1 3False",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1 1 3\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "86184af5414d33fd2f3d20e1a1338a855c0fcac1f6da7c450f2f173ee79951de"
+  },
+  {
+    "name": "bad_mass_1 3True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=1 3\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "c9c8947fa9066eca38b35a54b0e11628be22468949d9946f1e3ea23c4107c5db"
+  },
+  {
+    "name": "bad_mass_+False",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1   +\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "010b9f7a59925226174216a7f8bb708fd47015f22621a3a52edd5d9dd36d12f5"
+  },
+  {
+    "name": "bad_mass_+True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=+\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "3a47f3488f5aa1d7e66b923194fdaab960aa6b43a1e90ad00b0605fae30ea679"
+  },
+  {
+    "name": "bad_mass_401False",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1 401\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "75a8735f68b001d32d62f24efbfd8348ea1138a17cafdbd8b865ff332ab95ed5"
+  },
+  {
+    "name": "bad_mass_401True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=401\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "7942b51e28e0b162440db99e458b0d7a89c2642656bdd57261d72d7984fed9c2"
+  },
+  {
+    "name": "bad_mass_999False",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1 999\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "550877f32fa7d0da039096c1dde23a6e366ab667390de684778eb3bf397f0fef"
+  },
+  {
+    "name": "bad_mass_999True",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0 MASS=999\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "226b34c3164228fde68f3435f5d9b3aaae00b04c2bc50897c8bc3f164f9d2821"
+  },
+  {
+    "name": "bad_record_M  ISO  1   0  13",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   0  13\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "959f64d2f27463e8ee6c4ab5e8c316bf75358cb412ae9f6c2891827985e1bcd3"
+  },
+  {
+    "name": "bad_record_M  ISO  1   2  13",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   2  13\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "27b75c755f78fec473fb919c0a7207bd236823ca89ae3750ac3ff37dfaa7feeb"
+  },
+  {
+    "name": "bad_record_M  ISO  9   1  13",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  9   1  13\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "ffb87ff429bcb22472abe14512e13ac304407c5fe262cc08d90b1fbcb9b9dd00"
+  },
+  {
+    "name": "bad_record_M  ISO  1   1",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "3ff8b9db7fe8f1426ad14eb25aadeec666abec27533422e62caea1acdc3e7808"
+  },
+  {
+    "name": "bad_record_M  ISO  1   1  13junk",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  ISO  1   1  13junk\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "d7bd014463f2c24ad87f2d36abd6ac61599820b3e6a9348f879dda4e35ca8756"
+  },
+  {
+    "name": "bad_legacy_+5",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C  +5  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "b06b95f100abef5f8cd5ba3a2e20d02104b12d008b1cf01d321a66e8ab1a9b3d"
+  },
+  {
+    "name": "bad_legacy_1x",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C  1x  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "e3817d8051eeb22c772edc30d1e523f86c0def6d20b395446b04d73ce07343f9"
+  },
+  {
+    "name": "bad_legacy_-4",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C  -4  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "wrong_smiles": null,
+    "source_sha256": "84f35e7af4f16e7a1c8293a92bce0a23ef7ef42578fc3b6ae4b44771f4638223"
+  },
+  {
+    "name": "v2_map_'  0'",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C"
+    },
+    "source_sha256": "e387795fb0f8c211fdb71fc49fc222cf9cb28e9beb3fbb5142099a247ac5034a"
+  },
+  {
+    "name": "v2_map_'   '",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0     0  0\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C"
+    },
+    "source_sha256": "39d4a7b4f02b105080fe3cfd77ea19202f2682c3bd6fec3bcac6c7c7cb60f2d8"
+  },
+  {
+    "name": "v2_map_'000'",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0000  0  0\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C"
+    },
+    "source_sha256": "a04bf1a4f39d77b8d23064e9d4e9a4f6f9cfc6bde2490e59c5cf1b154ea6d419"
+  },
+  {
+    "name": "v2_map_' 00'",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0 00  0  0\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C"
+    },
+    "source_sha256": "925afddb5dbabee527fee78df82254bd6708139c945522ed083f5da7e0260b7b"
+  },
+  {
+    "name": "v2_map_'+00'",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0+00  0  0\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C"
+    },
+    "source_sha256": "961a26a2d776dd159447d23317e9da07344efdb397acd8db73b41af0a8833582"
+  },
+  {
+    "name": "v2_map_' +0'",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0 +0  0  0\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C"
+    },
+    "source_sha256": "b57c02c0f096100030feacf56511c5f7a6a2b7b31f1ab4fe1e0186ae9ae5f32b"
+  },
+  {
+    "name": "v2_map_' -0'",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0 -0  0  0\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C"
+    },
+    "source_sha256": "00c98ec906248c7c7523eb4a185e18892e0479cfefb84602313c95a7ee9557d9"
+  },
+  {
+    "name": "v2_map_' +1'",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0 +1  0  0\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "[CH4:1]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[CH4:1]"
+    },
+    "source_sha256": "378968e67bbe1752c45d984a17d062ada8a24e9e7fc18e5749ce63eb430e7618"
+  },
+  {
+    "name": "v2_map_'  1'",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  1  0  0\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "[CH4:1]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[CH4:1]"
+    },
+    "source_sha256": "b28759b61953298fb95ab30da85a2a71854a912ce133c0d5f306c67ef96d19fb"
+  },
+  {
+    "name": "v2_map_' -1'",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0 -1  0  0\nM  END\n",
+    "policy": "reject",
+    "expected_smiles": null,
+    "expected_graph": null,
+    "source_sha256": "dbb3d2ad2ce685b7a3782ec8e6ad12574cd08fe447caa2360544e8d5e2edfd70"
+  },
+  {
+    "name": "v2_map_' 1x'",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0 1x  0  0\nM  END\n",
+    "policy": "reject",
+    "expected_smiles": null,
+    "expected_graph": null,
+    "source_sha256": "abe1bfa970db612304a93ee86b7bba8ed2cca9b5dbe92140d440e1ec80e579af"
+  },
+  {
+    "name": "v3_map_0",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 0\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C"
+    },
+    "source_sha256": "6467d744b5a0a890828bd654c6f71ab72e3a9016acf651f6ce1717f93edab3cd"
+  },
+  {
+    "name": "v3_map_+0",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 +0\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C"
+    },
+    "source_sha256": "a3f6d03927c3725f14509b8d37a88ee8b32ddc23b4a02043dc4b2a8ffe1ed3ef"
+  },
+  {
+    "name": "v3_map_-0",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 -0\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "C",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C"
+    },
+    "source_sha256": "dd633cbc85b4333a6ac11cbcb8cf6774acd46cff5f0b6c92dd646d407fe34f9b"
+  },
+  {
+    "name": "v3_map_+1",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 +1\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "[CH4:1]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[CH4:1]"
+    },
+    "source_sha256": "f68f07530136a0b0c17d2dd121a48efa66033a3e2b7e6b81959da5994f7cb00c"
+  },
+  {
+    "name": "v3_map_-1",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 -1\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "reject",
+    "expected_smiles": null,
+    "expected_graph": null,
+    "source_sha256": "d8897c7c642011a65aa74182bdf3671d8662c9b704b530796d65a4bf970f4cf2"
+  },
+  {
+    "name": "v3_map_1x",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 C 0.000000 0.000000 0.000000 1x\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "reject",
+    "expected_smiles": null,
+    "expected_graph": null,
+    "source_sha256": "3253a64ec197bf19163ad1149b8960efd8b4f373e6017efb11e14800821a017b"
+  },
+  {
+    "name": "unsigned_override_other",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\n    1.2990    0.7500    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  ISO  1   2  18\nM  END\n",
+    "expected_smiles": "C[18OH]",
+    "policy": "identity",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "C[18OH]"
+    },
+    "source_sha256": "9be1832dcbdbd68ba2300cd081553e56d3f50df7f218bf67118be5e42bd5f450"
+  },
+  {
+    "name": "unsigned_D_other",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    1.2990    0.7500    0.0000 D   0  0  0  0  0  0  0  0  0  0  0  0\n    0.0000    0.0000    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  ISO  1   2  18\nM  END\n",
+    "expected_smiles": "[2H][18OH]",
+    "policy": "identity",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[2H][18OH]"
+    },
+    "source_sha256": "67e4088b0ff8e7deb3af039a77dc4b3c37f73258d37a94fc2ce144e6d6f7af54"
+  },
+  {
+    "name": "unsigned_T_other",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    1.2990    0.7500    0.0000 T   0  0  0  0  0  0  0  0  0  0  0  0\n    0.0000    0.0000    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  ISO  1   2  18\nM  END\n",
+    "expected_smiles": "[3H][18OH]",
+    "policy": "identity",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[3H][18OH]"
+    },
+    "source_sha256": "4221fe83b00c4ccba2620a304e115485c16f8d2ca844c053ead145bb4d6e74b3"
+  },
+  {
+    "name": "skip_does_not_override",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\nS  SKP  1\nM  ISO  1   1 +13\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]"
+    },
+    "source_sha256": "18825312d8b4050e1bd20dc70663794d3ff0fc5193ac18e91badd27f70da6673"
+  },
+  {
+    "name": "G_payload_does_not_override",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\nG    1\nM  ISO  1   1 +13\nM  END\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]"
+    },
+    "source_sha256": "57e70f0f22d00b9b0a360dfba8782119ab2ae0627a58b3fb35f2a0e692a0fa89"
+  },
+  {
+    "name": "A_payload_reject",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\nA    1\nM  ISO  1   1 +13\nM  END\n",
+    "expected_smiles": null,
+    "policy": "reject",
+    "expected_graph": null,
+    "source_sha256": "65fc07deb50771db73904462d4b25b688269803f4aa6e7e0e5d5a2132d72c846"
+  },
+  {
+    "name": "end_does_not_override",
+    "molfile": "\n     RDKit          2D\n\n  1  0  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\nM  END\nM  ISO  1   1 +13\n",
+    "expected_smiles": "[13CH4]",
+    "policy": "identity",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[13CH4]"
+    },
+    "source_sha256": "8186fd840f0570f35065cf3e0d24ddaa5b8918c7bf983cbbdcb68cc0ac7e18fc"
+  },
+  {
+    "name": "mass_zero_effective_override",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   1  0  0  0  0  0  0  0  0  0  0  0\n    1.2990    0.7500    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  ISO  1   2   0\nM  END\n",
+    "expected_smiles": "CO",
+    "policy": "compatibility",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "CO"
+    },
+    "source_sha256": "059b373d0c6fb0c5dd605252691d316ae7a5ae658e5384b876801c37d3e742dc"
+  },
+  {
+    "name": "D_same_explicit_override",
+    "molfile": "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    1.2990    0.7500    0.0000 D   0  0  0  0  0  0  0  0  0  0  0  0\n    0.0000    0.0000    0.0000 O   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  ISO  1   1   3\nM  END\n",
+    "expected_smiles": "[3H]O",
+    "policy": "compatibility",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[3H]O"
+    },
+    "source_sha256": "ada61ec98229bb7b5603d1d0edf14c2980c5b472f141b5f8e625fe238921bc49"
+  },
+  {
+    "name": "corrected_v3000_H2",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 H 0.000000 0.000000 0.000000 0 VAL=-1 MASS=2\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "[2H]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[2H]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 2,
+          "charge": 0,
+          "radicals": 1,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    },
+    "wrong_smiles": "[H]",
+    "source_sha256": "b49bb0bd5680c9117da689b133c918e744a536433441bcef4ebd5b9181a7c8a9",
+    "corrected_from": "absolute_H2True",
+    "correction_kind": "new input fixture; inserts missing explicit MASS declaration, preserves independent isotope oracle"
+  },
+  {
+    "name": "corrected_v3000_H+2",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 H 0.000000 0.000000 0.000000 0 VAL=-1 MASS=+2\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "[2H]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[2H]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 2,
+          "charge": 0,
+          "radicals": 1,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    },
+    "wrong_smiles": "[H]",
+    "source_sha256": "1bc0cd2562c4915a305ba604351bac2356ecf4ec9dfc1b1a928479b2e42f6e4f",
+    "corrected_from": "absolute_H2True",
+    "correction_kind": "new input fixture; inserts missing explicit MASS declaration, preserves independent isotope oracle"
+  },
+  {
+    "name": "corrected_v3000_H3",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 H 0.000000 0.000000 0.000000 0 VAL=-1 MASS=3\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "[3H]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[3H]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 3,
+          "charge": 0,
+          "radicals": 1,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    },
+    "wrong_smiles": "[H]",
+    "source_sha256": "e53be4968224aabf300be1d0dd76e48edd0232be3dd8035db2fbaa85b61c5708",
+    "corrected_from": "absolute_H3True",
+    "correction_kind": "new input fixture; inserts missing explicit MASS declaration, preserves independent isotope oracle"
+  },
+  {
+    "name": "corrected_v3000_H+3",
+    "molfile": "\n     RDKit          2D\n\n  0  0  0  0  0  0  0  0  0  0999 V3000\nM  V30 BEGIN CTAB\nM  V30 COUNTS 1 0 0 0 0\nM  V30 BEGIN ATOM\nM  V30 1 H 0.000000 0.000000 0.000000 0 VAL=-1 MASS=+3\nM  V30 END ATOM\nM  V30 END CTAB\nM  END\n",
+    "policy": "identity",
+    "expected_smiles": "[3H]",
+    "expected_graph": {
+      "canonical_isomeric_smiles": "[3H]",
+      "atoms": [
+        {
+          "atomic_number": 1,
+          "isotope": 3,
+          "charge": 0,
+          "radicals": 1,
+          "map": 0,
+          "totalHs": 0,
+          "chiral": 0
+        }
+      ],
+      "bonds": []
+    },
+    "wrong_smiles": "[H]",
+    "source_sha256": "5811b981f971b2bf140e34d34a51f86f804c7f2871a25a89a3fc53e1bc1fa479",
+    "corrected_from": "absolute_H3True",
+    "correction_kind": "new input fixture; inserts missing explicit MASS declaration, preserves independent isotope oracle"
+  }
+]
