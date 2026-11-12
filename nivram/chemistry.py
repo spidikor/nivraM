@@ -5,6 +5,7 @@ This module is not an implementation of Chemaxon's layout algorithm.
 """
 from __future__ import annotations
 import copy
+import json
 import math
 import re
 from typing import Any
@@ -115,6 +116,61 @@ def _check_double_bond_geometry(mol: Chem.Mol) -> None:
         if (sides[0] == sides[1]) != (stereo in same_side):
             raise ChemistryError('The coordinates conflict with specified double-bond stereochemistry. '
                                  'This edit was cancelled; preserve the configuration when moving its atoms.')
+
+def _double_stereo_signature(mol: Chem.Mol, atom_ids: list[int]) -> dict:
+    """Reference-relative double stereo, independent of atom/bond traversal.
+
+    E/Z and cis/trans use the bond's selected reference ligands. Comparing only
+    their enum values would miss a changed ligand and falsely reject an honest
+    serializer that selects the other ligand. Normalize each endpoint to its
+    lowest original atom index. NONE and ANY are both unspecified in plain
+    SMILES; the graph and MOL paths still retain their separate annotations.
+    """
+    signature = {}
+    for bond in mol.GetBonds():
+        if bond.GetBondType() != Chem.BondType.DOUBLE:
+            continue
+        endpoints = [bond.GetBeginAtomIdx(), bond.GetEndAtomIdx()]
+        key = tuple(sorted(atom_ids[i] for i in endpoints))
+        stereo = bond.GetStereo()
+        if stereo in (Chem.BondStereo.STEREONONE, Chem.BondStereo.STEREOANY):
+            signature[key] = None
+            continue
+        references = list(bond.GetStereoAtoms())
+        if len(references) != 2:
+            raise ChemistryError('Defined double-bond stereochemistry has invalid reference atoms.')
+        opposite = int(stereo in (Chem.BondStereo.STEREOE, Chem.BondStereo.STEREOTRANS))
+        for endpoint, other, reference in zip(endpoints, reversed(endpoints), references):
+            neighbors = [atom_ids[a.GetIdx()] for a in mol.GetAtomWithIdx(endpoint).GetNeighbors()
+                         if a.GetIdx() != other]
+            if atom_ids[reference] not in neighbors:
+                raise ChemistryError('Defined double-bond stereochemistry has disconnected reference atoms.')
+            opposite ^= atom_ids[reference] != min(neighbors)
+        signature[key] = opposite
+    return signature
+
+def _check_smiles_double_stereo(mol: Chem.Mol) -> None:
+    """Reject an actual SMILES output that invents or loses double stereo.
+
+    A partially specified polyene can require shared directional edges that
+    accidentally specify an intended-unspecified middle double. Comparing two
+    canonical SMILES masks that error because both use the same lossy writer.
+    The writer's atom-output order lets us compare native annotations directly,
+    without changing user atom maps or assuming a canonical atom ordering.
+    """
+    expected = _double_stereo_signature(mol, list(range(mol.GetNumAtoms())))
+    if not expected:
+        return
+    text = Chem.MolToSmiles(mol, isomericSmiles=True)
+    order = json.loads(mol.GetProp('_smilesAtomOutputOrder'))
+    parser = Chem.SmilesParserParams()
+    parser.removeHs = False
+    restored = Chem.MolFromSmiles(text, parser)
+    if (restored is None or restored.GetNumAtoms() != mol.GetNumAtoms()
+            or sorted(order) != list(range(mol.GetNumAtoms()))
+            or _double_stereo_signature(restored, order) != expected):
+        raise ChemistryError('The current SMILES serializer cannot preserve this combination of specified and unspecified '
+                             'double-bond stereochemistry. The edit was cancelled; the previous drawing is retained.')
 
 def mol_to_graph(mol: Chem.Mol, ids: list[str] | None = None,
                  bond_ids: list[str] | None = None) -> dict:
@@ -227,9 +283,30 @@ def graph_to_mol(graph: dict, allow_empty: bool = False) -> Chem.Mol:
                     'atom’s bonds, charge or fixed hydrogen count. Nothing was changed; '
                     'import a structure with the intended hydrogen and radical state.')
         Chem.AssignChiralTypesFromBondDirs(mol, confId=0, replaceExistingTags=False)
+        # Imported SMILES slash flags are a serialization of the explicit graph
+        # stereo, not a second authority. A removed reference can leave these
+        # flags on an alternative ligand, including edges shared by other E/Z
+        # bonds. Let native cleanup validate atom stereo, then restore only the
+        # graph's defined configurations on currently stereogenic double bonds.
+        for bond in mol.GetBonds():
+            if bond.GetBondDir() in (Chem.BondDir.ENDUPRIGHT, Chem.BondDir.ENDDOWNRIGHT):
+                bond.SetBondDir(Chem.BondDir.NONE)
         Chem.AssignStereochemistry(mol, cleanIt=True, force=True)
+        possible = {info.centeredOn for info in Chem.FindPotentialStereo(mol)
+                    if info.type == Chem.StereoType.Bond_Double}
+        for i, item in enumerate(bonds):
+            if item.get('stereo', 0) > 1 and i in possible:
+                bond = mol.GetBondWithIdx(i)
+                bond.SetStereoAtoms(*(indices[ref] for ref in item['stereoAtoms']))
+                bond.SetStereo(Chem.BondStereo.values[item['stereo']])
+        Chem.AssignStereochemistry(mol, cleanIt=False, force=True)
+        # Disconnected-component SMILES writing needs regenerated neighbor
+        # directions. Do not run cleanIt=True again: shared directions can
+        # recreate a graph-undefined center. The output gate below checks that.
+        Chem.SetDoubleBondNeighborDirections(mol)
         _check_supported(mol)
         _check_double_bond_geometry(mol)
+        _check_smiles_double_stereo(mol)
         return mol
     except ChemistryError:
         raise
@@ -293,7 +370,13 @@ def import_structure(text: str) -> dict:
 def export_mol(graph: dict) -> str:
     """No Compute2DCoords here: MOL export retains the supplied conformation."""
     mol = graph_to_mol(graph)
-    block = Chem.MolToMolBlock(mol, includeStereo=True, forceV3000=True)
+    # MOL carries undefined double stereo with CFG=2, not SMILES slash flags.
+    # A shared slash edge can otherwise defeat that unknown marker on export.
+    mol_for_export = Chem.Mol(mol)
+    for bond in mol_for_export.GetBonds():
+        if bond.GetBondDir() in (Chem.BondDir.ENDUPRIGHT, Chem.BondDir.ENDDOWNRIGHT):
+            bond.SetBondDir(Chem.BondDir.NONE)
+    block = Chem.MolToMolBlock(mol_for_export, includeStereo=True, forceV3000=True)
     restored = Chem.MolFromMolBlock(block, sanitize=True, removeHs=False, strictParsing=True)
     if restored is None or Chem.MolToSmiles(restored, isomericSmiles=True) != Chem.MolToSmiles(mol, isomericSmiles=True):
         raise ChemistryError('MOL export could not preserve chemical identity or stereochemistry at the stored coordinate precision. '

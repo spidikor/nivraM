@@ -148,11 +148,25 @@ export function placeRing(input,{position:point,atomId=null,bondId=null,type='be
 
 export function deleteEntities(input,{atomIds=[],bondIds=[]}={}){
   const graph=candidate(input),removed=new Set(selectedIds(graph,atomIds,'atom')),bids=new Set(selectedIds(graph,bondIds,'bond'));
-  const touched=graph.bonds.filter(b=>removed.has(b.begin)||removed.has(b.end)||bids.has(b.id)).flatMap(b=>[b.begin,b.end]);
+  const deletedBonds=graph.bonds.filter(b=>removed.has(b.begin)||removed.has(b.end)||bids.has(b.id));
+  const touched=deletedBonds.flatMap(b=>[b.begin,b.end]),disconnected=new Map();
+  for(const {begin,end} of deletedBonds)for(const [a,b] of [[begin,end],[end,begin]]){
+    if(!disconnected.has(a))disconnected.set(a,new Set());
+    disconnected.get(a).add(b);
+  }
   graph.atoms=graph.atoms.filter(a=>!removed.has(a.id));
   graph.bonds=graph.bonds.filter(b=>!removed.has(b.begin)&&!removed.has(b.end)&&!bids.has(b.id));
   touchStereo(graph,touched);
-  for(const bond of graph.bonds)if(bond.stereoAtoms?.some(id=>removed.has(id))){bond.stereo=0;bond.stereoAtoms=[];}
+  for(const bond of graph.bonds){
+    const refs=bond.stereoAtoms;
+    // Reference atoms must remain bonded to the corresponding begin/end atom.
+    // Removing only that edge invalidates E/Z just as removing the atom does.
+    // Never choose a replacement reference or reset an unaffected stereocenter.
+    if(refs?.some(id=>removed.has(id))||refs?.length===2&&
+      (disconnected.get(bond.begin)?.has(refs[0])||disconnected.get(bond.end)?.has(refs[1]))){
+      bond.stereo=0;bond.stereoAtoms=[];
+    }
+  }
   return result(input,graph);
 }
 
