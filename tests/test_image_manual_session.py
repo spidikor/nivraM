@@ -1,3 +1,4 @@
+from tests.import_binding_fixtures import prepare_fixture
 import base64
 import copy
 import hashlib
@@ -56,7 +57,7 @@ class ImageManualSessionTests(unittest.TestCase):
         self.assertIsInstance(cancellation_token, CancellationToken)
         if cancellation_token.cancelled:
             raise WorkerCancelled('Cancelled before preparation.')
-        return _prepare({'schema': SCHEMA, 'mode': 'import', 'source': source, 'style': style})
+        return prepare_fixture({'schema': SCHEMA, 'mode': 'import', 'source': source, 'style': style})
 
     def region(self, data, job_id, request_id, mode, rect):
         with Image.open(io.BytesIO(data)) as original:

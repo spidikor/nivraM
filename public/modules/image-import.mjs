@@ -1,3 +1,4 @@
+import {requestImport} from './import-contract.mjs';
 import {requestRender} from './render-contract.mjs';
 import {prepareRender} from './document.mjs';
 import {createImageReview} from './image-review.mjs';
@@ -66,11 +67,7 @@ async function initialize(){
   }
   const review=createImageReview({editor,native:window.pywebview.api,sessionToken:document.querySelector('meta[name="nivram-token"]')?.content||'',prepare:(result,base)=>prepareRender(result,base,document),reviewSource:sourceReview,
     render:(graph,style,job)=>requestRender('render',{graph,style},{job,token:document.querySelector('meta[name="nivram-token"]').content}),
-    importSource:async(source,style,job)=>{
-      const response=await job.wait(fetch('/api/import',{method:'POST',headers:{'Content-Type':'application/json','X-Nivram-Token':document.querySelector('meta[name="nivram-token"]').content},body:JSON.stringify({source,style}),signal:job.signal}));
-      const text=await job.wait(response.text());if(text.length>4_000_000)throw new Error('The local response exceeded the supported size.');
-      const result=JSON.parse(text);if(!response.ok)throw new Error(result.error||'The pasted structure could not be validated.');return result;
-    },
+    importSource:(source,style,job)=>requestImport({source,style},{job,token:document.querySelector('meta[name="nivram-token"]').content}),
     reviewRegion:regionReview,
     resetDestination:()=>window.nivramNative.resetDestination(),
     onInvalidate:message=>{close();const toast=$('toast');toast.textContent=message;toast.hidden=false;toast.classList.add('error');}});

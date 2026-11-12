@@ -1,4 +1,5 @@
 """Finite source-backed annotation boundary checks, not an exhaustive MOL audit."""
+from tests.import_binding_fixtures import prepare_fixture
 import copy
 import tempfile
 import unittest
@@ -121,7 +122,7 @@ class MolAtomAnnotationTests(unittest.TestCase):
                 request.update({'style': {}} if mode == 'import' else {'extension': '.mol', 'settings': SETTINGS})
                 before = copy.deepcopy(request)
                 with patch('nivram.scene.render_scene', side_effect=AssertionError('must reject before render')):
-                    with self.assertRaises(ImportPreparationError) as raised: _prepare(request)
+                    with self.assertRaises(ImportPreparationError) as raised: prepare_fixture(request)
                 self.assertEqual(raised.exception.code, 'unsupported_atom_annotation')
                 self.assertEqual(request, before)
 
@@ -144,7 +145,7 @@ class MolAtomAnnotationTests(unittest.TestCase):
         # Controlled same-process worker seam. No claim of Windows isolation or rendering.
         class Service:
             def prepare_batch(self, text, extension, settings, **kwargs):
-                return _prepare({'schema': SCHEMA, 'mode': 'batch', 'source': text,
+                return prepare_fixture({'schema': SCHEMA, 'mode': 'batch', 'source': text,
                                  'extension': extension, 'settings': settings})
             def shutdown(self, **kwargs): return True
         with tempfile.TemporaryDirectory() as folder:

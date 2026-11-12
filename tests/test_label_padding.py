@@ -1,4 +1,5 @@
 """Extra atom-label clearance: legacy appearance and bounded style transport."""
+from tests.import_binding_fixtures import prepare_fixture
 import copy
 import hashlib
 import json
@@ -34,7 +35,7 @@ SUPERSEDED_TEXT_SVG = {
 
 
 def imported(smiles='CO', padding=.145):
-    return preparation._prepare({'schema': preparation.SCHEMA, 'mode': 'import',
+    return prepare_fixture({'schema': preparation.SCHEMA, 'mode': 'import',
                                  'source': smiles, 'style': {**LEGACY_STYLE, 'labelPadding': padding}})
 
 
@@ -126,7 +127,7 @@ class LabelPaddingTests(unittest.TestCase):
                     'profile': {'id': 'a'*32, 'revision': 1, 'name': 'Exact clearance'}}
         checked = protocol.checked_batch_settings(settings)
         self.assertEqual(checked['style']['labelPadding'], .145)
-        value = preparation._prepare({'schema': preparation.SCHEMA, 'mode': 'batch',
+        value = prepare_fixture({'schema': preparation.SCHEMA, 'mode': 'batch',
                                       'source': json.dumps(project), 'extension': '.nivram', 'settings': checked})
         self.assertEqual(value['scene']['style'], {**settings['style'], 'hashBondStyle': 'engine'})
         self.assertEqual(value['project']['style'], {**settings['style'], 'hashBondStyle': 'engine'})
@@ -152,7 +153,7 @@ class LabelPaddingTests(unittest.TestCase):
             self.assertEqual(sorted(p.name for p in root.iterdir()), names)
 
     def test_native_preparation_marshals_exact_nondefault_style(self):
-        value = imported(); supervisor = FakeSupervisor(response(value))
+        value = imported(); supervisor = FakeSupervisor(response(value), bind_success=True)
         service = preparation.ImportPreparationService(supervisor=supervisor, command_factory=lambda: ['owned-fixture'])
         try:
             result = service.prepare_import('CO', {'labelPadding': .145})

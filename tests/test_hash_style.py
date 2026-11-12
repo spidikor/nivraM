@@ -3,6 +3,7 @@
 Fixtures are synthetic chemistry and vector shapes, never reference images.
 These checks do not establish colored-hash calibration or drawing-corpus parity.
 """
+from tests.import_binding_fixtures import prepare_fixture
 import copy
 import json
 import math
@@ -298,7 +299,7 @@ class HashStyleBoundaryTests(_HashAssertions, unittest.TestCase):
                 with self.subTest(mode=request['mode'], expected=expected):
                     with patch('nivram.scene.render_scene', side_effect=error):
                         with self.assertRaises(preparation.ImportPreparationError) as raised:
-                            preparation._prepare(request)
+                            prepare_fixture(request)
                     self.assertEqual(raised.exception.code, expected)
                     self.assertEqual(raised.exception.http_status, 422)
                     self.assertNotIn('private fixture detail', str(raised.exception))
@@ -358,7 +359,7 @@ class HashStyleBoundaryTests(_HashAssertions, unittest.TestCase):
                 spaced_hashes(synthetic_svg(), synthetic_mol(), width)
 
     def test_worker_result_and_batch_carry_exact_enum_and_reject_missing_keys(self):
-        value = preparation._prepare({'schema': preparation.SCHEMA, 'mode': 'import',
+        value = prepare_fixture({'schema': preparation.SCHEMA, 'mode': 'import',
                                       'source': 'N[C@H](C)O', 'style': {'hashBondStyle': 'spaced'}})
         self.assertEqual(value['scene']['style']['hashBondStyle'], 'spaced')
         self.assertIs(protocol.validate_prepared_result(value, mode='import'), value)
@@ -372,7 +373,7 @@ class HashStyleBoundaryTests(_HashAssertions, unittest.TestCase):
         graph = import_structure('N[C@@H](O)S')
         project = {'schema': 'nivram/1', 'graph': graph, 'style': LEGACY_STYLE, 'export': EXPORT}
         settings = protocol.checked_batch_settings({'style': {'hashBondStyle': 'spaced'}, 'export': EXPORT})
-        batch = preparation._prepare({'schema': preparation.SCHEMA, 'mode': 'batch',
+        batch = prepare_fixture({'schema': preparation.SCHEMA, 'mode': 'batch',
                                       'source': json.dumps(project), 'extension': '.nivram', 'settings': settings})
         self.assertEqual(batch['graph'], graph)
         self.assertEqual(batch['scene']['style']['hashBondStyle'], 'spaced')

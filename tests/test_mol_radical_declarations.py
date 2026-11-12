@@ -1,4 +1,5 @@
 """Raw source-declaration preservation, not physical spin-state prediction."""
+from tests.import_binding_fixtures import prepare_fixture
 import copy
 import unittest
 from unittest.mock import patch
@@ -95,7 +96,7 @@ class MolRadicalDeclarationTests(unittest.TestCase):
         from test_image_import import png
         for block in (V2, V3):
             with self.assertRaises(ImportPreparationError) as caught:
-                _prepare(dict(schema=SCHEMA, mode='import', source=block, style={}))
+                prepare_fixture(dict(schema=SCHEMA, mode='import', source=block, style={}))
             self.assertEqual(caught.exception.code, 'unsupported_singlet_radical')
             result = inspect_png_metadata(png([(b'tEXt', b'MOL rdkit 2025.09.4\0' + block.encode())]))
             self.assertFalse(result['candidates'])

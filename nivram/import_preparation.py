@@ -6,6 +6,7 @@ chemistry routes and interpreter startup are outside this resource boundary.
 """
 from __future__ import annotations
 import json
+import copy
 import os
 from pathlib import Path
 import re
@@ -16,6 +17,7 @@ import time
 
 from .import_protocol import (MAX_SOURCE_BYTES, MAX_TRANSPORT_BYTES, MAX_RESULT_BYTES,
     MAX_STDERR_BYTES, checked_batch_settings, checked_style, strict_json_loads, validate_prepared_result)
+from . import import_binding
 from .hash_style import HashStyleError
 from .worker_processes import (CancellationToken, WorkerSupervisor, WorkerCancelled,
                               WorkerOutputLimit, WorkerProcessError)
@@ -110,7 +112,9 @@ class ImportPreparationService:
                     'maximumActiveJobs': 1, 'lastStatus': self._last_status,
                     'lastResourceLimits': dict(self._last_limits) if self._last_limits else None}
 
-    def _run(self, request, cancellation_token):
+    def _run(self, request, cancellation_token, *, with_receipt=False):
+        request = copy.deepcopy(request)
+        expected = copy.deepcopy(request.get('importBinding'))
         token = cancellation_token if cancellation_token is not None else CancellationToken()
         with self._lock:
             if self._closed or token.cancelled:
@@ -142,16 +146,20 @@ class ImportPreparationService:
                     if set(envelope) != {'schema', 'status', 'code'} or envelope['code'] not in allowed_errors:
                         raise ValueError('Invalid preparation error.')
                     raise ImportPreparationError(envelope['code'])
-                if set(envelope) != {'schema', 'status', 'limits', 'result'} or envelope['status'] != 'ok':
+                success_fields = {'schema', 'status', 'limits', 'result'} | ({'importReceipt'} if request['mode'] == 'import' else set())
+                if set(envelope) != success_fields or envelope['status'] != 'ok':
                     raise ValueError('Invalid preparation response fields.')
                 limits = _check_limits(envelope['limits'])
                 result = validate_prepared_result(envelope['result'], mode=request['mode'])
+                receipt = None
+                if request['mode'] == 'import':
+                    receipt = import_binding.validate_receipt(envelope['importReceipt'], expected, result)
                 self._supervisor.check_cancelled(token)
                 with self._lock:
                     if self._closed or token.cancelled:
                         raise WorkerCancelled('Molecular preparation was cancelled.')
                     self._last_limits, self._last_status = limits, 'ready'
-                return result
+                return (copy.deepcopy(result), receipt) if with_receipt else copy.deepcopy(result)
             except ImportPreparationError as error:
                 with self._lock:
                     self._last_status = error.code
@@ -180,12 +188,13 @@ class ImportPreparationService:
                 if self._active is token:
                     self._active = None
 
-    def prepare_import(self, source, style=None, *, cancellation_token=None):
+    def prepare_import(self, source, style=None, *, cancellation_token=None, with_receipt=False):
         try:
             request = {'schema': SCHEMA, 'mode': 'import', 'source': _source(source), 'style': checked_style(style)}
+            request['importBinding'] = import_binding.capture(request['source'], request['style'])
         except (ValueError, TypeError, OverflowError):
             raise ImportPreparationError('invalid_input') from None
-        return self._run(request, cancellation_token)
+        return self._run(request, cancellation_token, with_receipt=with_receipt)
 
     def prepare_batch(self, text, extension, settings, *, cancellation_token=None):
         try:
@@ -228,7 +237,7 @@ def _prepare(request):
             except PopulationStateError as error:
                 raise ImportPreparationError(error.code) from None
     if mode == 'import':
-        if set(request) != {'schema', 'mode', 'source', 'style'}:
+        if set(request) != {'schema', 'mode', 'source', 'style', 'importBinding'}:
             raise ImportPreparationError('invalid_input')
     elif mode == 'batch':
         if set(request) != {'schema', 'mode', 'source', 'extension', 'settings'}:
@@ -236,6 +245,11 @@ def _prepare(request):
     else:
         raise ImportPreparationError('invalid_input')
     source = _source(request['source'])
+    if mode == 'import':
+        try:
+            binding = import_binding.validate_binding(request['importBinding'], source, request['style'])
+        except (ValueError, TypeError, KeyError):
+            raise ImportPreparationError('invalid_input') from None
     from rdkit import rdBase
     from .chemistry import import_structure, InconsistentMolRadicalError, UnsupportedAtomAnnotationError, UnsupportedSingletRadicalError
     from .persistence import validate_project
@@ -244,7 +258,7 @@ def _prepare(request):
         try:
             if mode == 'import':
                 graph = import_structure(source)
-                style = request['style']
+                style = copy.deepcopy(binding['style'])
             else:
                 settings = checked_batch_settings(request['settings'])
                 if request['extension'] == '.nivram':
@@ -276,6 +290,19 @@ def _prepare(request):
         except (ValueError, TypeError, KeyError, RuntimeError, OverflowError, RecursionError):
             raise ImportPreparationError('invalid_input') from None
         try:
+            if mode == 'import':
+                from .properties import input_identity
+                snapshot = copy.deepcopy(graph)
+                identity = input_identity(copy.deepcopy(snapshot))
+                witness = import_binding.canonical(snapshot)
+                producer_graph, producer_style = copy.deepcopy(snapshot), copy.deepcopy(style)
+                scene = render_scene(producer_graph, producer_style)
+                if not import_binding.same(producer_graph, snapshot) or not import_binding.same(producer_style, style):
+                    raise ValueError('Import producer mutated captured input.')
+                result = {'graph': snapshot, 'scene': copy.deepcopy(scene)}
+                receipt = {**binding, 'outputIdentity': identity, 'outputGraphJson': witness}
+                import_binding.validate_receipt(receipt, binding, result)
+                return result, receipt
             scene = render_scene(graph, style)
         except HashStyleError:
             raise ImportPreparationError('hash_style_failed') from None
@@ -299,7 +326,11 @@ def worker_main():
                 raise ImportPreparationError('invalid_input')
             request = strict_json_loads(raw.decode('utf-8'))
             result = _prepare(request)
-            response = {'schema': SCHEMA, 'status': 'ok', 'limits': limits, 'result': result}
+            if request.get('mode') == 'import':
+                result, receipt = result
+                response = {'schema': SCHEMA, 'status': 'ok', 'limits': limits, 'result': result, 'importReceipt': receipt}
+            else:
+                response = {'schema': SCHEMA, 'status': 'ok', 'limits': limits, 'result': result}
         except ImportPreparationError as error:
             response = {'schema': SCHEMA, 'status': 'error', 'code': error.code}
         except (ValueError, TypeError, KeyError, UnicodeError, RecursionError, OverflowError):

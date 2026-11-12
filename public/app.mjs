@@ -1,3 +1,4 @@
+import {requestImport} from './modules/import-contract.mjs';
 import {requestRender} from './modules/render-contract.mjs';
 import {mountComparison} from './modules/comparison.mjs';
 import {mountStereoInspector} from './modules/stereo-inspector.mjs';
@@ -70,7 +71,7 @@ function setBusy(value,label='Working…'){
 }
 async function api(action,data,job=null){
   if(['render','clean','reflect','rotate'].includes(action))return requestRender(action,data,{job,token});
-  // Source-text import retains its isolated child protocol; it is not graph binding.
+  if(action==='import')return requestImport(data,{job,token});
   const wait=promise=>job?job.wait(promise):promise;
   const response=await wait(fetch('/api/'+action,{method:'POST',headers:{'Content-Type':'application/json','X-Nivram-Token':token},body:JSON.stringify(data),...(job?{signal:job.signal}:{})}));
   const body=await wait(response.text());if(body.length>4_000_000)throw new Error('The local response exceeded the supported size.');

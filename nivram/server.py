@@ -393,6 +393,12 @@ class Handler(BaseHTTPRequestHandler):
             if route=='/api/import':
                 # Parsing, graph validation, descriptors and rendering all run
                 # in the limited child; never hold the host chemistry lock here.
+                from .import_binding import begin_http, finish_http
+                bound = begin_http(data)
+                if bound is not None:
+                    admitted = self.server.import_preparation.prepare_import(
+                        bound['source'],bound.get('style'),with_receipt=True)
+                    return self._send(200,finish_http(bound,admitted))
                 return self._send(200,self.server.import_preparation.prepare_import(
                     data.get('source',''),data.get('style')))
             if route=='/api/pubchem/prepare':

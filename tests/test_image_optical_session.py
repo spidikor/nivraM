@@ -1,3 +1,4 @@
+from tests.import_binding_fixtures import prepare_fixture
 import base64
 import copy
 import hashlib
@@ -331,7 +332,7 @@ class ImageOpticalSessionTests(unittest.TestCase):
                 def prepare(source, style, *, cancellation_token):
                     self.assertIsInstance(cancellation_token, CancellationToken)
                     self.assertFalse(cancellation_token.cancelled)
-                    return _prepare({'schema': SCHEMA, 'mode': 'import', 'source': source, 'style': style})
+                    return prepare_fixture({'schema': SCHEMA, 'mode': 'import', 'source': source, 'style': style})
 
                 # Exercise both text paths using the real shared parser, while
                 # retaining this session suite's explicit no-subprocess fixture.

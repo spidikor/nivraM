@@ -1,3 +1,4 @@
+from tests.import_binding_fixtures import bind_fixture_reply
 import copy
 import http.client
 import io
@@ -38,7 +39,8 @@ def response(result=None):
 
 
 class FakeSupervisor:
-    def __init__(self, reply=None):
+    def __init__(self, reply=None, *, bind_success=False):
+        self.bind_success = bind_success
         self.reply = reply or response()
         self.calls = []
         self.closed = False
@@ -49,7 +51,8 @@ class FakeSupervisor:
 
     def run(self, command, **kwargs):
         self.calls.append(kwargs)
-        return subprocess.CompletedProcess(command, 0, json.dumps(self.reply), '')
+        reply = bind_fixture_reply(self.reply, json.loads(kwargs['input_text'])) if self.bind_success else self.reply
+        return subprocess.CompletedProcess(command, 0, json.dumps(reply), '')
 
     def shutdown(self, **kwargs):
         self.closed = True
@@ -119,7 +122,7 @@ class ImportProtocolTests(unittest.TestCase):
 
 class PreparationServiceTests(unittest.TestCase):
     def service(self, reply=None):
-        supervisor = FakeSupervisor(reply)
+        supervisor = FakeSupervisor(reply, bind_success=True)
         return preparation.ImportPreparationService(supervisor=supervisor, command_factory=lambda: ['owned-test-worker']), supervisor
 
     def test_valid_reply_requires_exact_verified_limits(self):
@@ -220,8 +223,13 @@ class PreparationServiceTests(unittest.TestCase):
         value = example()
         def native(request):
             events.append('native')
-            return value
+            from nivram.import_binding import canonical
+            from nivram.properties import input_identity
+            return value, {**request['importBinding'],
+                           'outputIdentity': input_identity(value['graph']), 'outputGraphJson': canonical(value['graph'])}
         request = {'schema': preparation.SCHEMA, 'mode': 'import', 'source': 'CCO', 'style': None}
+        from nivram.import_binding import capture
+        request['importBinding'] = capture(request['source'], request['style'])
         with patch('nivram.worker_resource_limits.install_worker_limits', side_effect=limits), \
              patch.object(preparation.sys, 'stdin', types.SimpleNamespace(buffer=Input(json.dumps(request).encode()))), \
              patch.object(preparation.sys, 'stdout', types.SimpleNamespace(buffer=output)), \
@@ -238,7 +246,9 @@ class PreparationServiceTests(unittest.TestCase):
             "import sys;sys.stdout.buffer.write(bytes([255]))",
             "import sys;sys.stderr.buffer.write(b'x'*131072)",
         )
-        valid = "print(" + repr(json.dumps(response())) + ")"
+        valid = ("import json,sys,hashlib; r=json.load(sys.stdin); e=" + repr(response()) +
+                 "; g=e['result']['graph']; i=e['result']['scene']['properties']['inputIdentity'];"
+                 "e['importReceipt']={**r['importBinding'],'outputIdentity':i,'outputGraphJson':json.dumps(g,sort_keys=True,separators=(',',':'),ensure_ascii=True,allow_nan=False)}; print(json.dumps(e))")
         for index, program in enumerate(programs):
             with self.subTest(index=index):
                 selected = [program]

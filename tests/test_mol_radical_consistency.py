@@ -1,4 +1,5 @@
 """Positive raw radical constraints, not multiplicity or full MOL fidelity."""
+from tests.import_binding_fixtures import prepare_fixture
 import copy
 import json
 from pathlib import Path
@@ -87,7 +88,7 @@ class RadicalConsistencyTests(unittest.TestCase):
             requests=[dict(schema=SCHEMA,mode='import',source=block,style={}),
                       dict(schema=SCHEMA,mode='batch',source=block,extension='.mol',settings={'style':{},'export':{}})]
             for request in requests:
-                with self.assertRaises(ImportPreparationError) as caught:_prepare(request)
+                with self.assertRaises(ImportPreparationError) as caught:prepare_fixture(request)
                 self.assertEqual(caught.exception.code,'inconsistent_mol_radical')
             result=inspect_png_metadata(png([(b'tEXt',b'MOL rdkit 2025.09.4\0'+block.encode())]))
             self.assertFalse(result['candidates'])
