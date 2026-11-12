@@ -165,6 +165,8 @@ def name_structure(graph: dict, document_revision: int | str | None = None,
         raise ValueError('The naming timeout must be greater than zero and at most 60 seconds.')
     snapshot = copy.deepcopy(graph)
     mol = graph_to_mol(snapshot)
+    requires_verification = any(atom.GetIsotope() or atom.GetNumRadicalElectrons()
+                                for atom in mol.GetAtoms())
     identity = input_identity(snapshot, mol, document_revision)
     result = {'status': 'unavailable', 'name': None, 'generatedName': None,
               'nameKind': 'generated_systematic', 'preferredIUPACName': False,
@@ -183,10 +185,8 @@ def name_structure(graph: dict, document_revision: int | str | None = None,
     start = time.monotonic()
     try:
         runner.check_cancelled(cancellation_token)
-        if opsin_config is None and any(atom.GetIsotope() or atom.GetNumRadicalElectrons()
-                                        for atom in mol.GetAtoms()):
+        if opsin_config is None and requires_verification:
             result['status'] = 'unsupported'
-            result['warnings'].append('This NISPO release produced incorrect isotope/radical names in local evaluation. These structures require configured OPSIN identity verification; no unverified name is shown.')
             return finish()
         generated = _run_nispo(identity['smiles'], timeout_seconds, runner, cancellation_token)
         result['engine'] = generated.get('engine', result['engine'])
@@ -238,6 +238,19 @@ def name_structure(graph: dict, document_revision: int | str | None = None,
         result['name'] = None
         result['warnings'].append('The local naming adapter failed; the original structure is unchanged.')
         return result
+    finally:
+        # One admission rule covers normal returns and caught worker failures.
+        # A configured parser is not evidence of identity, and diagnostic
+        # generatedName is just as unsafe as the displayed name for these inputs.
+        if requires_verification and not (
+                result['status'] == 'round_trip_matched'
+                and result['roundTrip'].get('status') == 'matched'):
+            result.update(name=None, generatedName=None)
+            if result['status'] == 'generated_unverified':
+                result['status'] = 'unsupported'
+            result['warnings'].append(
+                'Isotope/radical structures require successful OPSIN identity '
+                'verification; no unverified name is shown.')
 
 
 def worker_main() -> int:
