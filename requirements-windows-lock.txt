@@ -7,7 +7,7 @@ nispo==0.1.7
 numpy==2.3.5
 packaging==26.3
 pefile==2024.8.26
-pillow==12.3.0
+pillow==13.0.0
 pip==26.2
 playwright==1.57.0
 proxy_tools==0.1.0
