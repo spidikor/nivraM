@@ -120,7 +120,8 @@ def checked_batch_settings(value):
     return copy.deepcopy(result)
 
 
-def _graph(graph):
+def validate_graph_fields(graph):
+    """Validate representable fields and references; return IDs without rebuilding chemistry."""
     _require(isinstance(graph, dict) and isinstance(graph.get('atoms'), list) and isinstance(graph.get('bonds'), list))
     atoms, bonds = graph['atoms'], graph['bonds']
     _require(0 < len(atoms) <= 512 and len(bonds) <= 1024)
@@ -177,7 +178,7 @@ def validate_prepared_result(value, *, mode):
     encoded = json.dumps(value, ensure_ascii=False, allow_nan=False, separators=(',', ':')).encode('utf-8')
     _require(len(encoded) <= MAX_RESULT_BYTES)
     graph, scene = value['graph'], value['scene']
-    ids = _graph(graph)
+    ids = validate_graph_fields(graph)
     scene_keys = {'svg', 'positions', 'transform', 'formula', 'smiles', 'mass', 'properties', 'style', 'width', 'height'}
     _require(isinstance(scene, dict) and set(scene) == scene_keys)
     _text(scene['svg'], 4_000_000, empty=False)

@@ -4,6 +4,22 @@ from rdkit.Chem import rdDepictor
 from nivram.chemistry import import_structure, graph_to_mol, export_mol, clean_graph, ChemistryError
 
 class ChemistryTests(unittest.TestCase):
+    def test_v2000_atom_alias_is_not_silently_discarded(self):
+        source = Chem.MolFromSmiles('CO')
+        rdDepictor.Compute2DCoords(source)
+        plain = Chem.MolToMolBlock(source)
+        # A valid alias on an ordinary oxygen, not a wildcard or a query atom.
+        labelled = plain.replace('M  END', 'A    2\nOH\nM  END')
+        for newline in ('\n', '\r\n'):
+            with self.subTest(newline=repr(newline)):
+                block = labelled.replace('\n', newline)
+                parsed = Chem.MolFromMolBlock(block, removeHs=False)
+                self.assertEqual(Chem.GetAtomAlias(parsed.GetAtomWithIdx(1)), 'OH')
+                with self.assertRaisesRegex(ChemistryError, 'atom alias'):
+                    import_structure(block)
+                graph = import_structure(plain.replace('\n', newline))
+                self.assertEqual(Chem.MolToSmiles(graph_to_mol(graph)), 'CO')
+
     def test_explicit_unknown_stereo_survives_mol_import_and_export(self):
         source=Chem.MolFromSmiles('FC(Cl)Br')
         rdDepictor.Compute2DCoords(source)

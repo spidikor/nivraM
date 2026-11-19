@@ -17,7 +17,7 @@ import subprocess
 import sys
 
 from .import_limits import RADICAL_CONSISTENCY_MESSAGE, SINGLET_MESSAGE
-from .import_protocol import _graph, strict_json_loads
+from .import_protocol import strict_json_loads, validate_graph_fields
 
 MAX_INPUT_BYTES = 1024 * 1024
 MAX_OUTPUT_BYTES = 1024 * 1024
@@ -77,7 +77,7 @@ def _checked_candidate(candidate, input_digest):
              and candidate['source'] == 'optical-recognition' and candidate['requiresReview'] is True)
     graph = candidate['graph']
     _require(isinstance(graph, dict) and set(graph) == {'atoms', 'bonds'})
-    _graph(graph)
+    validate_graph_fields(graph)
     for atom in graph['atoms']:
         _require(set(atom) == _ATOM_FIELDS and atom['id'].startswith('optical-1-'))
     for bond in graph['bonds']:

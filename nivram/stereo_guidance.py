@@ -46,7 +46,10 @@ def map_unresolved(graph, records):
 
 def unresolved_diagnostic(mol, graph, stereo_records):
     """Consume actual RDKit StereoInfo records; never infer stereo from text."""
-    unresolved = [s for s in stereo_records if str(s.specified) == 'Unspecified']
+    # A crossed double bond carries an explicit Unknown declaration rather
+    # than Unspecified. Neither state permits choosing an E/Z conformer.
+    unresolved = [s for s in stereo_records if str(s.specified) == 'Unspecified'
+                  or (str(s.type) == 'Bond_Double' and str(s.specified) == 'Unknown')]
     if not unresolved:
         return None
     # graph_to_mol adds atoms and bonds in source order. Check that invariant

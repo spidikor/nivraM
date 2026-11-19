@@ -13,6 +13,7 @@ from rdkit import Chem
 from rdkit.Chem import rdDepictor
 from rdkit.Geometry import Point2D, Point3D
 from .import_limits import MolRadicalConsistencyError, RADICAL_CONSISTENCY_MESSAGE, check_radical_consistency, UnsupportedMolRadicalError, SINGLET_MESSAGE, ImportLimitError, prepare_mol, check_smiles
+from .import_protocol import validate_graph_fields
 
 MAX_ATOMS = 512
 MAX_BONDS = 1024
@@ -116,6 +117,33 @@ def _check_double_bond_geometry(mol: Chem.Mol) -> None:
         if (sides[0] == sides[1]) != (stereo in same_side):
             raise ChemistryError('The coordinates conflict with specified double-bond stereochemistry. '
                                  'This edit was cancelled; preserve the configuration when moving its atoms.')
+
+def _check_wedge_geometry(mol: Chem.Mol, atoms: list[dict]) -> None:
+    """Check each explicitly tagged center against its own depicted wedge(s)."""
+    wedge = (Chem.BondDir.BEGINWEDGE, Chem.BondDir.BEGINDASH)
+    marks = {}
+    for b in mol.GetBonds():
+        i = b.GetBeginAtomIdx()
+        if (b.GetBondDir() in wedge and atoms[i].get('chiralTag', 0) in (1, 2)
+                and int(b.GetBeginAtom().GetChiralTag()) in (1, 2)):
+            marks.setdefault(i, []).append(b.GetIdx())
+    # One independent mark per center per pass. Reading all marks together can
+    # hide a conflicting second wedge; sites with a single wedge need one pass.
+    for slot in range(max(map(len, marks.values()), default=0)):
+        depicted = Chem.Mol(mol)
+        centers = [i for i, bonds in marks.items() if slot < len(bonds)]
+        for i in centers:
+            depicted.GetAtomWithIdx(i).SetChiralTag(Chem.ChiralType.CHI_UNSPECIFIED)
+            for j, bond in enumerate(marks[i]):
+                if j != slot:
+                    depicted.GetBondWithIdx(bond).SetBondDir(Chem.BondDir.NONE)
+        Chem.AssignChiralTypesFromBondDirs(depicted, confId=0, replaceExistingTags=False)
+        # Same neighbor order in both copies: compare local parity, not whole
+        # molecule SMILES, which can hide a site inversion by symmetry.
+        if any(depicted.GetAtomWithIdx(i).GetChiralTag() != mol.GetAtomWithIdx(i).GetChiralTag()
+               for i in centers):
+            raise ChemistryError('The wedge geometry at a stereocenter does not match its stored '
+                                 'configuration. The previous drawing was retained.')
 
 def _double_stereo_signature(mol: Chem.Mol, atom_ids: list[int]) -> dict:
     """Reference-relative double stereo, independent of atom/bond traversal.
@@ -300,6 +328,8 @@ def graph_to_mol(graph: dict, allow_empty: bool = False) -> Chem.Mol:
                 bond.SetStereoAtoms(*(indices[ref] for ref in item['stereoAtoms']))
                 bond.SetStereo(Chem.BondStereo.values[item['stereo']])
         Chem.AssignStereochemistry(mol, cleanIt=False, force=True)
+        # Compare the submitted wedges before RDKit regenerates alkene directions.
+        _check_wedge_geometry(mol, atoms)
         # Disconnected-component SMILES writing needs regenerated neighbor
         # directions. Do not run cleanIt=True again: shared directions can
         # recreate a graph-undefined center. The output gate below checks that.
@@ -357,7 +387,15 @@ def import_structure(text: str) -> dict:
             # private parser properties. Restore them before graph conversion.
             Chem.ReapplyMolBlockWedging(mol)
         Chem.Kekulize(mol, clearAromaticFlags=True)
-        return mol_to_graph(mol)
+        graph = mol_to_graph(mol)
+        # Parsing can succeed for chemistry or coordinates outside the editor's
+        # data model. Reject the source here, not as a later depiction failure.
+        try:
+            validate_graph_fields(graph)
+        except ValueError as exc:
+            raise ChemistryError('The structure has atom, bond or coordinate values outside the '
+                                 'supported 2D drawing format. Nothing was imported.') from exc
+        return graph
     except MolRadicalConsistencyError as exc:
         raise InconsistentMolRadicalError() from exc
     except UnsupportedMolRadicalError as exc:

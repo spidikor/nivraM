@@ -359,6 +359,11 @@ def _inspect_mol(source: str, max_atoms: int, max_bonds: int, edits: list) -> di
     lines = physical.split('\n')
     if len(lines) < 5:
         raise ImportLimitError('The MOL header is incomplete.')
+    # The dimensional code is in columns 21–22 of the program line for
+    # both MOL versions. RDKit may reinterpret a declared 3D file as 2D
+    # when all Z coordinates are zero and wedge markers are present.
+    if lines[1][20:22].upper() == '3D':
+        raise ImportLimitError('3D files are not imported by this 2D alpha. Supply a 2D MOL file.')
     header = lines[3]
     if header.rstrip().endswith('V2000'):
         atoms, bonds = _count(header[:3].strip()), _count(header[3:6].strip())

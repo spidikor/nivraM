@@ -7,7 +7,7 @@ from pathlib import Path
 import time
 import unittest
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from nivram.stereo_guidance import map_unresolved, validate_denial, UnresolvedStereoError
 from nivram.conformer import run_request
@@ -70,6 +70,42 @@ class MappingTests(unittest.TestCase):
 
 @unittest.skipUnless(importlib.util.find_spec('rdkit'), 'RDKit unavailable; native chemistry checks not run')
 class NativeChemistryTests(unittest.TestCase):
+    def test_crossed_double_from_mol_is_denied_before_embedding(self):
+        from rdkit import Chem
+        from rdkit.Chem import rdDistGeom
+        from nivram.chemistry import graph_to_mol, import_structure
+        from nivram.conformer import generate
+        from tests.test_mol_stereo_roundtrip import mol_fixture
+        for v3000 in (False, True):
+            for cis in (False, True):
+                with self.subTest(v3000=v3000, cis_geometry=cis):
+                    graph = import_structure(mol_fixture(v3000=v3000, unknown=True, cis=cis))
+                    bond = graph['bonds'][1]
+                    self.assertEqual(bond['direction'], int(Chem.BondDir.EITHERDOUBLE))
+                    info, = Chem.FindPotentialStereo(graph_to_mol(graph))
+                    self.assertEqual((info.type, info.specified, info.centeredOn),
+                                     (Chem.StereoType.Bond_Double, Chem.StereoSpecified.Unknown, 1))
+                    data = request(graph)
+                    before = copy.deepcopy(data)
+                    with patch.object(rdDistGeom, 'EmbedMolecule', wraps=rdDistGeom.EmbedMolecule) as embed:
+                        with self.assertRaises(UnresolvedStereoError) as caught:
+                            generate(data)
+                        embed.assert_not_called()
+                    denial = validate_denial(caught.exception.denial, graph)
+                    self.assertEqual(denial['targets'], [{'kind': 'bond', 'id': bond['id'], 'notation': 'E/Z?'}])
+                    self.assertEqual(denial['unsupportedCount'], 0)
+                    self.assertEqual(data, before)
+
+    def test_specified_e_and_z_still_generate_the_requested_isomer(self):
+        from rdkit import Chem
+        from nivram.chemistry import import_structure
+        from nivram.conformer import generate
+        for smiles in ('F/C=C/F', 'F/C=C\\F'):
+            with self.subTest(smiles=smiles):
+                result = generate(request(import_structure(smiles)))
+                self.assertEqual(result['scene']['kind'], 'generated_coordinates')
+                self.assertEqual(Chem.MolToSmiles(Chem.MolFromMolBlock(result['scene']['sourceText'])), smiles)
+
     def test_real_unresolved_atom_and_bond(self):
         from nivram.chemistry import import_structure
         from nivram.conformer import generate
@@ -83,10 +119,15 @@ class NativeChemistryTests(unittest.TestCase):
     def test_actual_worker_transport(self):
         from nivram.chemistry import import_structure
         from nivram.worker_processes import WorkerSupervisor, CancellationToken
+        from tests.test_mol_stereo_roundtrip import mol_fixture
         supervisor = WorkerSupervisor(max_workers=1)
         try:
-            result = run_request(request(import_structure('FC=CF')), supervisor, CancellationToken())
-            self.assertIn('denial', result); self.assertNotIn('scene', result)
+            for source in ('FC=CF', mol_fixture(v3000=True, unknown=True)):
+                graph = import_structure(source)
+                result = run_request(request(graph), supervisor, CancellationToken())
+                self.assertNotIn('scene', result)
+                self.assertEqual(result['denial']['targets'],
+                                 [{'kind': 'bond', 'id': graph['bonds'][1]['id'], 'notation': 'E/Z?'}])
         finally: supervisor.shutdown()
 
     def test_malformed_chemistry_is_not_stereo_diagnostic(self):
