@@ -7,6 +7,7 @@ import importlib.metadata
 from datetime import datetime, timezone
 from nivram import __version__
 from nivram.naming_runtime import discover_naming_runtime
+from scripts.build_evidence import is_private_installation_metadata
 
 datas = [('public', 'public')]
 datas += [('nivram/optical_worker.py', 'nivram')]
@@ -30,13 +31,12 @@ datas += collect_data_files('webview', includes=['js/**', 'lib/**'])
 datas += collect_data_files('rdkit', includes=['Data/**'], excludes=['**/*.ttf', '**/*.otf'])
 datas += collect_data_files('rdkit', includes=['_nivram_native/manifest.json'])
 datas += copy_metadata('rdkit')
-private_rdkit_metadata = 'rdkit-' + importlib.metadata.version('rdkit') + '.dist-info/direct_url.json'
 a = Analysis(['run_desktop.py'], pathex=[], binaries=collect_dynamic_libs('rdkit', search_patterns=['*.dll', '*.pyd']),
              datas=datas, hiddenimports=['webview.platforms.edgechromium', 'webview.platforms.winforms'],
              excludes=['tkinter', 'pytest', 'playwright'], noarchive=False)
 # RDKit hooks may collect optional fonts; the renderer uses installed system fonts.
 a.datas = [item for item in a.datas if not item[0].lower().endswith(('.ttf', '.otf', '.ttc', '.otc', '.woff', '.woff2', '.eot'))
-           and item[0].replace('\\', '/') != private_rdkit_metadata]
+           and not is_private_installation_metadata(item[0])]
 pyz = PYZ(a.pure)
 exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name='nivraM',
           debug=False, bootloader_ignore_signals=False, strip=False, upx=False,
@@ -46,7 +46,7 @@ worker = Analysis(['run_worker.py'], pathex=[], binaries=collect_dynamic_libs('r
                       + collect_data_files('rdkit', includes=['_nivram_native/manifest.json']) + copy_metadata('rdkit'),
                   hiddenimports=['nispo'], excludes=['webview','playwright','tkinter'], noarchive=False)
 worker.datas = [item for item in worker.datas if not item[0].lower().endswith(('.ttf','.otf','.ttc','.otc','.woff','.woff2','.eot'))
-                and item[0].replace('\\', '/') != private_rdkit_metadata]
+                and not is_private_installation_metadata(item[0])]
 worker_pyz = PYZ(worker.pure)
 worker_exe = EXE(worker_pyz, worker.scripts, [], exclude_binaries=True, name='nivram-worker',
                  debug=False, strip=False, upx=False, console=True)
