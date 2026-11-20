@@ -1,13 +1,33 @@
 import io
+import json
 import sys
 import threading
 import time
 import unittest
+from unittest.mock import patch
 from PIL import Image, PngImagePlugin
+from nivram import image_jobs
 from nivram.image_jobs import ImageJobs, ImageJobCancelled
 
 
 class ImageJobTests(unittest.TestCase):
+    def test_worker_fails_before_reading_when_limits_are_unavailable(self):
+        class Unreadable:
+            def read(self, _size):
+                raise AssertionError('Worker input was read before resource limits were installed.')
+
+        with patch.object(image_jobs, '_install_resource_limits', side_effect=RuntimeError('unavailable')):
+            self.assertEqual(image_jobs.worker_main(stdin=Unreadable(), stdout=io.BytesIO()), 2)
+
+    def test_incremental_json_encoder_enforces_output_limit(self):
+        output = io.BytesIO()
+        with patch.object(image_jobs, 'MAX_OUTPUT', 64):
+            self.assertFalse(image_jobs._write_json_bounded({'value': 'x' * 1000}, output))
+            self.assertLessEqual(len(output.getvalue()), 64)
+        output = io.BytesIO()
+        self.assertTrue(image_jobs._write_json_bounded({'status': 'ok'}, output))
+        self.assertEqual(json.loads(output.getvalue()), {'status': 'ok'})
+
     def test_real_worker_recovers_public_smiles_metadata(self):
         data = io.BytesIO()
         metadata = PngImagePlugin.PngInfo()

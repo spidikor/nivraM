@@ -6,7 +6,8 @@ import zlib
 from rdkit import Chem
 
 from nivram.chemistry import graph_to_mol, import_structure
-from nivram.image_import import ImageImportError, inspect_png_metadata, select_metadata_candidates
+from nivram.image_import import (ImageImportError, MAX_MRV_WARNING_BYTES, _WarningBudget,
+                                 inspect_png_metadata, select_metadata_candidates)
 
 
 def chunk(kind, data):
@@ -77,6 +78,27 @@ class ImageImportTests(unittest.TestCase):
         xml = ('<cml><MDocument><MChemicalStruct>' + one + two + '</MChemicalStruct></MDocument></cml>').encode()
         result = inspect_png_metadata(with_mrv(xml))
         self.assertEqual(len(result['candidates']), 2)
+
+    def test_repeated_mrv_warnings_are_shared_once_not_copied_per_component(self):
+        rejected = ''.join(
+            f'<molecule molID="bad{i}"><atomArray><atom id="bad-a{i}" elementType="C" '
+            f'x2="0" y2="0" unsupported="1"/></atomArray></molecule>' for i in range(500))
+        valid = ('<molecule molID="valid"><atomArray>'
+                 '<atom id="a1" elementType="C" x2="0" y2="0"/>'
+                 '<atom id="a2" elementType="O" x2="2" y2="0"/>'
+                 '</atomArray></molecule>')
+        xml = f'<cml><MDocument><MChemicalStruct>{rejected}{valid}</MChemicalStruct></MDocument></cml>'.encode()
+        result = inspect_png_metadata(with_mrv(xml))
+        warning = 'Unsupported atom fields: unsupported'
+        self.assertEqual(len(result['candidates']), 2)
+        self.assertEqual(result['warnings'].count(warning), 1)
+        self.assertTrue(all(warning not in candidate['warnings'] for candidate in result['candidates']))
+
+    def test_mrv_warning_budget_rejects_excess_bytes(self):
+        warnings = _WarningBudget(['repeated'] * 500)
+        self.assertEqual(warnings.values(), ['repeated'])
+        with self.assertRaisesRegex(ImageImportError, 'too many or excessively large warnings'):
+            warnings.add('x' * (MAX_MRV_WARNING_BYTES + 1))
 
     def test_text_smiles_and_mol_are_supported_without_binary_deserialization(self):
         result = inspect_png_metadata(png([(b'tEXt', b'SMILES rdkit 2025.09.4\0CCO')]))
