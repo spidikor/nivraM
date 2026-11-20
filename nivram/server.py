@@ -10,6 +10,7 @@ import mimetypes
 import re
 import secrets
 import socket
+import sys
 import threading
 import time
 from rdkit import Chem, rdBase
@@ -172,7 +173,15 @@ class NamingJobs:
 
 class LocalServer(ThreadingHTTPServer):
     daemon_threads = True
-    allow_reuse_address = True
+    allow_reuse_address = False
+
+    def server_bind(self):
+        # WebView treats this numeric origin as trusted application content.
+        # Windows SO_REUSEADDR permits another reuse-enabled process to share
+        # the endpoint, so require exclusive ownership before binding it.
+        if sys.platform == 'win32':
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
 
     def __init__(self, *args, **kwargs):
         self.naming_jobs = NamingJobs()
