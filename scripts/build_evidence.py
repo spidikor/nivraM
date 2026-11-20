@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 import shutil
 import sys
+from urllib.parse import urlsplit
 import uuid
 
 EXCLUDED = {'.git', '__pycache__', 'build', 'dist', 'verification', '.pytest_cache'}
@@ -20,6 +21,10 @@ BROWSER_PINS = {
     'color-stage-receipt.json': 'd4e57becef487cf02a91ce830d2749e6c817e269f4b8ce7e9dc72ee6c963d8f8',
 }
 BROWSER_COLOR_SOURCE_SHA256 = 'fbbc5d795f48a3ce6cafd17c75e0e1239d16de919b83e31150cedc8770aa5427'
+REVIEWED_PACKAGE_ORIGINS = {
+    'pypi.org': 'https://pypi.org',
+    'files.pythonhosted.org': 'https://files.pythonhosted.org',
+}
 
 
 def write_browser_dependency_evidence(root, bundle):
@@ -120,6 +125,11 @@ def normalized(name):
     return re.sub(r'[-_.]+', '-', name).lower()
 
 
+def is_private_installation_metadata(path):
+    """Identify PEP 610 installation locations that must not enter a bundle."""
+    return str(path).replace('\\', '/').lower().endswith('.dist-info/direct_url.json')
+
+
 def verify_lock(root):
     expected = {}
     for line in (Path(root) / 'requirements-windows-lock.txt').read_text(encoding='utf-8').splitlines():
@@ -140,7 +150,38 @@ def package_origin(distribution, signed_rdkit=None):
         return {'directUrl': None, 'localWheel': {
             'filename': signed_rdkit['pin']['wheelFilename'],
             'sha256': signed_rdkit['pin']['wheelSha256'], 'installationLocationOmitted': True}}
-    return {'directUrl': distribution.read_text('direct_url.json')}
+    raw_origin = distribution.read_text('direct_url.json')
+    if raw_origin is None:
+        return {'directUrl': None}
+    try:
+        origin = json.loads(raw_origin)
+    except (TypeError, json.JSONDecodeError) as error:
+        raise RuntimeError('Installed package has invalid PEP 610 origin metadata.') from error
+    if not isinstance(origin, dict) or not isinstance(origin.get('url'), str):
+        raise RuntimeError('Installed package has invalid PEP 610 origin metadata.')
+
+    projection = {'installationLocationOmitted': True}
+    try:
+        parsed = urlsplit(origin['url'])
+        if (parsed.scheme.lower() == 'https' and parsed.hostname in REVIEWED_PACKAGE_ORIGINS
+                and parsed.port in (None, 443)):
+            projection['publicOrigin'] = REVIEWED_PACKAGE_ORIGINS[parsed.hostname]
+    except ValueError:
+        pass
+
+    archive = origin.get('archive_info')
+    digest = None
+    if isinstance(archive, dict):
+        hashes = archive.get('hashes')
+        if isinstance(hashes, dict):
+            digest = hashes.get('sha256')
+        if digest is None and isinstance(archive.get('hash'), str):
+            algorithm, separator, value = archive['hash'].partition('=')
+            if separator and algorithm.lower() == 'sha256':
+                digest = value
+    if isinstance(digest, str) and re.fullmatch(r'[0-9a-fA-F]{64}', digest):
+        projection['archiveSha256'] = digest.lower()
+    return {'directUrl': projection}
 
 
 def write_dependency_evidence(root, bundle, source, signed_rdkit=None):

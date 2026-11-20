@@ -30,6 +30,45 @@ class BrowserEvidenceTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             evidence.package_origin(distribution)
 
+    def test_public_package_origin_is_reduced_to_reviewed_identity(self):
+        digest = 'A' * 64
+        origin = json.dumps({
+            'url': 'https://build-user:secret@files.pythonhosted.org/private/package.whl?token=secret#workspace',
+            'archive_info': {'hash': 'sha256=' + digest, 'localPath': 'C:/private/cache'},
+            'unknown': {'workspace': 'C:/private/source'},
+        })
+        distribution = SimpleNamespace(metadata={'Name': 'public-package'}, version='1.0',
+                                       read_text=lambda name: origin)
+        result = evidence.package_origin(distribution)
+        self.assertEqual(result, {'directUrl': {
+            'installationLocationOmitted': True,
+            'publicOrigin': 'https://files.pythonhosted.org',
+            'archiveSha256': digest.lower(),
+        }})
+        encoded = json.dumps(result)
+        for private_value in ('build-user', 'secret', '/private/', 'workspace', 'C:/private'):
+            self.assertNotIn(private_value, encoded)
+
+    def test_unreviewed_package_origin_is_fully_omitted(self):
+        origin = json.dumps({'url': 'https://packages.internal.example/private/package.whl'})
+        distribution = SimpleNamespace(metadata={'Name': 'private-package'}, version='1.0',
+                                       read_text=lambda name: origin)
+        self.assertEqual(evidence.package_origin(distribution), {
+            'directUrl': {'installationLocationOmitted': True}})
+
+    def test_malformed_package_origin_fails_closed(self):
+        distribution = SimpleNamespace(metadata={'Name': 'malformed-package'}, version='1.0',
+                                       read_text=lambda name: '{"url":')
+        with self.assertRaisesRegex(RuntimeError, 'PEP 610'):
+            evidence.package_origin(distribution)
+
+    def test_all_direct_url_metadata_is_private_bundle_input(self):
+        for path in ('package-1.0.dist-info/direct_url.json',
+                     r'package-1.0.dist-info\direct_url.json'):
+            self.assertTrue(evidence.is_private_installation_metadata(path))
+        self.assertFalse(evidence.is_private_installation_metadata(
+            'package-1.0.dist-info/METADATA'))
+
     def setUp(self):
         self.temporary = TemporaryDirectory(prefix='nivram-build-evidence-')
         self.addCleanup(self.temporary.cleanup)
@@ -50,8 +89,8 @@ class BrowserEvidenceTests(unittest.TestCase):
             'javaVersion': 'test', 'javaVendor': 'test', 'javaArchiveSha256': '0' * 64,
             'opsinVersion': 'test'}), encoding='utf-8')
 
-    def write_evidence(self):
-        with patch.object(evidence.metadata, 'distributions', return_value=[]), \
+    def write_evidence(self, distributions=()):
+        with patch.object(evidence.metadata, 'distributions', return_value=distributions), \
                 patch('nivram.naming_runtime.discover_naming_runtime', return_value=SimpleNamespace(status='available')):
             evidence.write_dependency_evidence(self.root, self.bundle, {'sha256': '1' * 64})
 
@@ -144,6 +183,26 @@ class BrowserEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, '[Bb]rowser'):
             self.write_evidence()
 
+    def test_local_package_origin_cannot_reach_bundled_provenance(self):
+        self.copy_browser_inputs()
+        digest = 'b' * 64
+        private_origin = json.dumps({
+            'url': 'file:///C:/Users/OriginLeak/private-package.whl?leak_token=secret#leak_fragment',
+            'archive_info': {'hashes': {'sha256': digest}},
+        })
+        record = Message()
+        record['Name'] = 'local-package'
+        distribution = SimpleNamespace(metadata=record, version='1.0', files=[],
+                                       read_text=lambda name: private_origin)
+        self.write_evidence([distribution])
+        inventory_text = (self.bundle / 'dependency-provenance.json').read_text(encoding='utf-8')
+        for private_value in ('file:', 'C:/Users', 'OriginLeak', 'private-package',
+                              'leak_token', 'secret', 'leak_fragment'):
+            self.assertNotIn(private_value, inventory_text)
+        inventory = json.loads(inventory_text)
+        self.assertEqual(inventory['packages'][0]['directUrl'], {
+            'installationLocationOmitted': True, 'archiveSha256': digest})
+
     def test_python_inventory_still_identifies_build_environment_scope(self):
         self.copy_browser_inputs()
         record = Message()
@@ -154,9 +213,11 @@ class BrowserEvidenceTests(unittest.TestCase):
                 patch('nivram.naming_runtime.discover_naming_runtime', return_value=SimpleNamespace(status='available')):
             evidence.write_dependency_evidence(self.root, self.bundle, {'sha256': '1' * 64})
         bom = json.loads((self.bundle / 'build-environment.cdx.json').read_text(encoding='utf-8'))
+        inventory = json.loads((self.bundle / 'dependency-provenance.json').read_text(encoding='utf-8'))
         component = next(c for c in bom['components'] if c['name'] == 'synthetic-build-tool')
         self.assertEqual(component['properties'], [{'name': 'nivram:inventory-scope',
             'value': 'pinned-build-environment; inclusion in runtime must be cross-checked against bundled files'}])
+        self.assertIsNone(inventory['packages'][0]['directUrl'])
 
 
 if __name__ == '__main__':
