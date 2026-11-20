@@ -29,12 +29,41 @@ MAX_XML_DEPTH = 64
 MAX_SOURCE_ATOMS = 16_384
 MAX_SOURCE_BONDS = 32_768
 MAX_CANDIDATES = 1024
+MAX_MRV_WARNINGS = 128
+MAX_MRV_WARNING_BYTES = 64 * 1024
 PREVIEW_PIXELS = 16_000_000
 PNG_SIGNATURE = b'\x89PNG\r\n\x1a\n'
 
 
 class ImageImportError(ValueError):
     """The input must not replace an existing document."""
+
+
+class _WarningBudget:
+    """Deduplicate untrusted MRV diagnostics within an aggregate byte budget."""
+
+    def __init__(self, warnings=()):
+        self._warnings = []
+        self._seen = set()
+        self._bytes = 0
+        self.extend(warnings)
+
+    def add(self, warning: str):
+        if warning in self._seen:
+            return
+        size = len(warning.encode('utf-8'))
+        if len(self._warnings) >= MAX_MRV_WARNINGS or self._bytes + size > MAX_MRV_WARNING_BYTES:
+            raise ImageImportError('MRV metadata produces too many or excessively large warnings.')
+        self._seen.add(warning)
+        self._warnings.append(warning)
+        self._bytes += size
+
+    def extend(self, warnings):
+        for warning in warnings:
+            self.add(warning)
+
+    def values(self) -> list[str]:
+        return list(self._warnings)
 
 
 def _inflate(data: bytes) -> bytes:
@@ -189,26 +218,26 @@ _INERT_TAGS = {'propertyList', 'property', 'scalar', 'MBracket', 'MPoint'}
 
 
 def _mrv_preflight(node: ET.Element) -> list[str]:
-    flags = []
+    flags = _WarningBudget()
     for item in node.iter():
         tag = _tag(item)
         if item.tag.startswith('{') and not item.tag.startswith('{http://www.chemaxon.com}'):
-            flags.append('Unsupported XML namespace in a molecular record.')
+            flags.add('Unsupported XML namespace in a molecular record.')
         if tag in _INERT_TAGS:
             continue
         if tag not in _ATTRIBUTES:
-            flags.append('Unsupported chemical XML element: ' + tag)
+            flags.add('Unsupported chemical XML element: ' + tag)
             continue
         unknown = set(item.attrib) - _ATTRIBUTES[tag]
         if unknown:
-            flags.append('Unsupported ' + tag + ' fields: ' + ', '.join(sorted(unknown)))
+            flags.add('Unsupported ' + tag + ' fields: ' + ', '.join(sorted(unknown)))
         if tag in ('atom', 'atomArray') and any(key in item.attrib for key in ('x3', 'y3', 'z3')):
-            flags.append('3D molecular coordinates are not supported by this 2D importer.')
+            flags.add('3D molecular coordinates are not supported by this 2D importer.')
         if tag == 'atom' and ('x2' not in item.attrib or 'y2' not in item.attrib):
-            flags.append('An MRV atom lacks explicit 2D coordinates.')
+            flags.add('An MRV atom lacks explicit 2D coordinates.')
         if tag == 'atomArray' and 'atomID' in item.attrib and ('x2' not in item.attrib or 'y2' not in item.attrib):
-            flags.append('A compact MRV atom array lacks explicit 2D coordinates.')
-    return sorted(set(flags))
+            flags.add('A compact MRV atom array lacks explicit 2D coordinates.')
+    return sorted(flags.values())
 
 
 def _wrapped_molecule(node: ET.Element) -> str:
@@ -224,7 +253,7 @@ def _wrapped_molecule(node: ET.Element) -> str:
     return ET.tostring(root, encoding='unicode')
 
 
-def _candidates_from_mol(mol: Chem.Mol, source: str, warnings: list[str]) -> list[dict]:
+def _candidates_from_mol(mol: Chem.Mol, source: str) -> list[dict]:
     fragments = Chem.GetMolFrags(mol)
     if len(fragments) > MAX_CANDIDATES:
         raise ImageImportError('The metadata contains more than 1024 disconnected components.')
@@ -241,7 +270,7 @@ def _candidates_from_mol(mol: Chem.Mol, source: str, warnings: list[str]) -> lis
                      'label': f'Disconnected component {index + 1} ({piece.GetNumAtoms()} atoms)',
                      'source': source, 'status': 'unsupported', 'graph': None,
                      'atomCount': piece.GetNumAtoms(), 'formalCharge': Chem.GetFormalCharge(piece),
-                     'requiresReview': True, 'warnings': list(warnings), 'unsupportedFeatures': []}
+                     'requiresReview': True, 'warnings': [], 'unsupportedFeatures': []}
         if any(b.GetStereo() == Chem.BondStereo.STEREOANY
                or b.GetBondDir() in (Chem.BondDir.UNKNOWN, Chem.BondDir.EITHERDOUBLE)
                for b in piece.GetBonds()):
@@ -298,13 +327,13 @@ def _recover_mrv(payload: bytes, source: str) -> tuple[list[dict], list[str]]:
             molecules.append(node)
     annotations = Counter(_tag(node) for node in nodes if _tag(node).startswith('M')
                           and _tag(node) not in ('MDocument', 'MChemicalStruct'))
-    warnings = sorted(context_issues)
+    warnings = _WarningBudget(sorted(context_issues))
     if annotations:
-        warnings.append('Document annotations are retained only in the original PNG/MRV: ' + ', '.join(f'{key} ({value})' for key, value in sorted(annotations.items())) + '.')
+        warnings.add('Document annotations are retained only in the original PNG/MRV: ' + ', '.join(f'{key} ({value})' for key, value in sorted(annotations.items())) + '.')
     if any(_tag(node) == 'propertyList' for node in nodes):
-        warnings.append('Arbitrary MRV property metadata remains in the original source and is not copied into the editable graph.')
+        warnings.add('Arbitrary MRV property metadata remains in the original source and is not copied into the editable graph.')
     if any(_tag(node) == 'molecule' and node.attrib.get('role') for node in nodes):
-        warnings.append('The MRV document contains chemical groups; affected components may be unsupported.')
+        warnings.add('The MRV document contains chemical groups; affected components may be unsupported.')
     candidates = []
     for index, node in enumerate(molecules):
         flags = _mrv_preflight(node)
@@ -314,17 +343,17 @@ def _recover_mrv(payload: bytes, source: str) -> tuple[list[dict], list[str]]:
         with rdBase.BlockLogs():
             mol = Chem.MolFromMrvBlock(_wrapped_molecule(node), sanitize=True, removeHs=False)
         if mol is None:
-            warnings.append('A molecular record could not be parsed without changing its chemistry.')
+            warnings.add('A molecular record could not be parsed without changing its chemistry.')
             continue
         # Sanitization may move explicit MRV wedge/unknown marks into MolFile
         # properties. Restore those source marks; do not infer missing stereo.
         Chem.ReapplyMolBlockWedging(mol)
-        candidates.extend(_candidates_from_mol(mol, f'{source}-record-{index + 1}', warnings))
+        candidates.extend(_candidates_from_mol(mol, f'{source}-record-{index + 1}'))
         if len(candidates) > MAX_CANDIDATES:
             raise ImageImportError('The metadata contains more than 1024 candidate components.')
     if not molecules:
-        warnings.append('No supported top-level molecular record was found.')
-    return candidates, warnings
+        warnings.add('No supported top-level molecular record was found.')
+    return candidates, warnings.values()
 
 
 def _native_candidates(payload, source):
@@ -345,7 +374,7 @@ def _native_candidates(payload, source):
             'label': f'Disconnected component {index + 1} ({len(atoms)} atoms)',
             'source': source, 'status': 'supported', 'graph': piece,
             'atomCount': len(atoms), 'formalCharge': sum(a.get('charge', 0) for a in atoms),
-            'requiresReview': True, 'warnings': list(warnings), 'unsupportedFeatures': []})
+            'requiresReview': True, 'warnings': [], 'unsupportedFeatures': []})
     return candidates, warnings
 
 
@@ -394,7 +423,7 @@ def inspect_png_metadata(data: bytes) -> dict:
                 graph = import_structure(text)
                 if 'V2000' not in text and 'V3000' not in text:
                     warnings.append('SMILES metadata has no drawing coordinates; the existing local RDKit import creates a 2D layout.')
-                candidates = _candidates_from_mol(graph_to_mol(graph), source, warnings)
+                candidates = _candidates_from_mol(graph_to_mol(graph), source)
             result['candidates'].extend(candidates)
             if warnings:
                 result['warnings'].extend(warnings)

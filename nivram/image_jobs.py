@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -14,6 +15,30 @@ MAX_OUTPUT = 16 * 1024 * 1024
 
 class ImageJobCancelled(ValueError):
     pass
+
+
+def _install_resource_limits():
+    """Fail closed before input or native parser code reaches this worker."""
+    if os.name == 'nt':
+        from .worker_resource_limits import install_worker_limits
+        install_worker_limits()
+    else:
+        import resource
+        resource.setrlimit(resource.RLIMIT_CPU, (10, 10))
+        resource.setrlimit(resource.RLIMIT_AS, (2 * 1024 ** 3, 2 * 1024 ** 3))
+
+
+def _write_json_bounded(result, output) -> bool:
+    """Encode directly to the transport without constructing an oversized string."""
+    encoder = json.JSONEncoder(ensure_ascii=True, allow_nan=False)
+    written = 0
+    for text in encoder.iterencode(result):
+        encoded = text.encode('utf-8')
+        if written + len(encoded) > MAX_OUTPUT:
+            return False
+        output.write(encoded)
+        written += len(encoded)
+    return True
 
 
 def worker_command():
@@ -93,17 +118,18 @@ class ImageJobs:
                 self.cancel(self._active['id'])
 
 
-def worker_main():
-    from .image_import import inspect_png_metadata
+def worker_main(*, stdin=None, stdout=None):
     try:
-        data = sys.stdin.buffer.read(MAX_INPUT + 1)
+        _install_resource_limits()
+        from .image_import import inspect_png_metadata
+        input_stream = stdin if stdin is not None else sys.stdin.buffer
+        output_stream = stdout if stdout is not None else sys.stdout.buffer
+        data = input_stream.read(MAX_INPUT + 1)
         if len(data) > MAX_INPUT:
             return 2
         result = inspect_png_metadata(data)
-        encoded = json.dumps(result, ensure_ascii=True, allow_nan=False).encode('utf-8')
-        if len(encoded) > MAX_OUTPUT:
+        if not _write_json_bounded(result, output_stream):
             return 2
-        sys.stdout.buffer.write(encoded)
         return 0
     except Exception:
         # Neither source content nor personal paths are emitted in a failed job.
