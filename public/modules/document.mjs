@@ -5,7 +5,7 @@ import {applyBondPaint} from './bond-paint.mjs';
 import {validMassUnavailable} from './mass-contract.mjs';
 
 export const PROJECT_SCHEMA='nivram/1';
-export const DEFAULT_STYLE=Object.freeze({bondWidth:4.2,labelSize:36,bondSpacing:0.14,labelPadding:0.04,color:true,hashBondStyle:'engine'});
+export const DEFAULT_STYLE=Object.freeze({bondWidth:4.2,labelSize:36,bondSpacing:0.14,labelPadding:0.04,color:true,hashBondStyle:'engine',skeletalCarbons:true});
 export const DEFAULT_EXPORT=Object.freeze({width:2000,marginMode:'percent',margin:2,transparentBackground:false});
 const SVG_NS='http://www.w3.org/2000/svg';
 const plain=value=>value!==null&&typeof value==='object'&&!Array.isArray(value)&&[Object.prototype,null].includes(Object.getPrototypeOf(value));
@@ -73,6 +73,7 @@ export function validateProject(input){
   if(project.style!==undefined)known(project.style,Object.keys(DEFAULT_STYLE),'drawing style');
   for(const [key,lo,hi] of [['bondWidth',.5,5],['labelSize',10,40],['bondSpacing',.06,.28]]){finite(style[key],key);if(style[key]<lo||style[key]>hi)throw new Error(`Unsupported ${key}.`);}
   if(!Number.isInteger(style.labelSize)||typeof style.color!=='boolean')throw new Error('Invalid drawing style.');
+  if(typeof style.skeletalCarbons!=='boolean')throw new Error('Skeletal carbons must be true or false.');
   if(!['engine','spaced'].includes(style.hashBondStyle))throw new Error('Choose Engine spacing or Thicker, spaced bars for hashed stereobonds.');
   if(project.export!==undefined)known(project.export,Object.keys(DEFAULT_EXPORT),'export settings');
   const options={...DEFAULT_EXPORT,...(project.export??{})};validateOptions(options);

@@ -8,7 +8,7 @@ import {mountStereoGuidance} from './modules/stereo-guidance.mjs';
 import {valenceFeedback,paintValenceFeedback} from './modules/valence-feedback.mjs';
 import {exportSvg} from './modules/svg-export.mjs';
 import {validateOptions,exportPng,downloadBlob} from './modules/export.mjs';
-import {createDocumentStore,validateProject,prepareRender,cloneData,DEFAULT_EXPORT} from './modules/document.mjs';
+import {createDocumentStore,validateProject,prepareRender,cloneData,DEFAULT_STYLE,DEFAULT_EXPORT} from './modules/document.mjs';
 import {createJobController} from './modules/jobs.mjs';
 import {prepareCleanupPreview} from './modules/cleanup.mjs';
 import {stereoEditNotice} from './modules/bond-edit.mjs';
@@ -34,7 +34,7 @@ const svg=$('canvas'), drawing=$('drawing'), overlay=$('selection'), gesture=$('
 const NS='http://www.w3.org/2000/svg';
 const empty=()=>({atoms:[],bonds:[]});
 let graph=empty(),scene=null,tool='select',element='C',selected=new Set(),selectedBonds=new Set();
-let style={bondWidth:4.2,labelSize:36,bondSpacing:0.14,labelPadding:0.04,color:true,hashBondStyle:'engine'};
+let style={...DEFAULT_STYLE};
 let busy=false,drag=null,view={x:0,y:0,width:800,height:500},activeJob=null;
 let keyboardEditor=null,fragmentShelf=null;
 let canvasMenu=null;
@@ -117,7 +117,7 @@ function install(result,{baseProject=snapshot(),shouldFit=false,resetSelection=f
   documentStore.commit(prepared.project,{expectedRevision,mode,historyGroup,historyContext:departing,apply:(nextDocument,{changed})=>{
     const previous={graph,scene,style,autoFit,resizeFitPending,view:{...view},selected,selectedBonds,nodes:[...drawing.childNodes],overlays:[...overlay.childNodes]};
     const textFields=new Set(['counts','formula','molecular-weight','margin-summary','atom-info']);
-    const controls=['empty-state','counts','formula','molecular-weight','bond-width','label-size','bond-spacing','label-padding','hash-bond-style','element-color','export-width','margin-mode','margin-value','transparent-background','margin-summary','atom-info','atom-charge','atom-isotope','atom-radicals','apply-atom'].map(id=>{
+    const controls=['empty-state','counts','formula','molecular-weight','bond-width','label-size','bond-spacing','label-padding','hash-bond-style','element-color','skeletal-carbons','export-width','margin-mode','margin-value','transparent-background','margin-summary','atom-info','atom-charge','atom-isotope','atom-radicals','apply-atom'].map(id=>{
       const node=$(id);return {node,text:textFields.has(id)?node.textContent:undefined,value:node.value,checked:node.checked,hidden:node.hidden,disabled:node.disabled};
     });
     try{
@@ -143,6 +143,7 @@ function install(result,{baseProject=snapshot(),shouldFit=false,resetSelection=f
       $('formula').textContent=scene.formula;$('molecular-weight').textContent=scene.mass===null?'Molar mass unavailable':scene.mass?`${scene.mass.toFixed(2)} g/mol`:'';
       $('molecular-weight').title=scene.properties?.massUnavailable?.message||'';
       $('bond-width').value=style.bondWidth;$('label-size').value=style.labelSize;$('bond-spacing').value=style.bondSpacing;$('label-padding').value=labelPaddingPercent(style.labelPadding);$('element-color').checked=style.color;$('hash-bond-style').value=style.hashBondStyle;
+      $('skeletal-carbons').checked=style.skeletalCarbons;
       $('export-width').value=nextDocument.export.width;$('margin-mode').value=nextDocument.export.marginMode;$('margin-value').value=nextDocument.export.margin;$('transparent-background').checked=nextDocument.export.transparentBackground;
       updateMarginSummary();paintSelection();if(symbolPreview)paintSymbolPreview();
     }catch(error){
@@ -460,7 +461,16 @@ $('cleanup-dialog').addEventListener('cancel',event=>{event.preventDefault();can
 $('fit-button').onclick=fit;$('zoom-in').onclick=()=>zoom(.8);$('zoom-out').onclick=()=>zoom(1.25);
 $('reset-margin').onclick=()=>{$('margin-mode').value='percent';$('margin-value').value=2;syncMargin();};
 for(const id of ['export-width','margin-mode','margin-value','transparent-background'])$(id).addEventListener('input',syncMargin);
-$('apply-style').onclick=()=>change(copy(graph),{newStyle:{...style,bondWidth:Number($('bond-width').value),labelSize:Number($('label-size').value),bondSpacing:Number($('bond-spacing').value),labelPadding:enteredLabelPadding(),color:$('element-color').checked,hashBondStyle:$('hash-bond-style').value}});
+$('apply-style').onclick=()=>change(copy(graph),{newStyle:{
+  ...style,
+  bondWidth:Number($('bond-width').value),
+  labelSize:Number($('label-size').value),
+  bondSpacing:Number($('bond-spacing').value),
+  labelPadding:enteredLabelPadding(),
+  color:$('element-color').checked,
+  hashBondStyle:$('hash-bond-style').value,
+  skeletalCarbons:$('skeletal-carbons').checked
+}});
 $('apply-atom').onclick=async()=>{
   if(selected.size!==1)return;const g=copy(graph),a=g.atoms.find(a=>a.id===[...selected][0]);a.charge=$('atom-charge').valueAsNumber;a.isotope=$('atom-isotope').valueAsNumber;a.radicals=$('atom-radicals').valueAsNumber;await change(g,{proposedEdit:{before:copy(graph),after:g}});
 };

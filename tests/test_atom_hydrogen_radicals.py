@@ -52,7 +52,7 @@ class AtomHydrogenRadicalTests(unittest.TestCase):
                  ('C=C', {0: 'CH<sub>2</sub>', 1: 'CH<sub>2</sub>'}),
                  ('C#C', {0: 'CH', 1: 'CH'}),
                  ('[CH3]', {0: 'CH<sub>3</sub>'}),
-                 ('[13CH3-:7]', {0: '<sup>13</sup>CH<sub>3</sub><sup>−</sup>:7'}),
+                 ('[13CH3-:7]', {0: '<sup>13</sup>CH<sub>3</sub><sup>-</sup>:7'}),
                  ('N', {}), ('[C]', {})]
         for smiles, expected in cases:
             with self.subTest(smiles=smiles):

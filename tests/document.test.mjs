@@ -24,6 +24,20 @@ test('label clearance defaults preserve old projects and validate finite bounded
   for(const value of [0,0.145,0.2])assert.equal(validateProject({...single(),style:{labelPadding:value}}).style.labelPadding,value);
   for(const value of [-0.01,0.201,NaN,Infinity,'0.1',true])assert.throws(()=>validateProject({...single(),style:{labelPadding:value}}),/Extra label clearance must be a number from 0% to 20%/);
 });
+
+test('skeletal carbons default for legacy drawings and persist either boolean mode',()=>{
+  const legacy=single();
+  assert.equal(validateProject(legacy).style.skeletalCarbons,true);
+  assert.equal(Object.hasOwn(legacy.style??{},'skeletalCarbons'),false);
+  for(const skeletalCarbons of [true,false]){
+    const project=validateProject({...legacy,style:{...legacy.style,skeletalCarbons}});
+    assert.equal(validateProject(JSON.parse(JSON.stringify(project))).style.skeletalCarbons,skeletalCarbons);
+    assert.deepEqual(project.graph,legacy.graph);
+  }
+  for(const skeletalCarbons of [null,0,1,'true','false',[],{}]){
+    assert.throws(()=>validateProject({...legacy,style:{skeletalCarbons}}),/Skeletal carbons must be true or false/);
+  }
+});
 test('invalid references and nonfinite document values are rejected',()=>{
   const project=single();project.graph.bonds=[{id:'b0',begin:'a0',end:'missing',order:1}];
   assert.throws(()=>validateProject(project),/invalid atom reference/);
