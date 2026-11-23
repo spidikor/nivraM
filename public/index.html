@@ -125,7 +125,9 @@
       <p id="label-padding-hint" class="muted">Adds space around atom labels relative to label size.</p>
       <label for="hash-bond-style">Hashed stereobonds</label><select id="hash-bond-style" aria-describedby="hash-bond-style-hint"><option value="engine">Engine spacing</option><option value="spaced">Thicker, spaced bars</option></select>
       <p id="hash-bond-style-hint" class="muted">Full-width bars with spacing proportional to line width. Provisional appearance from one black-bond example; colored hashes keep engine colors.</p>
-      <label class="check-label"><input id="element-color" type="checkbox" checked> Element colors</label><button id="apply-style" class="secondary-full">Apply appearance</button>
+      <label class="check-label"><input id="element-color" type="checkbox" checked> Element colors</label>
+      <label class="check-label"><input id="skeletal-carbons" type="checkbox" checked> Skeletal carbons</label>
+      <button id="apply-style" class="secondary-full">Apply appearance</button>
     </section>
     <section class="atom-panel"><h2>Selected atom</h2><p class="muted" id="atom-info">Select one atom to edit.</p><div class="two-fields"><div><label for="atom-charge">Charge</label><input id="atom-charge" type="number" min="-8" max="8" step="1" value="0" disabled></div><div><label for="atom-isotope">Isotope</label><input id="atom-isotope" type="number" min="0" max="400" step="1" value="0" disabled></div></div><label for="atom-radicals">Unpaired electrons (radicals)</label><input id="atom-radicals" type="number" min="0" max="8" step="1" value="0" disabled aria-describedby="atom-hydrogen-help"><p class="muted" id="atom-hydrogen-help">Hydrogen labels follow the engine’s valence rules. Imported hydrogen overrides are preserved; incompatible radical edits are rejected.</p><button id="apply-atom" class="secondary-full" disabled>Apply to atom</button></section>
     <section class="science-panel"><h2>maraPssiwS</h2><p class="muted">Open a supplied population model to calculate and explore its pH curves. Prediction from the drawing remains unavailable.</p>

@@ -14,7 +14,8 @@ MAX_SOURCE_BYTES = 4_000_000
 MAX_TRANSPORT_BYTES = 16 * 1024 * 1024
 MAX_RESULT_BYTES = 8 * 1024 * 1024
 MAX_STDERR_BYTES = 65_536
-DEFAULT_STYLE = {'bondWidth': 4.2, 'labelSize': 36, 'bondSpacing': 0.14, 'labelPadding': 0.04, 'color': True, 'hashBondStyle': 'engine'}
+DEFAULT_STYLE = {'bondWidth': 4.2, 'labelSize': 36, 'bondSpacing': 0.14, 'labelPadding': 0.04, 'color': True,
+                 'hashBondStyle': 'engine', 'skeletalCarbons': True}
 ELEMENTS = frozenset(('H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca Sc Ti V Cr Mn Fe Co Ni Cu Zn '
     'Ga Ge As Se Br Kr Rb Sr Y Zr Nb Mo Tc Ru Rh Pd Ag Cd In Sn Sb Te I Xe Cs Ba La Ce Pr Nd Pm Sm Eu '
     'Gd Tb Dy Ho Er Tm Yb Lu Hf Ta W Re Os Ir Pt Au Hg Tl Pb Bi Po At Rn Fr Ra Ac Th Pa U Np Pu Am Cm '
@@ -82,6 +83,7 @@ def checked_style(value):
     for key, low, high in (('bondWidth', .5, 5), ('labelSize', 10, 40), ('bondSpacing', .06, .28), ('labelPadding', 0, .20)):
         _number(result[key], low, high)
     _require(result['labelSize'] == int(result['labelSize']) and type(result['color']) is bool)
+    _require(type(result['skeletalCarbons']) is bool)
     _require(isinstance(result['hashBondStyle'], str) and result['hashBondStyle'] in ('engine', 'spaced'))
     return result
 

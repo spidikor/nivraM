@@ -13,7 +13,8 @@ from .properties import calculate_properties
 from .drawing_font import system_arial
 from .hash_style import spaced_hashes
 
-DEFAULT_STYLE = {'bondWidth': 4.2, 'labelSize': 36, 'bondSpacing': 0.14, 'labelPadding': 0.04, 'color': True, 'hashBondStyle': 'engine'}
+DEFAULT_STYLE = {'bondWidth': 4.2, 'labelSize': 36, 'bondSpacing': 0.14, 'labelPadding': 0.04, 'color': True,
+                 'hashBondStyle': 'engine', 'skeletalCarbons': True}
 PALETTE = {
     -1:(0,0,0), 1:(0,0,0), 6:(0,0,0), 7:(0.2,0.2,0.6), 8:(1,0,0),
     9:(0.6,0.4,0), 11:(0,0,1), 15:(1,0.5,0), 16:(0.6,0.6,0),
@@ -34,16 +35,18 @@ def checked_style(style: dict | None) -> dict:
         raise ValueError('labelSize must be a whole number.')
     if not isinstance(out['color'], bool):
         raise ValueError('Element color must be true or false.')
+    if not isinstance(out['skeletalCarbons'], bool):
+        raise ValueError('Skeletal carbons must be true or false.')
     if not isinstance(out['hashBondStyle'], str) or out['hashBondStyle'] not in ('engine', 'spaced'):
         raise ValueError('Hashed stereobonds must use Engine spacing or Thicker, spaced bars.')
     return out
 
-def hydrogen_carbon_labels(mol: Chem.Mol) -> dict[int, str]:
+def hydrogen_carbon_labels(mol: Chem.Mol, *, skeletal: bool = False) -> dict[int, str]:
     """Expose carbon-bound H counts without creating atoms or changing valence.
 
-    RDKit already labels heteroatom hydrogens. Its default skeletal carbon
-    labels hide attached H; provide those labels explicitly, retaining isotope,
-    charge and atom map declarations. Radical marks remain drawer-owned.
+    Leave ordinary bonded carbons to RDKit in skeletal mode, including its
+    clarifying carbon labels at near-straight junctions. Retain the full
+    labels of isolated or annotated carbons. Radical marks remain drawer-owned.
     """
     labels = {}
     for atom in mol.GetAtoms():
@@ -51,15 +54,19 @@ def hydrogen_carbon_labels(mol: Chem.Mol) -> dict[int, str]:
         if atom.GetAtomicNum() != 6 or not count:
             continue
         isotope = atom.GetIsotope()
+        charge = atom.GetFormalCharge()
+        atom_map = atom.GetAtomMapNum()
+        if skeletal and atom.GetDegree() and not (isotope or charge or atom_map or atom.GetNumRadicalElectrons()):
+            continue
         label = (f'<sup>{isotope}</sup>' if isotope else '') + 'CH'
         if count != 1:
             label += f'<sub>{count}</sub>'
-        charge = atom.GetFormalCharge()
         if charge:
             magnitude = str(abs(charge)) if abs(charge) != 1 else ''
-            label += f'<sup>{magnitude}{"+" if charge > 0 else "−"}</sup>'
-        if atom.GetAtomMapNum():
-            label += f':{atom.GetAtomMapNum()}'
+            # The custom-label parser draws the ASCII sign as a single glyph.
+            label += f'<sup>{magnitude}{"+" if charge > 0 else "-"}</sup>'
+        if atom_map:
+            label += f':{atom_map}'
         labels[atom.GetIdx()] = label
     return labels
 
@@ -86,7 +93,7 @@ def render_scene(graph: dict, style: dict | None = None) -> dict:
     opts.scaleBondWidth=False;opts.singleColourWedgeBonds=False;opts.additionalAtomLabelPadding=style['labelPadding']
     if style['color']:opts.setAtomPalette(PALETTE)
     else:opts.useBWAtomPalette()
-    for index, label in hydrogen_carbon_labels(drawing).items():
+    for index, label in hydrogen_carbon_labels(drawing, skeletal=style['skeletalCarbons']).items():
         opts.atomLabels[index] = label
     drawer.DrawMolecule(drawing)
     positions=[]

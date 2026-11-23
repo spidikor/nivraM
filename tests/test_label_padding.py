@@ -20,7 +20,8 @@ from tests.test_import_preparation import FakeSupervisor, response
 from tests.test_population_state import request as state_request
 
 LEGACY_STYLE = {'bondWidth': 4.2, 'labelSize': 36, 'bondSpacing': .14, 'color': True}
-STYLE_KEYS = set(LEGACY_STYLE) | {'labelPadding', 'hashBondStyle'}
+OTHER_DEFAULTS = {'hashBondStyle': 'engine', 'skeletalCarbons': True}
+STYLE_KEYS = set(LEGACY_STYLE) | {'labelPadding', *OTHER_DEFAULTS}
 EXPORT = {'width': 640, 'marginMode': 'percent', 'margin': 2}
 # Captured from the delivered appearance-build-fb9d4a9e0cd4-90a76cb3 renderer,
 # scene.py SHA750c3eadf569f40c27bf6205e7da234d574d6d98219310fc60a1c018bc3d86ff,
@@ -106,7 +107,7 @@ class LabelPaddingTests(unittest.TestCase):
 
     def test_child_result_requires_exact_expanded_style_keys(self):
         value = imported()
-        self.assertEqual(value['scene']['style'], {**LEGACY_STYLE, 'labelPadding': .145, 'hashBondStyle': 'engine'})
+        self.assertEqual(value['scene']['style'], {**LEGACY_STYLE, 'labelPadding': .145, **OTHER_DEFAULTS})
         self.assertIs(protocol.validate_prepared_result(value, mode='import'), value)
         for change in ('missing', 'extra', 'invalid'):
             broken = copy.deepcopy(value)
@@ -129,8 +130,8 @@ class LabelPaddingTests(unittest.TestCase):
         self.assertEqual(checked['style']['labelPadding'], .145)
         value = prepare_fixture({'schema': preparation.SCHEMA, 'mode': 'batch',
                                       'source': json.dumps(project), 'extension': '.nivram', 'settings': checked})
-        self.assertEqual(value['scene']['style'], {**settings['style'], 'hashBondStyle': 'engine'})
-        self.assertEqual(value['project']['style'], {**settings['style'], 'hashBondStyle': 'engine'})
+        self.assertEqual(value['scene']['style'], {**settings['style'], **OTHER_DEFAULTS})
+        self.assertEqual(value['project']['style'], {**settings['style'], **OTHER_DEFAULTS})
         self.assertEqual(value['graph'], graph)
         self.assertIs(protocol.validate_prepared_result(value, mode='batch'), value)
         with self.assertRaises(ValueError):
@@ -158,7 +159,7 @@ class LabelPaddingTests(unittest.TestCase):
         try:
             result = service.prepare_import('CO', {'labelPadding': .145})
             request = json.loads(supervisor.calls[0]['input_text'])
-            self.assertEqual(request['style'], {**LEGACY_STYLE, 'labelPadding': .145, 'hashBondStyle': 'engine'})
+            self.assertEqual(request['style'], {**LEGACY_STYLE, 'labelPadding': .145, **OTHER_DEFAULTS})
             self.assertEqual(result['scene']['style'], request['style'])
             with self.assertRaises(preparation.ImportPreparationError):
                 service.prepare_import('CO', {'labelPadding': True})
@@ -169,9 +170,9 @@ class LabelPaddingTests(unittest.TestCase):
     def test_population_state_accepts_new_key_and_rejects_unknown_key(self):
         data = state_request(); data['style'] = {**LEGACY_STYLE, 'labelPadding': .145}
         before = copy.deepcopy(data)
-        self.assertEqual(population_state.validate_request(data)['style'], {**data['style'], 'hashBondStyle': 'engine'})
+        self.assertEqual(population_state.validate_request(data)['style'], {**data['style'], **OTHER_DEFAULTS})
         result = population_state.prepare_state(data)
-        self.assertEqual(result['scene']['style'], {**data['style'], 'hashBondStyle': 'engine'})
+        self.assertEqual(result['scene']['style'], {**data['style'], **OTHER_DEFAULTS})
         self.assertIs(protocol.validate_prepared_result(result, mode='population-state'), result)
         self.assertEqual(data, before)
         broken = copy.deepcopy(data); broken['style']['unknownStyle'] = .1
