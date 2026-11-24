@@ -87,7 +87,16 @@ async function initialize(){
     onReplace:source=>updateCorrection(()=>review.replaceFromText(source)),
     onUndo:()=>updateCorrection(()=>review.undoCorrection()),onRedo:()=>updateCorrection(()=>review.redoCorrection()),onReset:()=>updateCorrection(()=>review.resetCorrection()),
     onError:error=>{if(dialog.open)status(error.message,true);}});
-  const opticalStatus=availability=>{$('image-import-optical-status').textContent=availability?.status==='configured'?'Local recognition is configured. Runtime compatibility is checked when recognition starts. Choose a crop around one complete structure, then recognize it. Review and correct the proposal before accepting.':availability?.message||'Local optical recognition is not configured. Supported embedded structures can still be reviewed.';};
+  function opticalStatus(availability){
+    let message=availability?.message||'Local optical recognition is not configured. Supported embedded structures can still be reviewed.';
+    if(availability?.status==='configured'){
+      message='Local recognition is configured. Runtime compatibility is checked when recognition starts.';
+      if(inspection?.regionPreviewAvailable&&typeof window.pywebview.api.recognize_image==='function'){
+        message+=' Choose a crop around one complete structure, then recognize it. Review and correct the proposal before accepting.';
+      }
+    }
+    $('image-import-optical-status').textContent=message;
+  }
   attachOpticalSetup({document,events:window,native:window.pywebview.api,sessionToken:document.querySelector('meta[name="nivram-token"]')?.content||'',
     canOpen:()=>!busy&&!closing&&![...document.querySelectorAll('dialog[open]')].some(open=>open!==dialog),
     reviewIdentity:()=>review.inspection?.jobId??null,
@@ -123,7 +132,25 @@ async function initialize(){
     }
     const omitted=(details.unsupportedSources||[]).flatMap(item=>(item.features||[]).map(feature=>`${item.source}: ${feature}`));
     warnings([...(details.warnings||[]),...omitted,details.preservation||'Retain the original PNG; this is a component reconstruction.']);
-    status(details.status==='three_d_coordinates'?'Open this PNG using Open 3D PNG in the optional 3D viewer. Embedded 3D coordinates are not flattened into the drawing.':details.candidates.some(c=>c.status==='supported')?'Select components to preview, or supply structure text for the selected crop.':result.regionPreviewAvailable&&typeof window.pywebview.api.preview_image_draft==='function'?'No supported embedded structures were found. Supply SMILES or 2D MOL text to start a review against the selected crop.':result.opticalRecognition?.status==='configured'?'No supported embedded structures were found. Choose a crop around a structure and recognize it locally.':'No supported embedded structures were found. Local recognition needs its model configured.');
+    const hasManualCrop=result.regionPreviewAvailable&&typeof window.pywebview.api.preview_image_draft==='function';
+    if(details.status==='three_d_coordinates'){
+      status('Open this PNG using Open 3D PNG in the optional 3D viewer. Embedded 3D coordinates are not flattened into the drawing.');
+    }else if(details.candidates.some(candidate=>candidate.status==='supported')){
+      status(hasManualCrop?'Select components to preview, or supply structure text for the selected crop.':'Select embedded components to preview.');
+    }else{
+      let message='No supported embedded structures were found.';
+      if(!result.regionPreviewAvailable){
+        message+=' Bounded crop review is unavailable for this PNG.';
+        if(result.regionPreviewLimitation)message+=' '+result.regionPreviewLimitation;
+      }else if(hasManualCrop){
+        message+=' Supply SMILES or 2D MOL text to start a review against the selected crop.';
+      }else if(result.opticalRecognition?.status!=='configured'){
+        message+=' Local recognition needs its model configured.';
+      }else if(typeof window.pywebview.api.recognize_image==='function'){
+        message+=' Choose a crop around a structure and recognize it locally.';
+      }
+      status(message);
+    }
   }
   $('image-import-button').hidden=false;
   async function startImport(file){

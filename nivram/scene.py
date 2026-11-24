@@ -12,6 +12,7 @@ from .chemistry import graph_to_mol, ChemistryError
 from .properties import calculate_properties
 from .drawing_font import system_arial
 from .hash_style import spaced_hashes
+from .label_anchors import anchor_element_labels
 
 DEFAULT_STYLE = {'bondWidth': 4.2, 'labelSize': 36, 'bondSpacing': 0.14, 'labelPadding': 0.04, 'color': True,
                  'hashBondStyle': 'engine', 'skeletalCarbons': True}
@@ -81,6 +82,18 @@ def render_scene(graph: dict, style: dict | None = None) -> dict:
     # Work on a copy; depiction must never rewrite document coordinates.
     drawing = rdMolDraw2D.PrepareMolForDrawing(Chem.Mol(mol), kekulize=True,
                                               addChiralHs=False, wedgeBonds=True, forceCoords=False)
+    # A wedge at a nonstereogenic atom can specify perspective without assigning
+    # a stereocenter. RDKit removes these marks during chemistry normalization.
+    # Restore an explicitly supplied single-bond mark on the drawing copy only.
+    lost_marks = [(bond, item['direction']) for bond, item in zip(drawing.GetBonds(), graph['bonds'])
+                  if item.get('direction') in (int(Chem.BondDir.BEGINWEDGE), int(Chem.BondDir.BEGINDASH))
+                  and bond.GetBondType() == Chem.BondType.SINGLE and bond.GetBondDir() == Chem.BondDir.NONE]
+    if lost_marks:
+        possible_centers = {info.centeredOn for info in Chem.FindPotentialStereo(mol)
+                            if info.type == Chem.StereoType.Atom_Tetrahedral}
+        for bond, direction in lost_marks:
+            if bond.GetBeginAtomIdx() not in possible_centers:
+                bond.SetBondDir(Chem.BondDir.values[direction])
     xs=[a['x'] for a in graph['atoms']]; ys=[a['y'] for a in graph['atoms']]
     width=max(300,min(6000,math.ceil((max(xs)-min(xs)+4)*65)))
     height=max(220,min(6000,math.ceil((max(ys)-min(ys)+4)*65)))
@@ -107,6 +120,7 @@ def render_scene(graph: dict, style: dict | None = None) -> dict:
     if '<text' in svg:
         raise ValueError('Accurate atom-label outlines require FreeType support; the drawing could not be rendered.')
     svg=svg.replace('stroke-linecap:butt','stroke-linecap:round').replace('stroke-linejoin:miter','stroke-linejoin:round')
+    svg=anchor_element_labels(svg, drawing, positions)
     if style['hashBondStyle'] == 'spaced':
         svg = spaced_hashes(svg, drawing, style['bondWidth'])
     return {'svg':svg,'positions':positions,'transform':{'x0':p0.x,'y0':p0.y,'xScale':px.x-p0.x,'yScale':py.y-p0.y},
