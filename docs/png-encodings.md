@@ -602,6 +602,17 @@ source columns are already PCS-adapted. Optional bkpt/lumi triples are bounded
 by 16; black point is not applied. Optional chrm has exactly three xy coordinate
 pairs, each in [0,1] with x+y<=1, and colorant type 0–4; it does not alter conversion.
 
+The PNG preview also recognizes the nonstandard Qt 6 ICC v4.4 RGB display
+encoding with an all-zero date and Qt creator signature. It requires a
+validated chromatic adaptation matrix and a positive native white with
+normalized Y. The matrix must map this white to PCS D50 within 0.002 per
+channel, and the RGB colorants must independently sum to D50 within the
+same tolerance. The relative-colorimetric transform uses the RGB colorants
+and TRCs directly. The preview reports its Qt compatibility policy and the
+hash of the original profile. The strict parser remains the default for
+direct callers. See the [Qt profile writer](https://github.com/qt/qtbase/blob/dev/src/gui/painting/qicc.cpp)
+and the [ICC display white point explanation](https://www.color.org/whyd50/).
+
 TRCs may be curv identity, positive u8Fixed8 gamma up to 10, or 2–4096 monotone
 unsigned16 entries with endpoints 0/65535 and piecewise linear interpolation.
 Parametric type0 supports positive gamma up to 10. Type3 supports `(a*x+b)^g`

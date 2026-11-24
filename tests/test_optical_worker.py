@@ -114,6 +114,28 @@ class OpticalInputTests(unittest.TestCase):
         self.assertEqual(key.getpixel((0, 0)), (255, 255, 255))
 
 
+    def test_dark_background_normalization_targets_only_model_pixels(self):
+        original = Image.new('RGB', (20, 20), (25, 25, 25))
+        original.paste((100, 100, 100), (3, 7, 17, 9))
+        before = original.tobytes()
+        adjusted = worker.model_input_image(original)
+        self.assertEqual(adjusted.size, original.size)
+        self.assertEqual(adjusted.getpixel((0, 0)), (255, 255, 255))
+        self.assertEqual(adjusted.getpixel((7, 8)), (0, 0, 0))
+        self.assertEqual(original.tobytes(), before)
+
+    def test_light_background_blank_and_mixed_fields_keep_input_rgb(self):
+        light = Image.new('RGB', (20, 20), 'white')
+        light.paste('red', (3, 7, 17, 9))
+        mixed = Image.new('RGB', (20, 20), 'black')
+        mixed.paste('white', (2, 2, 18, 18))
+        dark_center = Image.new('RGB', (20, 20), 'white')
+        dark_center.paste('black', (1, 1, 19, 19))
+        for image in (light, mixed, dark_center, Image.new('RGB', (1, 1), 'black')):
+            with self.subTest(size=image.size, border=image.getpixel((0, 0))):
+                self.assertIs(worker.model_input_image(image), image)
+
+
 def fake_runtime(states=None):
     states = states or {'args': {'input_size': 384}, 'encoder': {'module.weight': 'encoder-weight'},
                         'decoder': {'module.layer.module.weight': 'decoder-weight'}}

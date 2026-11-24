@@ -67,6 +67,36 @@ def curve(kind,values=(),function=0):
 
 
 class ICCPreviewTests(unittest.TestCase):
+    def test_qt_rgb_compatibility_checks_native_white_and_keeps_pcs_transform(self):
+        # Synthetic non-sRGB transfer curve and non-D65 native white. Color
+        # expectations come from the suite's independent linear fixture.
+        header = bytearray(PROF[:128])
+        header[8:12] = bytes.fromhex('04400000')
+        header[24:36] = bytes(12)
+        header[80:84] = b'Qt\x06\x08'
+        native_white = (.9, 1, .95)
+        matrix = [icc.D50[i] / native_white[i] if i == j else 0 for i in range(3) for j in range(3)]
+        def fixed(values):
+            return struct.pack('>' + 'i' * len(values), *(round(v * 65536) for v in values))
+        tags = dict(entries(PROF))
+        tags[b'wtpt'] = b'XYZ ' + bytes(4) + fixed(native_white)
+        tags[b'chad'] = b'sf32' + bytes(4) + fixed(matrix)
+        profile = rebuild(tags.items(), header)
+        with self.assertRaisesRegex(ValueError, 'creation date'):
+            icc._parse(profile, lambda: None)
+        result = pp.preview_png(make(metadata=meta(profile)), mode='overview')
+        self.assertEqual(read(result)[0], read(pp.preview_png(make(), mode='overview'))[0])
+        info = result['engine']['iccProfile']
+        self.assertEqual(info['admissionPolicy'], 'Qt-6-display-RGB-matrix-TRC-compatibility')
+        self.assertEqual(info['sha256'], hashlib.sha256(profile).hexdigest())
+        # The creator marker alone cannot establish colorimetric agreement.
+        for wrong in (change(profile, 80, b'Other'[:4]), change(profile, 34, b'\0\x01'),
+                      rebuild([(k,v) for k,v in tags.items() if k != b'chad'], header),
+                      rebuild({**tags, b'chad': b'sf32' + bytes(4) + fixed([1,0,0,0,1,0,0,0,1])}.items(), header),
+                      rebuild({**tags, b'wtpt': b'XYZ ' + bytes(4) + fixed((1,0,1))}.items(), header)):
+            with self.subTest(sha=hashlib.sha256(wrong).hexdigest()):
+                self.reject(make(metadata=meta(wrong)))
+
     def reject(self,data):
         self.assertFalse(pp.preview_capability(data)['available'])
         with self.assertRaises(pp.PngPreviewError):pp.preview_png(data,mode='overview')
