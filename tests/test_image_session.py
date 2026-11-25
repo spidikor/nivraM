@@ -34,6 +34,53 @@ class ImageSessionTests(unittest.TestCase):
         self.session.close()
         self.temp.cleanup()
 
+    def test_native_chooser_only_returns_an_opaque_one_use_selection(self):
+        from nivram.desktop import DesktopApi
+        api = DesktopApi.__new__(DesktopApi)
+        api._images = self.session
+        api._window = Mock()
+        api._window.create_file_dialog.return_value = [str(self.source)]
+        choice = api.inspect_image('dialog-first', 'choose')
+        self.assertEqual(set(choice), {'status', 'jobId', 'selectionId'})
+        self.assertEqual(choice['status'], 'selected')
+        self.session._jobs.inspect.assert_not_called()
+        for job, key in [('another-job', choice['selectionId']), ('dialog-first', str(self.source))]:
+            with self.assertRaises(ImageJobCancelled):
+                api.inspect_image(job, 'inspect', key)
+        result = api.inspect_image('dialog-first', 'inspect', choice['selectionId'])
+        self.assertEqual(result['inspection']['originalSha256'], hashlib.sha256(self.data).hexdigest())
+        self.assertEqual(api._window.create_file_dialog.call_count, 1)
+        with self.assertRaises(ImageJobCancelled):
+            api.inspect_image('dialog-first', 'inspect', choice['selectionId'])
+        self.assertEqual(self.session._jobs.inspect.call_count, 1)
+        self.assertEqual(api.inspect_image('legacy-one-call')['status'], 'inspected')
+
+    def test_cancelled_or_replaced_native_choice_cannot_resume_or_read(self):
+        for action in ('cancel', 'replace', 'reload', 'dismiss'):
+            with self.subTest(action=action):
+                job = 'dialog-' + action
+                replacement = {}
+                def pick():
+                    if action == 'cancel':
+                        self.session.cancel(job)
+                    elif action == 'replace':
+                        replacement.update(self.session.choose_source('new-dialog', lambda: self.source))
+                    elif action == 'reload':
+                        self.session.discard_choice()
+                    else:
+                        return None
+                    return self.source
+                if action == 'dismiss':
+                    self.assertEqual(self.session.choose_source(job, pick), {'status': 'cancelled'})
+                else:
+                    with self.assertRaises(ImageJobCancelled):
+                        self.session.choose_source(job, pick)
+                if replacement:
+                    self.assertEqual(self.session._choice['key'], replacement['selectionId'])
+                    self.session.cancel('new-dialog')
+                self.assertIsNone(self.session._choice)
+        self.session._jobs.inspect.assert_not_called()
+
     def test_accept_preserves_inspected_bytes_despite_later_source_file_change(self):
         result = self.session.inspect(self.source, 'original-bytes')
         self.assertTrue(result['reviewAvailable'])

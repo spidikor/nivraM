@@ -162,7 +162,8 @@ def _source(data: bytes, end: float) -> tuple[int, int, _Encoding, list[tuple[in
             if idat or b'PLTE' in seen or kind in seen:
                 raise PngPreviewError('PNG ICC profile is duplicated or misplaced.')
             try:
-                icc = png_icc.parse_iccp(body, lambda: _deadline(end), PIXEL_PIPELINE_BUDGET)
+                icc = png_icc.parse_iccp(body, lambda: _deadline(end), PIXEL_PIPELINE_BUDGET,
+                                         allow_qt_rgb=True)
                 if (icc.color_model == 'GRAY') != (color in (0, 4)):
                     raise PngPreviewError('PNG ICC color model does not match source color type.')
             except ValueError as exc:
@@ -805,6 +806,10 @@ def preview_png(data: bytes, *, mode: str, rect: dict | None = None,
             result['engine']['iccProfile'].update({
                 'admissionPolicy': 'bounded-v4-display-GRAY-XYZ-kTRC',
                 'sourceColorModel': 'GRAY', 'sizeBytes': encoding.icc.size})
+        if encoding.icc.qt_rgb_compatibility:
+            result['engine']['iccProfile'].update({
+                'admissionPolicy': 'Qt-6-display-RGB-matrix-TRC-compatibility',
+                'profileInterpretation': 'Nonstandard Qt header; native white verified against chad and PCS D50.'})
     if icc_active:
         result['engine']['colorConversion'] = {
             'name': 'bounded ICC v4 matrix/TRC to sRGB', 'version': 1,

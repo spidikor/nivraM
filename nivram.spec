@@ -1,6 +1,11 @@
 # Build on Windows with the isolated, pinned environment.
+from PyInstaller.depend import imphook
 from PyInstaller.utils.hooks import collect_data_files, collect_dynamic_libs, copy_metadata
+import glob
+import hashlib
+import ssl
 from pathlib import Path
+from types import SimpleNamespace
 import os
 import json
 import importlib.metadata
@@ -8,7 +13,23 @@ from datetime import datetime, timezone
 from nivram import __version__
 from nivram.naming_runtime import discover_naming_runtime
 
+
+def glob_hook_files(pattern):
+    directory, filename_pattern = os.path.split(pattern)
+    return glob.glob(os.path.join(glob.escape(directory), filename_pattern))
+
+
 datas = [('public', 'public')]
+# The pinned Codex Python runtime loads this CA distrust data beside ssl.py.
+# Reject a broken SSL runtime at build time. Standard CPython has no extra PEM.
+runtime_ca_data = Path(ssl.__file__).with_name('codex-rejected-cas.pem')
+if runtime_ca_data.is_file():
+    if hashlib.sha256(runtime_ca_data.read_bytes()).hexdigest() != (
+        'c916ce1b14ed8ca69e9b5c9fab22799a900dd610d6d4ec9b1347f4fd48e53718'
+    ):
+        raise RuntimeError('The Python runtime CA distrust file does not match the pinned bytes.')
+    datas.append((str(runtime_ca_data), '.'))
+ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
 datas += [('nivram/optical_worker.py', 'nivram')]
 source_digest = os.environ.get('NIVRAM_SOURCE_SHA256', '')
 if len(source_digest) != 64 or any(c not in '0123456789abcdef' for c in source_digest):
@@ -31,6 +52,10 @@ datas += collect_data_files('rdkit', includes=['Data/**'], excludes=['**/*.ttf',
 datas += collect_data_files('rdkit', includes=['_nivram_native/manifest.json'])
 datas += copy_metadata('rdkit')
 private_rdkit_metadata = 'rdkit-' + importlib.metadata.version('rdkit') + '.dist-info/direct_url.json'
+# PyInstaller 6.22.3 treats bracketed hook directories as glob patterns.
+# Apply the literal-directory search only to hook discovery in this build.
+original_hook_glob = imphook.glob
+imphook.glob = SimpleNamespace(glob=glob_hook_files)
 a = Analysis(['run_desktop.py'], pathex=[], binaries=collect_dynamic_libs('rdkit', search_patterns=['*.dll', '*.pyd']),
              datas=datas, hiddenimports=['webview.platforms.edgechromium', 'webview.platforms.winforms'],
              excludes=['tkinter', 'pytest', 'playwright'], noarchive=False)
@@ -45,6 +70,7 @@ worker = Analysis(['run_worker.py'], pathex=[], binaries=collect_dynamic_libs('r
                   datas=collect_data_files('nispo') + copy_metadata('nispo')
                       + collect_data_files('rdkit', includes=['_nivram_native/manifest.json']) + copy_metadata('rdkit'),
                   hiddenimports=['nispo'], excludes=['webview','playwright','tkinter'], noarchive=False)
+imphook.glob = original_hook_glob
 worker.datas = [item for item in worker.datas if not item[0].lower().endswith(('.ttf','.otf','.ttc','.otc','.woff','.woff2','.eot'))
                 and item[0].replace('\\', '/') != private_rdkit_metadata]
 worker_pyz = PYZ(worker.pure)

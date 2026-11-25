@@ -29,7 +29,7 @@ export function createJobController(getRevision,{timeoutMs=30000}={}){
         }
       };
       active.set(channel,task);
-      timer=setTimeout(()=>task.cancel('The operation timed out. The preceding document is retained.','TimeoutError'),timeout);
+      if(timeout!==null)timer=setTimeout(()=>task.cancel('The operation timed out. The preceding document is retained.','TimeoutError'),timeout);
       return Object.freeze(task);
     },
     cancelAll(message){for(const task of [...active.values()])task.cancel(message);}

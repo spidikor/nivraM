@@ -213,3 +213,75 @@ test('PNG UI requires explicit reviewed components, preserves cancellation and g
   assert.equal(await page.locator('.wordmark').evaluate(node=>getComputedStyle(node).transform),'matrix(-1, 0, 0, 1, 0, 0)');
   t.diagnostic('PNG source decoding, explicit selection/acceptance, provenance, crop/decode rejection, cancellation, stale render and destination guards completed.');
 });
+
+
+test('PNG review explains crop availability independently of the configured model',{timeout:120000},async t=>{
+  const {page}=await fixture(t),before=await live(page);
+  const reason='PNG ICC profile: unsupported media white point.';
+  await page.evaluate(reason=>{
+    const api=window.pywebview.api,inspect=api.inspect_image;
+    api.inspect_image=async id=>{
+      const result=await inspect(id),scenario=window.regionScenario;
+      result.regionPreviewAvailable=scenario.regions;
+      result.regionPreviewLimitation=scenario.regions?null:reason;
+      result.opticalRecognition={status:'configured',modelSha256:'32821fa4ba8d17f9a92e374601438c5e757947dbf1141e9ad0ef51cccfa1c501',message:'Model configured.'};
+      if(!scenario.metadata)result.inspection.candidates=[];
+      return result;
+    };
+    api.recognize_image=()=>{throw new Error('This display test should not start recognition.');};
+    api.preview_image_draft=()=>{throw new Error('This display test should not start a manual draft.');};
+  },reason);
+  for(const scenario of [{name:'unsupported plain image',regions:false,metadata:false},
+    {name:'supported embedded components',regions:false,metadata:true},
+    {name:'usable regions',regions:true,metadata:false}]){
+    await t.test(scenario.name,async()=>{
+      await page.evaluate(value=>{window.regionScenario=value;},scenario);
+      await page.click('#image-import-button');
+      try{
+        await page.waitForFunction(()=>document.querySelector('#image-import-name').textContent.includes('synthetic-source.png'));
+        const status=await page.textContent('#image-import-status'),optical=await page.textContent('#image-import-optical-status');
+        assert.match(optical,/configured/i);
+        assert.equal(await page.isDisabled('#image-import-recognize'),!scenario.regions);
+        assert.equal(await page.isDisabled('#image-import-crop-button'),!scenario.regions);
+        assert.equal(await page.isDisabled('#image-import-accept'),true);
+        if(scenario.regions){
+          assert.match(status,/supply SMILES/i);assert.match(optical,/choose a crop/i);
+        }else{
+          assert.doesNotMatch(optical,/choose a crop/i);
+          if(scenario.metadata){
+            assert.match(status,/select .*components to preview/i);assert.doesNotMatch(status,/supply structure text/i);
+            await page.check('#image-import-components input');assert.equal(await page.isDisabled('#image-import-preview'),false);
+          }else{
+            assert.ok(status.includes(reason));assert.doesNotMatch(status,/choose a crop|needs its model/i);
+          }
+        }
+      }finally{await page.click('#image-import-cancel');}
+      assert.deepEqual(await live(page),before);
+    });
+  }
+});
+
+test('Import PNG keeps the review open while the native chooser awaits a selection',async t=>{
+  const {page}=await fixture(t),before=await live(page);
+  await page.clock.install();
+  await page.evaluate(()=>{
+    const api=window.pywebview.api,inspect=api.inspect_image;
+    api.inspect_image=(id,phase,key)=>{
+      if(phase==='choose')return new Promise(resolve=>{
+        window.completeFixturePicker=()=>resolve({status:'selected',jobId:id,selectionId:'a'.repeat(32)});
+      });
+      if(phase!=='inspect'||key!=='a'.repeat(32))throw new Error('Invalid fixture selection.');
+      return inspect(id);
+    };
+  });
+  await page.click('#image-import-button');
+  await page.waitForFunction(()=>typeof window.completeFixturePicker==='function');
+  await page.clock.fastForward(600000);
+  assert.match(await page.textContent('#image-import-status'),/Choose a PNG/i);
+  assert.ok(await page.locator('#image-import-dialog').evaluate(dialog=>dialog.open));
+  await page.evaluate(()=>window.completeFixturePicker());
+  await page.waitForFunction(()=>document.querySelector('#image-import-components input'));
+  assert.deepEqual(await live(page),before);
+  await page.click('#image-import-cancel');
+  assert.deepEqual(await live(page),before);
+});

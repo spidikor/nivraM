@@ -129,9 +129,10 @@ class Profile:
     matrix: tuple
     curves: tuple
     color_model: str = 'RGB'
+    qt_rgb_compatibility: bool = False
 
 
-def parse_iccp(body, check, budget):
+def parse_iccp(body, check, budget, *, allow_qt_rgb=False):
     """Bound inflation before allocation, then validate every admitted tag."""
     _require(budget >= PROFILE_WORK_BYTES, 'profile processing exceeds pixel buffer budget.')
     _require(3 <= len(body) <= MAX_COMPRESSED+81, 'compressed envelope exceeds supported bounds.')
@@ -163,10 +164,10 @@ def parse_iccp(body, check, budget):
     except zlib.error as exc:
         raise ValueError('PNG ICC profile: invalid compressed profile/checksum.') from exc
     check()
-    return _parse(bytes(raw), check)
+    return _parse(bytes(raw), check, allow_qt_rgb=allow_qt_rgb)
 
 
-def _parse(raw, check):
+def _parse(raw, check, *, allow_qt_rgb=False):
     _require(len(raw) >= 132 and len(raw) % 4 == 0 and int.from_bytes(raw[:4], 'big') == len(raw), 'invalid declared profile size.')
     _require(raw[8] == 4 and raw[9] >> 4 <= 4 and raw[9] & 15 <= 9 and raw[10:12] == b'\0\0', 'only ICC v4.0 through v4.4 profiles are supported.')
     _require(raw[12:16] == b'mntr' and raw[16:20] in (b'RGB ', b'GRAY') and
@@ -176,10 +177,16 @@ def _parse(raw, check):
     _require(raw[68:80] == struct.pack('>3i', 63190,65536,54061) and not any(raw[100:128]), 'invalid PCS illuminant or reserved header.')
     intent = int.from_bytes(raw[64:68], 'big')
     _require(intent <= 3, 'invalid rendering intent.')
-    try:
-        datetime(*struct.unpack_from('>6H', raw, 24))
-    except ValueError as exc:
-        raise ValueError('PNG ICC profile: invalid creation date.') from exc
+    # Qt 6 identifies its version in the creator signature, writes a zero
+    # date and can store the native display white in wtpt. Verify its color
+    # data independently below. The compatibility route is specific to RGB.
+    qt_rgb = (allow_qt_rgb and not gray and raw[80:83] == b'Qt\x06'
+              and raw[8:12] == b'\x04\x40\x00\x00' and not any(raw[24:36]))
+    if not qt_rgb:
+        try:
+            datetime(*struct.unpack_from('>6H', raw, 24))
+        except ValueError as exc:
+            raise ValueError('PNG ICC profile: invalid creation date.') from exc
     count = int.from_bytes(raw[128:132], 'big')
     end = 132+12*count
     _require(1 <= count <= MAX_TAGS and end <= len(raw), 'invalid tag count/table.')
@@ -207,7 +214,11 @@ def _parse(raw, check):
     for name in (b'desc',b'cprt'):
         _mluc(payload(name),check)
     white = _xyz(payload(b'wtpt'))
-    _require(all(abs(a-b) <= 2/65536 for a,b in zip(white,D50)), 'unsupported media white point.')
+    if qt_rgb:
+        _require(b'chad' in tags and all(0 < v <= 4 for v in white)
+                 and abs(white[1] - 1) <= 2/65536, 'unsupported Qt display white point.')
+    else:
+        _require(all(abs(a-b) <= 2/65536 for a,b in zip(white,D50)), 'unsupported media white point.')
     for name in (b'bkpt',b'lumi'):
         if name in tags:
             _require(all(abs(x) <= 16 for x in _xyz(payload(name))), 'optional XYZ exceeds bounds.')
@@ -216,6 +227,10 @@ def _parse(raw, check):
         _require(len(p)==44 and p[:4]==b'sf32', 'invalid chromatic adaptation tag.')
         values=_fixed(p,8,9); matrix=tuple(values[i:i+3] for i in (0,3,6))
         _require(all(abs(x)<=16 for x in values) and abs(_det(matrix))>=1e-8, 'invalid chromatic adaptation matrix.')
+        if qt_rgb:
+            adapted = tuple(sum(v * w for v, w in zip(row, white)) for row in matrix)
+            _require(all(abs(a-b) <= .002 for a,b in zip(adapted,D50)),
+                     'Qt display white and chromatic adaptation matrix disagree.')
     if b'chrm' in tags:
         p=payload(b'chrm')
         _require(len(p)==36 and p[:4]==b'chrm' and int.from_bytes(p[8:10],'big')==3 and int.from_bytes(p[10:12],'big')<=4,
@@ -234,7 +249,8 @@ def _parse(raw, check):
              'matrix exceeds the supported numerical subset.')
     curves=tuple(_curve(payload(n)) for n in (b'rTRC',b'gTRC',b'bTRC'))
     check()
-    return Profile(hashlib.sha256(raw).hexdigest(),len(raw),intent,matrix,curves)
+    return Profile(hashlib.sha256(raw).hexdigest(),len(raw),intent,matrix,curves,
+                   qt_rgb_compatibility=qt_rgb)
 
 
 def table_bytes(depth, profile=None):

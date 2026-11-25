@@ -281,8 +281,37 @@ def validated_prediction(prediction, input_sha256):
     return result
 
 
+def model_input_image(image):
+    """Map light ink on a dominant dark background to dark ink for inference."""
+    from PIL import ImageOps
+
+    gray = image.convert('L')
+    histogram = gray.histogram()
+    background = max(range(256), key=histogram.__getitem__)
+    if background >= 128:
+        return image
+    low, high = gray.getextrema()
+    if high - background <= background - low:
+        return image
+
+    # A frequent dark stroke (or a dark frame around a light page) is not
+    # sufficient evidence of a dark canvas. Require both area and edge support.
+    width, height = gray.size
+    near_background = slice(max(0, background - 16), min(256, background + 17))
+    if sum(histogram[near_background]) * 4 < width * height * 3:
+        return image
+    edges = ((0, 0, width, 1), (0, height - 1, width, height),
+             (0, 0, 1, height), (width - 1, 0, width, height))
+    edge_background = sum(sum(gray.crop(edge).histogram()[near_background]) for edge in edges)
+    if edge_background * 4 < 3 * (2 * width + 2 * height):
+        return image
+    return ImageOps.autocontrast(ImageOps.invert(gray)).convert('RGB')
+
+
 def recognize(png, input_sha256, model_path):
-    image = decode_png(png)
+    # Keep the reviewed crop and its provenance hash intact. Only the tensor
+    # supplied to the predictor uses the normalized contrast and polarity.
+    image = model_input_image(decode_png(png))
     with contextlib.ExitStack() as resources:
         with ThreadPoolExecutor(max_workers=1) as executor:
             checked = executor.submit(resources.enter_context, verified_model(model_path))

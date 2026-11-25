@@ -39,6 +39,7 @@ class ImageImportSession:
         self._lock = threading.RLock()
         self._current = None
         self._pending = None
+        self._choice = None
         self._cancelled_ids = deque(maxlen=64)
         self._closed = False
         self._optical_operation = None
@@ -75,12 +76,47 @@ class ImageImportSession:
             self._optical_status = self._optical_jobs.availability()
             return dict(self._optical_status)
 
-    def inspect(self, path, job_id):
+    def discard_choice(self):
+        with self._lock:
+            self._choice = None
+
+    def choose_source(self, job_id, picker):
+        self._validate_job_id(job_id)
+        with self._lock:
+            if self._closed or job_id in self._cancelled_ids:
+                raise ImageJobCancelled('Image inspection was cancelled.')
+            choice = {'id': job_id, 'key': secrets.token_hex(16), 'path': None}
+            self._choice = choice
+        try:
+            path = picker()
+            with self._lock:
+                if self._choice is not choice or self._closed:
+                    raise ImageJobCancelled('This file selection is no longer current.')
+                if path is None:
+                    self._choice = None
+                    return {'status': 'cancelled'}
+                choice['path'] = Path(path)
+                return {'status': 'selected', 'jobId': job_id, 'selectionId': choice['key']}
+        except BaseException:
+            with self._lock:
+                if self._choice is choice:
+                    self._choice = None
+            raise
+
+    def inspect_chosen(self, job_id, selection_id):
+        with self._lock:
+            choice = self._choice
+            if (choice is None or choice['id'] != job_id or choice['key'] != selection_id
+                    or choice['path'] is None):
+                raise ImageJobCancelled('This file selection is no longer current.')
+        return self.inspect(choice['path'], job_id, choice=choice)
+
+    def inspect(self, path, job_id, *, choice=None):
         path = Path(path)
         def read_source():
             with path.open('rb') as handle:
                 return handle.read(MAX_INPUT + 1)
-        return self._inspect(read_source, path.name, job_id)
+        return self._inspect(read_source, path.name, job_id, choice=choice)
 
     def inspect_bytes(self, png_base64, filename, job_id):
         """Inspect original PNG bytes; filename is a label, never a filesystem path."""
@@ -98,14 +134,21 @@ class ImageImportSession:
                 raise ValueError('PNG input has an invalid base64 encoding.') from None
         return self._inspect(read_source, filename, job_id)
 
-    def _inspect(self, read_source, name, job_id):
+    @staticmethod
+    def _validate_job_id(job_id):
         if not isinstance(job_id, str) or not re.fullmatch(r'[A-Za-z0-9_-]{8,80}', job_id):
             raise ValueError('Invalid image job identifier.')
+
+    def _inspect(self, read_source, name, job_id, *, choice=None):
+        self._validate_job_id(job_id)
         with self._lock:
+            if choice is not None and self._choice is not choice:
+                raise ImageJobCancelled('This file selection is no longer current.')
             if self._closed or job_id in self._cancelled_ids:
                 raise ImageJobCancelled('Image inspection was cancelled.')
             if self._pending is not None:
                 raise ValueError('Another source-image inspection is already running.')
+            self._choice = None
             state = {'id': job_id, 'cancelled': False, 'cancel_event': threading.Event()}
             self._pending = state
             if self._current is not None:
@@ -156,6 +199,8 @@ class ImageImportSession:
     def cancel(self, job_id):
         with self._lock:
             self._cancelled_ids.append(job_id)
+            if self._choice is not None and self._choice['id'] == job_id:
+                self._choice = None
             if self._pending and self._pending['id'] == job_id:
                 self._pending['cancelled'] = True
                 self._pending['cancel_event'].set()
@@ -497,6 +542,7 @@ class ImageImportSession:
     def close(self):
         with self._lock:
             self._closed = True
+            self._choice = None
             if self._current is not None:
                 self._cancel_optical(self._current)
                 self._cancel_manual(self._current)
