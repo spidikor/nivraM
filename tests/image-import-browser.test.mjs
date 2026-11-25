@@ -260,3 +260,28 @@ test('PNG review explains crop availability independently of the configured mode
     });
   }
 });
+
+test('Import PNG keeps the review open while the native chooser awaits a selection',async t=>{
+  const {page}=await fixture(t),before=await live(page);
+  await page.clock.install();
+  await page.evaluate(()=>{
+    const api=window.pywebview.api,inspect=api.inspect_image;
+    api.inspect_image=(id,phase,key)=>{
+      if(phase==='choose')return new Promise(resolve=>{
+        window.completeFixturePicker=()=>resolve({status:'selected',jobId:id,selectionId:'a'.repeat(32)});
+      });
+      if(phase!=='inspect'||key!=='a'.repeat(32))throw new Error('Invalid fixture selection.');
+      return inspect(id);
+    };
+  });
+  await page.click('#image-import-button');
+  await page.waitForFunction(()=>typeof window.completeFixturePicker==='function');
+  await page.clock.fastForward(600000);
+  assert.match(await page.textContent('#image-import-status'),/Choose a PNG/i);
+  assert.ok(await page.locator('#image-import-dialog').evaluate(dialog=>dialog.open));
+  await page.evaluate(()=>window.completeFixturePicker());
+  await page.waitForFunction(()=>document.querySelector('#image-import-components input'));
+  assert.deepEqual(await live(page),before);
+  await page.click('#image-import-cancel');
+  assert.deepEqual(await live(page),before);
+});

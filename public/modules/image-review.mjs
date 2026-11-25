@@ -139,14 +139,33 @@ export function createImageReview({editor,native,sessionToken='',prepare,render,
     resetCorrection(){if(!current?.preview)throw new Error('Preview the components first.');return correct(current.preview.response.graph);},
     async inspect(file){
       cancel();const source=editor.getSnapshot(),session={id:newId(),revision:source.revision,document:cloneData(source.document),status:'inspecting',preview:null,committing:false,generation:0,regionEpoch:0,regionTask:null,regionRequest:null,detail:null,requiresCrop:false};
-      current=session;const task=jobs.begin('image-inspect',{input:{jobId:session.id},timeout:180000});
+      current=session;
+      const input={jobId:session.id};
+      let task=jobs.begin('image-inspect',{input,timeout:file===undefined?null:180000});
       try{
         let bytes=null;
         if(file!==undefined){
           if(typeof native.inspect_image_bytes!=='function'||typeof sessionToken!=='string'||!sessionToken)throw new Error('PNG drop and image paste require the native desktop app.');
           bytes=await task.wait(preparePngIntake(file,task));active(session,task);
         }
-        const raw=await task.wait(bytes?native.inspect_image_bytes(bytes.pngBase64,bytes.filename,session.id,sessionToken):native.inspect_image(session.id));active(session,task);
+        let raw;
+        if(bytes){
+          raw=await task.wait(native.inspect_image_bytes(bytes.pngBase64,bytes.filename,session.id,sessionToken));
+        }else{
+          const choice=await task.wait(native.inspect_image(session.id,'choose'));active(session,task);
+          if(choice?.status==='cancelled'){cancel();return null;}
+          task.finish();
+          task=jobs.begin('image-inspect',{input,timeout:180000});
+          if(choice?.status==='selected'){
+            if(choice.jobId!==session.id||typeof choice.selectionId!=='string'||!/^[0-9a-f]{32}$/.test(choice.selectionId))throw new Error('The selected PNG does not belong to this review.');
+            raw=await task.wait(native.inspect_image(session.id,'inspect',choice.selectionId));
+          }else{
+            // A one-call host can supply its already completed inspection.
+            // The same source and job-identity checks apply below.
+            raw=choice;
+          }
+        }
+        active(session,task);
         if(raw?.status==='cancelled'){cancel();return null;}
         const result=validateInspection(raw,session.id);
         if(bytes&&(result.inspection.originalSha256!==bytes.sha256||result.name!==bytes.filename))throw new Error('The image inspection does not match the original byte-source identity.');

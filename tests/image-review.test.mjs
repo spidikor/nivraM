@@ -14,7 +14,7 @@ function fixture({sourceHash=hash,reviewAvailable=true,regionPreviewAvailable=fa
   const calls={reset:0,open:0,cancel:[],preview:[],prepare:[],regions:[],regionCancel:[],tokens:[],chooser:0,bytes:[],imports:[]},fault={};let sequence=0;
   const candidate=ids=>({graph:{atoms:ids.flatMap(id=>components.find(c=>c.id===id)?.graph?.atoms||[]),bonds:[]},scene:{style:before.document.style},sourceSha256:sourceHash,selectedComponents:ids,warnings:['Review stereo against source.']});
   const native={
-    async inspect_image(id){calls.chooser++;return fault.inspect?fault.inspect(id):{status:'inspected',jobId:id,name:'sample.png',inspection,reviewAvailable,regionPreviewAvailable,sourcePreview:reviewAvailable?'test-source':null,previewLimitation:reviewAvailable?null:'A detail crop is required.'};},
+    async inspect_image(id,phase,selectionId){if(phase==='choose'&&!fault.inspect)return {status:'selected',jobId:id,selectionId:'a'.repeat(32)};calls.chooser++;return fault.inspect?fault.inspect(id,phase,selectionId):{status:'inspected',jobId:id,name:'sample.png',inspection,reviewAvailable,regionPreviewAvailable,sourcePreview:reviewAvailable?'test-source':null,previewLimitation:reviewAvailable?null:'A detail crop is required.'};},
     async inspect_image_bytes(encoded,name,id,token){calls.bytes.push({encoded,name,id,token});return fault.bytes?fault.bytes(id):{status:'inspected',jobId:id,name,inspection,reviewAvailable,regionPreviewAvailable,sourcePreview:reviewAvailable?'test-source':null};},
     async preview_image_components(id,ids){calls.preview.push(ids);return fault.preview?fault.preview(id,ids):candidate(ids);},
     async prepare_image_import(id,ids,_style,token){calls.prepare.push(ids);calls.tokens.push(token);if(fault.prepare)return fault.prepare(id,ids);const region=calls.regions.at(-1);return {...candidate(ids),provenance:{kind:'png-metadata-component-reconstruction',sourceSha256:sourceHash,selectedComponents:ids,sourceStorage:'local-profile/import-sources',...(token?{reviewedRegion:{kind:'crop',requestId:region.requestId,sourceSha256:sourceHash,sourceWidth:100,sourceHeight:100,rect:region.rect,width:region.rect.width,height:region.rect.height,pngSha256:otherHash,scale:'one-source-pixel-per-image-pixel',metadataCorrespondence:'not established; whole components retained'}}:{})}};},
@@ -425,3 +425,57 @@ test('a decoded crop with no selected components remains view-only',async()=>{
    const accepted=await f.review.accept({confirmed:true});assert.equal(accepted.continuationBinding,null);assert.equal(accepted.name,'sample.png');assert.equal(f.calls.reset,1);f.review.dispose();
   }
  });
+
+test('native PNG chooser time is separate from the inspection deadline',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']});
+  const f=fixture(),pick=deferred(),read=deferred(),started=deferred(),key='a'.repeat(32);
+  let jobId,settled=false;
+  f.fault.inspect=(id,phase,selectionId)=>{
+    jobId=id;
+    if(phase==='inspect'){assert.equal(selectionId,key);started.resolve();return read.promise;}
+    return pick.promise;
+  };
+  const pending=f.review.inspect();
+  pending.then(()=>{settled=true;},()=>{settled=true;});
+  t.mock.timers.tick(360001);
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(settled,false,'A waiting native chooser must stay open.');
+  pick.resolve({status:'selected',jobId,selectionId:key});await started.promise;
+  t.mock.timers.tick(179999);
+  await new Promise(resolve=>setImmediate(resolve));assert.equal(settled,false);
+  const rejected=assert.rejects(pending,{name:'TimeoutError'});
+  t.mock.timers.tick(1);await rejected;
+  read.resolve({status:'inspected',jobId});
+  assert.equal(f.review.status,'idle');assert.deepEqual(f.store.getSnapshot(),f.before);
+  f.review.dispose();
+});
+
+test('cancelling a waiting native PNG chooser discards a late selected file',async()=>{
+  const f=fixture(),pick=deferred();let jobId,reads=0;
+  f.fault.inspect=(id,phase)=>{jobId=id;if(phase==='inspect')reads++;return pick.promise;};
+  const pending=f.review.inspect(),rejected=assert.rejects(pending,{name:'AbortError'});
+  f.review.cancel();await rejected;
+  pick.resolve({status:'selected',jobId,selectionId:'a'.repeat(32)});
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(reads,0);assert.deepEqual(f.store.getSnapshot(),f.before);
+  f.review.dispose();
+});
+
+test('a long native picker can complete and review the same file without a document mutation',async t=>{
+  t.mock.timers.enable({apis:['setTimeout']});
+  const f=fixture(),pick=deferred(),key='b'.repeat(32),phases=[];
+  let jobId;
+  f.fault.inspect=(id,phase,selectionId)=>{
+    jobId=id;phases.push(phase);
+    if(phase==='choose')return pick.promise;
+    assert.equal(selectionId,key);
+    return {status:'inspected',jobId:id,name:'sample.png',inspection:f.inspection,reviewAvailable:false};
+  };
+  const result=f.review.inspect();
+  t.mock.timers.tick(600000);
+  pick.resolve({status:'selected',jobId,selectionId:key});
+  assert.equal((await result).inspection.originalSha256,f.inspection.originalSha256);
+  assert.deepEqual(phases,['choose','inspect']);
+  assert.deepEqual(f.store.getSnapshot(),f.before);
+  f.review.dispose();
+});

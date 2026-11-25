@@ -89,6 +89,7 @@ class DesktopApi:
         self._store.begin_recovery_generation()
         self._appearance.begin_page()
         self._optical_setup.begin_page()
+        self._images.discard_choice()
         self._recovery_page_ready = True
 
     def get_appearance(self):
@@ -234,13 +235,24 @@ class DesktopApi:
         return self._population_exports.save(self._window, kind, payload, session_token,
             getattr(self._server, 'api_token', None), transparent_background)
 
-    def inspect_image(self, job_id):
-        import webview
-        paths = self._window.create_file_dialog(webview.FileDialog.OPEN,
-            allow_multiple=False, file_types=('PNG images (*.png)',))
-        if not paths:
-            return {'status': 'cancelled'}
-        return self._images.inspect(paths[0], job_id)
+    def inspect_image(self, job_id, phase=None, selection_id=None):
+        if phase == 'inspect':
+            return self._images.inspect_chosen(job_id, selection_id)
+        if phase not in (None, 'choose') or selection_id is not None:
+            raise ValueError('Invalid PNG file selection request.')
+
+        def pick():
+            import webview
+            paths = self._window.create_file_dialog(webview.FileDialog.OPEN,
+                allow_multiple=False, file_types=('PNG images (*.png)',))
+            if not paths:
+                return None
+            return paths if isinstance(paths, str) else paths[0]
+
+        choice = self._images.choose_source(job_id, pick)
+        if phase == 'choose' or choice['status'] == 'cancelled':
+            return choice
+        return self._images.inspect_chosen(job_id, choice['selectionId'])
 
     def _authorize_optical_setup(self, session_token):
         expected = getattr(self._server, 'api_token', None)

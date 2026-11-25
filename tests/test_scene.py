@@ -24,18 +24,36 @@ class SceneTests(unittest.TestCase):
                     numbers = r'-?(?:\d+(?:\.\d*)?|\.\d+)'
                     values = list(map(float, re.findall(numbers, label.get('d'))))
                     xs, ys = values[::2], values[1::2]
-                    dx, dy = map(float, re.findall(numbers, label.get('transform')))
+                    self.assertNotIn('transform', label.attrib)
                     point = scene['positions'][atom_index]
-                    self.assertAlmostEqual((min(xs) + max(xs)) / 2 + dx, point['x'], places=3)
-                    self.assertAlmostEqual((min(ys) + max(ys)) / 2 + dy,
+                    self.assertAlmostEqual((min(xs) + max(xs)) / 2, point['x'], places=3)
+                    self.assertAlmostEqual((min(ys) + max(ys)) / 2,
                                            point['y'] + (max(ys) - min(ys)) / 8, places=3)
-                    del label.attrib['transform']
                     before = ET.fromstring(unshifted['svg'])
                     expected = next(p for p in before.iter() if p.get('class') == f'atom-{atom_index}')
-                    self.assertEqual(label.attrib, expected.attrib)
+                    self.assertEqual(re.findall('[MLQZ]', label.get('d')), re.findall('[MLQZ]', expected.get('d')))
+                    original_values = list(map(float, re.findall(numbers, expected.get('d'))))
+                    self.assertEqual(len(values), len(original_values))
+                    shifts = [v - old for v, old in zip(values, original_values)]
+                    for i, shift in enumerate(shifts):
+                        self.assertAlmostEqual(shift, shifts[i % 2], places=3)
+                    self.assertEqual({k:v for k,v in label.attrib.items() if k!='d'},
+                                     {k:v for k,v in expected.attrib.items() if k!='d'})
                     bond_paths = lambda svg: [p.attrib for p in ET.fromstring(svg).iter()
                                               if p.get('class', '').startswith('bond-')]
                     self.assertEqual(bond_paths(scene['svg']), bond_paths(unshifted['svg']))
+
+    def test_unsupported_glyph_paths_are_preserved_byte_for_byte(self):
+        from rdkit import Chem
+        from nivram.label_anchors import anchor_element_labels
+        mol = Chem.MolFromSmiles('COC')
+        pos = [{'x': 10, 'y': 20}] * mol.GetNumAtoms()
+        for outline in ('m 1 2 l 2 3 z', 'M 0 0 H 3 V 4 Z', 'M 0 0 C 1 2 3 4 5 6 Z',
+                        'M 0 0 Q 1 2 Z', 'M 0 0 L 1 2 3 Z', 'M 0 0 A 2 2 0 0 0 2 3',
+                        'M 0 0 L 4 5 Z 2 1'):
+            with self.subTest(outline=outline):
+                svg = f"<svg><path class='atom-1' d='{outline}' fill='#ff0000'/></svg>"
+                self.assertEqual(anchor_element_labels(svg, mol, pos), svg)
 
     def test_annotated_and_hydrogen_labels_keep_their_engine_layout(self):
         for smiles in ('CO', 'C[NH3+]', 'CC=[18O]', 'C[O:7]C', 'C[O]', 'C#N'):
@@ -43,7 +61,7 @@ class SceneTests(unittest.TestCase):
                 graph = import_structure(smiles)
                 with patch('nivram.scene.anchor_element_labels', side_effect=lambda svg, *_: svg):
                     unshifted = render_scene(graph)
-                self.assertEqual(render_scene(graph), unshifted)
+                self.assertEqual(render_scene(graph)['svg'], unshifted['svg'])
 
     def test_explicit_perspective_marks_on_nonstereogenic_single_bonds(self):
         for direction in (1, 2):
